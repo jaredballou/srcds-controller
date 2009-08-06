@@ -55,10 +55,14 @@ public class XmlPropertiesConfiguration implements Configuration {
 	@Override
 	public <T> void setValue(String key, T value) throws ConfigurationException {
 		
-		properties.setProperty(key, value.toString());
-		store();
+		if (!SRCDS_EXECUTABLE.equals(key)) {
+			properties.setProperty(key, value.toString());
+			store();
 
-		log.info(String.format("%s = %s", key, value));
+			log.info(String.format("%s = %s", key, value));
+		} else {
+			throw new ConfigurationException(String.format("Runtime modification of parameter %s is prohibited", key));
+		}
 	}
 
 	private void loadConfiguration() throws ConfigurationException {
@@ -85,13 +89,13 @@ public class XmlPropertiesConfiguration implements Configuration {
 
 		properties = new Properties();
 		properties.setProperty(HTTP_SERVER_PORT, "8888");
+		properties.setProperty(SRCDS_EXECUTABLE, "srcds_run");
 		
 		/*
 		 * This block is for testing purposes only.
 		 */
 		setValue(AUTOSTART, true);
 		setValue(SRCDS_PATH, "l4d");
-		setValue(SRCDS_EXECUTABLE, "srcds_run");
 		setValue(SRCDS_PARAMETERS, "+hostport 27015 +maxplayers 14 -tickrate 100 +exec server_unrest.cfg +map l4d_vs_airport01_greenhouse.bsp");
 		setValue(SRCDS_GAMETYPE, GameType.LEFT4DEAD);
 		
