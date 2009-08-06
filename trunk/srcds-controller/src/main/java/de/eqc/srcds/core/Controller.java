@@ -12,7 +12,6 @@ import static de.eqc.srcds.configuration.Constants.SRCDS_PATH;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,6 +31,8 @@ import de.eqc.srcds.exceptions.ConfigurationException;
 import de.eqc.srcds.exceptions.NotRunningException;
 import de.eqc.srcds.exceptions.StartupFailedException;
 import de.eqc.srcds.exceptions.UnsupportedOSException;
+import de.eqc.srcds.handlers.SetConfigurationValueHandler;
+import de.eqc.srcds.handlers.ShowConfigurationHandler;
 import de.eqc.srcds.handlers.ShutdownHandler;
 import de.eqc.srcds.handlers.StartHandler;
 import de.eqc.srcds.handlers.StatusHandler;
@@ -101,6 +102,12 @@ public class Controller {
 		
 		HttpContext shutdownContext = httpServer.createContext("/shutdown", new ShutdownHandler());
 		shutdownContext.setAuthenticator(new DefaultAuthenticator());
+		
+		HttpContext showConfigurationContext = httpServer.createContext("/showConfig", new ShowConfigurationHandler(config));
+		showConfigurationContext.setAuthenticator(new DefaultAuthenticator());	
+
+		HttpContext setConfigurationContext = httpServer.createContext("/setConfig", new SetConfigurationValueHandler(config));
+		setConfigurationContext.setAuthenticator(new DefaultAuthenticator());	
 		
 		Runtime.getRuntime().addShutdownHook(new ShutdownHook(this));
 		
