@@ -3,8 +3,8 @@
 = Introduction =
 
 In order to control a SRCDS (Source Dedicated Server) instance remotely one is able to trigger certain actions by invocation of the GET interface of the controller component.
-The controller is most likely listening on the default TCP port 8080 - but can also be re-configured to any possible port (depending on the user's permissions).
-The following chapter gives a quick overview on all currently available commands.
+The controller is most likely listening on the default TCP port 8080 - but can also be re-configured to use any possible port (depending on the user's permissions).
+The following chapter gives a quick overview on all commands which are currently available.
 
 = Available Commands =
 
