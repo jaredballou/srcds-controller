@@ -23,7 +23,7 @@ public class ShowConfigurationHandler implements HttpHandler {
 		httpExchange.getResponseHeaders().add("Content-type", "text/xml");
 		String response = config.toXml();
 		
-		httpExchange.sendResponseHeaders(200, response.length());
+		httpExchange.sendResponseHeaders(200, response.toString().getBytes().length);
 		OutputStream os = httpExchange.getResponseBody();
 		os.write(response.toString().getBytes());
 		os.close();

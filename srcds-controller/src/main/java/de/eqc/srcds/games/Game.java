@@ -7,10 +7,12 @@ import java.util.Map;
 public abstract class Game {
 
 	private final Map<String, String> parameters;
+	private String directory;
 	
-	public Game() {
+	public Game(String directory) {
 
-		parameters = new HashMap<String, String>();
+		this.directory = directory;
+		this.parameters = new HashMap<String, String>();
 	}
 	
 	public Map<String, String> getParameters() {
@@ -35,5 +37,10 @@ public abstract class Game {
 		}
 		
 		return params;
+	}
+	
+	public String getDirectory() {
+
+		return directory;
 	}
 }

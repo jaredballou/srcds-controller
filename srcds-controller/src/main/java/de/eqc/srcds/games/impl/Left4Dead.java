@@ -6,7 +6,7 @@ public class Left4Dead extends Game {
 
 	public Left4Dead() {
 
-		super();
+		super("left4dead");
 		
 		addParameter("game", "left4dead");
 	}
