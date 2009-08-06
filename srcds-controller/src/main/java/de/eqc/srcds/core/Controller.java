@@ -235,6 +235,7 @@ public class Controller {
 			try {
 				server.getOutputStream().write(3);
 				server.getOutputStream().flush();
+				log.info("SIGTERM sent to process");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

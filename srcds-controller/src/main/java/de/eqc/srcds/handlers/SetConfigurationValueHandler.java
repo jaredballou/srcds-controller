@@ -40,9 +40,9 @@ public class SetConfigurationValueHandler implements HttpHandler {
 		if (key == null || value == null){
 			response.append("Either key or value parameter is missing<br/>");
 		} else {
-			response.append("Set key " + key + " to value " + value);
 			try {
 				config.setValue(key, value);
+				response.append("Set key " + key + " to value " + value);
 			} catch (ConfigurationException e) {
 				response.append(e.getLocalizedMessage());
 			}
