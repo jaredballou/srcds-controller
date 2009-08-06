@@ -1,0 +1,14 @@
+#summary Usage of the command line interface
+
+= Introduction =
+
+In order to control a SRCDS (Source Dedicated Server) instance remotely one is able to trigger certain actions by invocation of the GET interface of the controller component.
+The controller is most likely listening on the default TCP port 8080 - but can also be re-configured to any possible port (depending on the user's permissions).
+The following chapter gives a quick overview on all currently available commands.
+
+= Available Commands =
+
+  * *start*: Starts the SRCDS instance (e.g. http://127.0.0.1:8080/start)
+  * *stop*: Stops the SRCDS instance (e.g. http://127.0.0.1:8080/stop)
+  * *status*: Provides information on the current state of the SRCDS instance (e.g. http://127.0.0.1:8080/status)
+  * *shutdown*: Shuts the controller down (e.g. http://127.0.0.1:8080/shutdown)
