@@ -8,6 +8,7 @@ import static de.eqc.srcds.configuration.Constants.SRCDS_EXECUTABLE;
 import static de.eqc.srcds.configuration.Constants.SRCDS_GAMETYPE;
 import static de.eqc.srcds.configuration.Constants.SRCDS_PARAMETERS;
 import static de.eqc.srcds.configuration.Constants.SRCDS_PATH;
+import static de.eqc.srcds.configuration.Constants.STARTUP_WAIT_TIME_MILLIS;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -136,7 +137,7 @@ public class Controller {
 			int exitValue = -1;
 			try {
 				exitValue = server.exitValue();
-				log.info("Server was terminated.");
+				log.info("Server was terminated");
 			} catch (Exception e) {			
 			}
 			
@@ -155,7 +156,7 @@ public class Controller {
 		String executable = "." + File.separator + config.getValue(SRCDS_EXECUTABLE, String.class);
 		
 		GameType gameType = config.getValue(SRCDS_GAMETYPE, GameType.class);
-		log.info(String.format("Game type is set to %s", gameType));
+		log.info(String.format("Game type is %s", gameType));
 		LinkedList<String> parameters = gameType.getImplementation().getParametersAsList();
 
 		parameters.addAll(parseUserParameters());
@@ -200,7 +201,7 @@ public class Controller {
 			try {
 				File srcdsPath = new File(config.getValue(SRCDS_PATH, String.class));
 				if (srcdsPath.exists()) {
-					log.info(String.format("SRCDS path is set to %s", srcdsPath.getPath()));
+					log.info(String.format("SRCDS path is %s", srcdsPath.getPath()));
 				} else {
 					throw new ConfigurationException(String.format("%s refers to the non-existent path %s", SRCDS_PATH, srcdsPath.getPath()));
 				}
@@ -208,6 +209,12 @@ public class Controller {
 				ProcessBuilder pb = new ProcessBuilder(parseCommandLine());
 				pb.directory(srcdsPath);
 				server = pb.start();
+				
+				Thread.sleep(STARTUP_WAIT_TIME_MILLIS);
+				
+				if (getServerState() != ServerState.RUNNING) {
+					throw new StartupFailedException("Process was terminated during startup phase");
+				}
 				
 				/*
 				 * DEBUG
@@ -239,6 +246,7 @@ public class Controller {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			log.info("Destroying reference to process");
 			server.destroy();
 			server = null;
 		}

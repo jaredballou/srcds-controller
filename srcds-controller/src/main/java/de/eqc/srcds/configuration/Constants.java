@@ -7,6 +7,8 @@ public final class Constants {
         throw new UnsupportedOperationException();
     }
     
+    public static final int STARTUP_WAIT_TIME_MILLIS = 2000;
+    
     public static final String LOGGING_FILENAME = "srcds-controller-logging.properties";
     
     public static final String DEFAULT_CONFIG_FILENAME = "srcds-controller-config.xml";
