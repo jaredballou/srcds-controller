@@ -8,4 +8,5 @@ public interface Configuration {
 	
 	public <T> void setValue(String key, T value) throws ConfigurationException;
 
+	public String toXml();
 }

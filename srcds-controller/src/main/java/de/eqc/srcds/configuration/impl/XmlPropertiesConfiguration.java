@@ -2,6 +2,7 @@ package de.eqc.srcds.configuration.impl;
 
 import static de.eqc.srcds.configuration.Constants.*;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -110,5 +111,20 @@ public class XmlPropertiesConfiguration implements Configuration {
 		
 		log.info("Configuration stored to file.");
 	}
-
+	
+	@Override
+	public String toXml() {
+		
+		String ret = null;
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		try {
+			properties.storeToXML(baos, null);
+			baos.flush();
+			baos.close();
+			ret = new String(baos.toByteArray());
+		} catch (IOException e) {
+			ret = "Unable to create XML output for configuration";
+		}
+		return ret;
+	}
 }

@@ -18,6 +18,7 @@ public class StatusHandler implements HttpHandler {
 	}
 	
 	public void handle(HttpExchange httpExchange) throws IOException {
+
 		httpExchange.getResponseHeaders().add("Content-type", "text/html");
 		String response = "<pre>" + controller.getServerState() + "</pre>";
 

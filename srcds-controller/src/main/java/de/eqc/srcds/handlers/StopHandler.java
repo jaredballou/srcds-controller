@@ -18,6 +18,7 @@ public class StopHandler implements HttpHandler {
 	}	
 	
 	public void handle(HttpExchange httpExchange) throws IOException {
+
 		httpExchange.getResponseHeaders().add("Content-type", "text/html");
 		String response = "<pre>Server stopped successfully</pre>";
 

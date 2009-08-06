@@ -8,6 +8,7 @@ import com.sun.net.httpserver.HttpHandler;
 public class ShutdownHandler implements HttpHandler {
 	
 	public void handle(HttpExchange httpExchange) throws IOException {
+
 		System.out.println("Controller is going down...");
 		System.exit(0);
 	}
