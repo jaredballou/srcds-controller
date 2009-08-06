@@ -2,7 +2,6 @@ package de.eqc.srcds.core;
 
 import java.util.logging.Logger;
 
-import de.eqc.srcds.enums.ServerState;
 import de.eqc.srcds.exceptions.NotRunningException;
 
 
