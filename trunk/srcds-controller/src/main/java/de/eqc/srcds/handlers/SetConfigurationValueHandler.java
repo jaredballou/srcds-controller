@@ -49,7 +49,7 @@ public class SetConfigurationValueHandler implements HttpHandler {
 		}
 		response.append("<pre>");
 		
-		httpExchange.sendResponseHeaders(200, response.length());
+		httpExchange.sendResponseHeaders(200, response.toString().getBytes().length);
 		OutputStream os = httpExchange.getResponseBody();
 		os.write(response.toString().getBytes());
 		os.close();

@@ -13,7 +13,6 @@ import static de.eqc.srcds.configuration.Constants.STARTUP_WAIT_TIME_MILLIS;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,6 +34,7 @@ import de.eqc.srcds.exceptions.StartupFailedException;
 import de.eqc.srcds.exceptions.UnsupportedOSException;
 import de.eqc.srcds.handlers.SetConfigurationValueHandler;
 import de.eqc.srcds.handlers.ShowConfigurationHandler;
+import de.eqc.srcds.handlers.ShowServerConfigurationHandler;
 import de.eqc.srcds.handlers.ShutdownHandler;
 import de.eqc.srcds.handlers.StartHandler;
 import de.eqc.srcds.handlers.StatusHandler;
@@ -110,7 +110,10 @@ public class Controller {
 
 		HttpContext setConfigurationContext = httpServer.createContext("/setConfig", new SetConfigurationValueHandler(config));
 		setConfigurationContext.setAuthenticator(new DefaultAuthenticator());	
-		
+
+		HttpContext showServerConfigurationContext = httpServer.createContext("/showServerConfig", new ShowServerConfigurationHandler(this));
+		showServerConfigurationContext.setAuthenticator(new DefaultAuthenticator());	
+
 		Runtime.getRuntime().addShutdownHook(new ShutdownHook(this));
 		
 		httpServer.start();
@@ -155,7 +158,7 @@ public class Controller {
 
 		String executable = "." + File.separator + config.getValue(SRCDS_EXECUTABLE, String.class);
 		
-		GameType gameType = config.getValue(SRCDS_GAMETYPE, GameType.class);
+		GameType gameType = getGameType();
 		log.info(String.format("Game type is %s", gameType));
 		LinkedList<String> parameters = gameType.getImplementation().getParametersAsList();
 
@@ -165,6 +168,11 @@ public class Controller {
 		log.info(String.format("Process: %s", parameters.toString()));
 		
 		return parameters;
+	}
+
+	public GameType getGameType() throws ConfigurationException {
+ 
+		return config.getValue(SRCDS_GAMETYPE, GameType.class);
 	}
 	
 	public List<String> parseUserParameters() throws ConfigurationException {
@@ -199,12 +207,7 @@ public class Controller {
 		
 		if (getServerState() != ServerState.RUNNING) {
 			try {
-				File srcdsPath = new File(config.getValue(SRCDS_PATH, String.class));
-				if (srcdsPath.exists()) {
-					log.info(String.format("SRCDS path is %s", srcdsPath.getPath()));
-				} else {
-					throw new ConfigurationException(String.format("%s refers to the non-existent path %s", SRCDS_PATH, srcdsPath.getPath()));
-				}
+				File srcdsPath = getSrcdsPath();
 				
 				ProcessBuilder pb = new ProcessBuilder(parseCommandLine());
 				pb.directory(srcdsPath);
@@ -232,6 +235,17 @@ public class Controller {
 		} else {
 			throw new AlreadyRunningException("Server is already running");
 		}
+	}
+
+	public File getSrcdsPath() throws ConfigurationException {
+
+		File srcdsPath = new File(config.getValue(SRCDS_PATH, String.class));
+		if (srcdsPath.exists()) {
+			log.info(String.format("SRCDS path is %s", srcdsPath.getPath()));
+		} else {
+			throw new ConfigurationException(String.format("%s refers to the non-existent path %s", SRCDS_PATH, srcdsPath.getPath()));
+		}
+		return srcdsPath;
 	}
 	
 	public void stopServer() throws NotRunningException {
