@@ -12,6 +12,7 @@ import static de.eqc.srcds.configuration.Constants.SRCDS_PATH;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.util.LinkedList;
 import java.util.List;
@@ -151,14 +152,7 @@ public class Controller {
 	
 	public List<String> parseCommandLine() throws ConfigurationException {
 
-		File srcdsPath = new File(config.getValue(SRCDS_PATH, String.class));
-		if (srcdsPath.exists()) {
-			log.info(String.format("SRCDS path is set to %s", srcdsPath.getPath()));
-		} else {
-			throw new ConfigurationException(String.format("%s refers to the non-existent path %s", SRCDS_PATH, srcdsPath.getPath()));
-		}
-		
-		String executable = srcdsPath.getPath() + File.separator + config.getValue(SRCDS_EXECUTABLE, String.class);
+		String executable = "." + File.separator + config.getValue(SRCDS_EXECUTABLE, String.class);
 		
 		GameType gameType = config.getValue(SRCDS_GAMETYPE, GameType.class);
 		log.info(String.format("Game type is set to %s", gameType));
@@ -204,7 +198,15 @@ public class Controller {
 		
 		if (getServerState() != ServerState.RUNNING) {
 			try {
+				File srcdsPath = new File(config.getValue(SRCDS_PATH, String.class));
+				if (srcdsPath.exists()) {
+					log.info(String.format("SRCDS path is set to %s", srcdsPath.getPath()));
+				} else {
+					throw new ConfigurationException(String.format("%s refers to the non-existent path %s", SRCDS_PATH, srcdsPath.getPath()));
+				}
+				
 				ProcessBuilder pb = new ProcessBuilder(parseCommandLine());
+				pb.directory(srcdsPath);
 				server = pb.start();
 				
 				/*
@@ -230,6 +232,12 @@ public class Controller {
 		if (getServerState() != ServerState.RUNNING) {
 			throw new NotRunningException("Server is not running");
 		} else {
+			try {
+				server.getOutputStream().write(3);
+				server.getOutputStream().flush();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			server.destroy();
 			server = null;
 		}
