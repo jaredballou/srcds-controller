@@ -13,13 +13,13 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 import de.eqc.srcds.configuration.Configuration;
-import de.eqc.srcds.core.Controller;
+import de.eqc.srcds.core.ServerController;
 import de.eqc.srcds.enums.GameType;
 import de.eqc.srcds.exceptions.ConfigurationException;
 
 public class XmlPropertiesConfiguration implements Configuration {
 
-	private static Logger log = Logger.getLogger(Controller.class.getSimpleName());
+	private static Logger log = Logger.getLogger(ServerController.class.getSimpleName());
 	private final File propertiesFile;
 	private Properties properties;
 	

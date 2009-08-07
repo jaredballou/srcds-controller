@@ -9,18 +9,28 @@ import java.io.OutputStream;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import de.eqc.srcds.core.Controller;
+import de.eqc.srcds.configuration.Configuration;
+import de.eqc.srcds.core.ServerController;
 import de.eqc.srcds.enums.GameType;
-import de.eqc.srcds.exceptions.ConfigurationException;
 
-public class ShowServerConfigurationHandler implements HttpHandler {
+public class ShowServerConfigurationHandler implements HttpHandler, RegisterHandlerByReflection {
 
-	private final Controller controller;
+	private ServerController controller;
 
-	public ShowServerConfigurationHandler(Controller controller) {
+  @Override
+  public void init(ServerController controller, Configuration config) {
+    this.controller = controller;
+  }
 
-		this.controller = controller;
-	}
+  @Override
+  public String getPath() {
+    return "/showServerConfig";
+  }
+
+  @Override
+  public HttpHandler getHttpHandler() {
+    return this;
+  }
 
 	public void handle(HttpExchange httpExchange) throws IOException {
 

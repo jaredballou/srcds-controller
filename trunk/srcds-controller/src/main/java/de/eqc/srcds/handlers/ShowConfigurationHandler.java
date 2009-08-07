@@ -7,16 +7,26 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import de.eqc.srcds.configuration.Configuration;
-import de.eqc.srcds.exceptions.ConfigurationException;
+import de.eqc.srcds.core.ServerController;
 
-public class ShowConfigurationHandler implements HttpHandler {
+public class ShowConfigurationHandler implements HttpHandler, RegisterHandlerByReflection {
 	
-	private final Configuration config;
+	private  Configuration config;
 	
-	public ShowConfigurationHandler(Configuration config) {
+  @Override
+  public void init(ServerController controller, Configuration config) {
+    this.config = config;
+  }
 
-		this.config = config;
-	}
+  @Override
+  public String getPath() {
+    return "/showConfig";
+  }
+
+  @Override
+  public HttpHandler getHttpHandler() {
+    return this;
+  }
 
 	public void handle(HttpExchange httpExchange) throws IOException {
 		
