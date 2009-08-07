@@ -14,7 +14,6 @@ public class StatusHandler extends AbstractRegisteredHandler implements
 
     public void handleRequest(HttpExchange httpExchange) throws IOException {
 
-	httpExchange.getResponseHeaders().add("Content-type", "text/html");
 	String response = "<pre>" + getServerController().getServerState()
 		+ "</pre>";
 
