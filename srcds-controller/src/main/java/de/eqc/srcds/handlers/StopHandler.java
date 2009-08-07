@@ -6,16 +6,27 @@ import java.io.OutputStream;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import de.eqc.srcds.core.Controller;
+import de.eqc.srcds.configuration.Configuration;
+import de.eqc.srcds.core.ServerController;
 
-public class StopHandler implements HttpHandler {
+public class StopHandler implements HttpHandler, RegisterHandlerByReflection {
 	
-	private final Controller controller;
+	private ServerController controller;
 	
-	public StopHandler(Controller controller) {
-	
-		this.controller = controller;
-	}	
+  @Override
+  public void init(ServerController controller, Configuration config) {
+    this.controller = controller;
+  }
+
+  @Override
+  public String getPath() {
+    return "/stop";
+  }
+
+  @Override
+  public HttpHandler getHttpHandler() {
+    return this;
+  }
 	
 	public void handle(HttpExchange httpExchange) throws IOException {
 

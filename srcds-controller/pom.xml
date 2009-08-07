@@ -15,7 +15,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>de.eqc.srcds.core.Controller</mainClass>
+							<mainClass>de.eqc.srcds.core.CLI</mainClass>
 							<packageName>de.eqc.srcds.core</packageName>
 						</manifest>
 						<manifestEntries>
