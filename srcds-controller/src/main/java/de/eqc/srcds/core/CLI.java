@@ -23,6 +23,12 @@ import de.eqc.srcds.enums.OperatingSystem;
 import de.eqc.srcds.exceptions.ConfigurationException;
 import de.eqc.srcds.exceptions.UnsupportedOSException;
 import de.eqc.srcds.handlers.RegisterHandlerByReflection;
+import de.eqc.srcds.handlers.SetConfigurationValueHandler;
+import de.eqc.srcds.handlers.ShowConfigurationHandler;
+import de.eqc.srcds.handlers.ShowServerConfigurationHandler;
+import de.eqc.srcds.handlers.ShutdownHandler;
+import de.eqc.srcds.handlers.StartHandler;
+import de.eqc.srcds.handlers.StopHandler;
 
 /**
  * This class starts the srcds controller.
@@ -65,7 +71,14 @@ public class CLI {
 	httpServer = HttpServer.create(new InetSocketAddress(port), 0);
 	log.info(String.format("Bound to TCP port %d.", port));
 
-	RegisterHandlerByReflection[] clazzes = getRegisterHandlerByReflectionClasses();
+	RegisterHandlerByReflection[] clazzes = new RegisterHandlerByReflection[] {
+		new SetConfigurationValueHandler(),
+		new ShowConfigurationHandler(),
+		new ShowServerConfigurationHandler(), // 
+		new ShutdownHandler(), //
+		new StartHandler(), //
+		new StopHandler() //
+	};
 	DefaultAuthenticator defaultAuthenticator = new DefaultAuthenticator();
 	for (RegisterHandlerByReflection clazzByReflection : clazzes) {
 	    clazzByReflection.init(this.serverController, this.config);
@@ -76,73 +89,6 @@ public class CLI {
 	}
 
 	httpServer.start();
-    }
-
-    /**
-     * This class gets all classes in the same package as
-     * RegisterHandlerByReflection which implements the
-     * RegisterHandlerByReflection interface.
-     * 
-     * @return
-     * @throws ClassNotFoundException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws UnsupportedEncodingException
-     */
-    public RegisterHandlerByReflection[] getRegisterHandlerByReflectionClasses()
-	    throws ClassNotFoundException, InstantiationException,
-	    IllegalAccessException, UnsupportedEncodingException {
-	String pckgname = RegisterHandlerByReflection.class.getPackage()
-		.getName();
-	ArrayList<RegisterHandlerByReflection> serviceCalls = new ArrayList<RegisterHandlerByReflection>();
-	// Get a File object for the package
-	File directory = null;
-	try {
-	    String path = '/' + pckgname.replace('.', '/');
-	    URL resource = getClass().getResource(path);
-	    if (resource == null) {
-		throw new ClassNotFoundException("No resource for " + path);
-	    }
-	    directory = new File(URLDecoder.decode(resource.getFile(), "UTF-8"));
-	} catch (NullPointerException excp) {
-	    throw new ClassNotFoundException(pckgname + " (" + directory
-		    + ") does not appear to be a valid package");
-	}
-
-	if (directory.exists()) {
-	    // Get the list of the files contained in the package
-	    String[] files = directory.list();
-	    for (int i = 0; i < files.length; i++) {
-		// we are only interested in .class files
-		if (files[i].endsWith(".class")) {
-		    // removes the .class extension
-		    Class<?> aClass = Class.forName(pckgname + '.'
-			    + files[i].substring(0, files[i].length() - 6));
-		    if (!aClass.isInterface()
-			    && !Modifier.isAbstract(aClass.getModifiers())) {
-			boolean implementsRemoteServiceCall = false;
-			for (Class<?> interfaceClass : aClass.getInterfaces()) {
-			    if (interfaceClass == RegisterHandlerByReflection.class) {
-				implementsRemoteServiceCall = true;
-				break;
-			    }
-			}
-			if (implementsRemoteServiceCall) {
-			    serviceCalls
-				    .add((RegisterHandlerByReflection) aClass
-					    .newInstance());
-			}
-		    }
-		}
-	    }
-	} else {
-	    throw new ClassNotFoundException(pckgname
-		    + " does not appear to be a valid package");
-	}
-
-	RegisterHandlerByReflection[] array = new RegisterHandlerByReflection[serviceCalls
-		.size()];
-	return serviceCalls.toArray(array);
     }
 
     private void checkOS() throws UnsupportedOSException {
