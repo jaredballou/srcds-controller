@@ -123,19 +123,12 @@ public class CLI {
 	}
 
 	for (String className : classNames) {
-	    Class<?> aClass = Class.forName(className);
-	    if (!aClass.isInterface()
-		    && !Modifier.isAbstract(aClass.getModifiers())) {
-		boolean implementsRemoteServiceCall = false;
-		for (Class<?> interfaceClass : aClass.getInterfaces()) {
-		    if (interfaceClass == RegisteredHandler.class) {
-			implementsRemoteServiceCall = true;
-			break;
-		    }
-		}
-		if (implementsRemoteServiceCall) {
-		    handlers.add((RegisteredHandler) aClass.newInstance());
-		}
+	    Class<?> clazz = Class.forName(className);
+	    if (!clazz.isInterface()
+		    && !Modifier.isAbstract(clazz.getModifiers())
+		    && RegisteredHandler.class.isAssignableFrom(clazz)) {
+
+		handlers.add((RegisteredHandler) clazz.newInstance());
 	    }
 	}
 
