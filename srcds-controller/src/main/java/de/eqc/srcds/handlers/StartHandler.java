@@ -15,7 +15,6 @@ public class StartHandler extends AbstractRegisteredHandler implements
     @Override
     public void handleRequest(HttpExchange httpExchange) throws IOException {
 
-	httpExchange.getResponseHeaders().add("Content-type", "text/html");
 	String response = "<pre>Server started successfully</pre>";
 
 	try {
