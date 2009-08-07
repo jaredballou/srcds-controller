@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 public class LogFactory {
   
   static {
+
     File loggingConfig = new File(LOGGING_FILENAME);
     if (loggingConfig.exists()) {
       try {
@@ -25,7 +26,8 @@ public class LogFactory {
     }
   }
   
-  public static Logger getLogger(Class clazz) {
-    return  Logger.getLogger(clazz.getName());
+  public static Logger getLogger(Class<?> clazz) {
+
+    return Logger.getLogger(clazz.getName());
   }
 }
