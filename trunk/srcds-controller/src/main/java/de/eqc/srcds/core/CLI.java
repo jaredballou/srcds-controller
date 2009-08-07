@@ -22,7 +22,7 @@ import de.eqc.srcds.configuration.impl.XmlPropertiesConfiguration;
 import de.eqc.srcds.enums.OperatingSystem;
 import de.eqc.srcds.exceptions.ConfigurationException;
 import de.eqc.srcds.exceptions.UnsupportedOSException;
-import de.eqc.srcds.handlers.RegisterHandlerByReflection;
+import de.eqc.srcds.handlers.RegisteredHandler;
 import de.eqc.srcds.handlers.SetConfigurationValueHandler;
 import de.eqc.srcds.handlers.ShowConfigurationHandler;
 import de.eqc.srcds.handlers.ShowServerConfigurationHandler;
@@ -71,7 +71,7 @@ public class CLI {
 	httpServer = HttpServer.create(new InetSocketAddress(port), 0);
 	log.info(String.format("Bound to TCP port %d.", port));
 
-	RegisterHandlerByReflection[] clazzes = new RegisterHandlerByReflection[] {
+	RegisteredHandler[] clazzes = new RegisteredHandler[] {
 		new SetConfigurationValueHandler(),
 		new ShowConfigurationHandler(),
 		new ShowServerConfigurationHandler(), // 
@@ -80,7 +80,7 @@ public class CLI {
 		new StopHandler() //
 	};
 	DefaultAuthenticator defaultAuthenticator = new DefaultAuthenticator();
-	for (RegisterHandlerByReflection clazzByReflection : clazzes) {
+	for (RegisteredHandler clazzByReflection : clazzes) {
 	    clazzByReflection.init(this.serverController, this.config);
 	    HttpContext startContext = httpServer.createContext(
 		    clazzByReflection.getPath(), clazzByReflection
