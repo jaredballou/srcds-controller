@@ -1,6 +1,7 @@
 package de.eqc.srcds.handlers;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,10 +19,10 @@ public abstract class AbstractRegisteredHandler implements HttpHandler,
 
     private Configuration config;
     private ServerController serverController;
-    private String requestQuery;
 
     // created on demand
     private Map<String, String> parsedRequestParameter = null;
+    private HttpExchange httpExchange;
 
     /*
      * @see de.eqc.srcds.handlers.RegisteredHandler#getHttpHandler()
@@ -58,10 +59,12 @@ public abstract class AbstractRegisteredHandler implements HttpHandler,
     private void parseRequestQuery() {
 	if (this.parsedRequestParameter == null) {
 	    this.parsedRequestParameter = new HashMap<String, String>();
-	    if (this.requestQuery == null || this.requestQuery.isEmpty()) {
+
+	    String requestQuery = this.httpExchange.getRequestURI().getQuery();
+	    if (requestQuery == null || requestQuery.isEmpty()) {
 		return;
 	    }
-	    String[] params = this.requestQuery.split("&");
+	    String[] params = requestQuery.split("&");
 	    for (String param : params) {
 		String[] parts = param.split("=");
 		if (parts.length != 2) {
@@ -77,17 +80,49 @@ public abstract class AbstractRegisteredHandler implements HttpHandler,
 	return this.parsedRequestParameter.get(getKey);
     }
 
+    /**
+     * Set the content-type to "text/html" and writes the content to the stream.
+     * The stream is closed at the end, so don't call this method twice!
+     * 
+     * @param content
+     * @throws IOException
+     */
+    protected void outputHtmlContent(String content) throws IOException {
+	outputContent(content, "text/html");
+    }
+
+    /**
+     * Writes the content to the stream. The stream is closed at the end, so
+     * don't call this method twice!
+     * 
+     * @param content
+     * @param contentType
+     * @throws IOException
+     */
+    protected void outputContent(String content, String contentType)
+	    throws IOException {
+	this.httpExchange.getResponseHeaders().add("Content-type", contentType);
+
+	httpExchange.sendResponseHeaders(200, content.getBytes().length);
+	OutputStream os = httpExchange.getResponseBody();
+	os.write(content.getBytes());
+	os.close();
+    }
+
     /*
      * @see
      * com.sun.net.httpserver.HttpHandler#handle(com.sun.net.httpserver.HttpExchange
      * )
      */
     @Override
-    public final void handle(HttpExchange arg0) throws IOException {
-	this.requestQuery = arg0.getRequestURI().getQuery();
+    public final void handle(HttpExchange httpExchange) throws IOException {
+	this.httpExchange = httpExchange;
 	this.parsedRequestParameter = null;
-	this.handleRequest(arg0);
+
+	this.handleRequest(httpExchange);
+
     }
 
-    public abstract void handleRequest(HttpExchange arg0) throws IOException;
+    public abstract void handleRequest(HttpExchange httpExchange)
+	    throws IOException;
 }
