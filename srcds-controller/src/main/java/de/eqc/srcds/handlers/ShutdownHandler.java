@@ -8,7 +8,7 @@ import com.sun.net.httpserver.HttpHandler;
 import de.eqc.srcds.configuration.Configuration;
 import de.eqc.srcds.core.ServerController;
 
-public class ShutdownHandler implements HttpHandler, RegisterHandlerByReflection {
+public class ShutdownHandler implements HttpHandler, RegisteredHandler {
 
   @Override
   public void init(ServerController controller, Configuration config) {

@@ -13,7 +13,7 @@ import de.eqc.srcds.configuration.Configuration;
 import de.eqc.srcds.core.ServerController;
 import de.eqc.srcds.enums.GameType;
 
-public class ShowServerConfigurationHandler implements HttpHandler, RegisterHandlerByReflection {
+public class ShowServerConfigurationHandler implements HttpHandler, RegisteredHandler {
 
 	private ServerController controller;
 

@@ -9,7 +9,7 @@ import com.sun.net.httpserver.HttpHandler;
 import de.eqc.srcds.configuration.Configuration;
 import de.eqc.srcds.core.ServerController;
 
-public class ShowConfigurationHandler implements HttpHandler, RegisterHandlerByReflection {
+public class ShowConfigurationHandler implements HttpHandler, RegisteredHandler {
 	
 	private  Configuration config;
 	

@@ -9,7 +9,7 @@ import de.eqc.srcds.core.ServerController;
  * 
  * @author Holger Cremer
  */
-public interface RegisterHandlerByReflection {
+public interface RegisteredHandler {
   void init(ServerController controller, Configuration config);
   
   String getPath();

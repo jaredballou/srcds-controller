@@ -10,7 +10,7 @@ import de.eqc.srcds.configuration.Configuration;
 import de.eqc.srcds.core.ServerController;
 import de.eqc.srcds.exceptions.ConfigurationException;
 
-public class SetConfigurationValueHandler implements HttpHandler, RegisterHandlerByReflection {
+public class SetConfigurationValueHandler implements HttpHandler, RegisteredHandler {
 	
 	private  Configuration config;
 	
