@@ -28,6 +28,7 @@ import de.eqc.srcds.configuration.impl.XmlPropertiesConfiguration;
 import de.eqc.srcds.enums.OperatingSystem;
 import de.eqc.srcds.exceptions.ConfigurationException;
 import de.eqc.srcds.exceptions.UnsupportedOSException;
+import de.eqc.srcds.handlers.IndexHandler;
 import de.eqc.srcds.handlers.RegisteredHandler;
 
 /**

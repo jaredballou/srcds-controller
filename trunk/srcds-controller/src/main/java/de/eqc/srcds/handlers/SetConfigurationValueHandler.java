@@ -1,17 +1,13 @@
 package de.eqc.srcds.handlers;
 
 import java.io.IOException;
-import java.io.OutputStream;
 
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 
-import de.eqc.srcds.configuration.Configuration;
-import de.eqc.srcds.core.ServerController;
 import de.eqc.srcds.exceptions.ConfigurationException;
 
 public class SetConfigurationValueHandler extends AbstractRegisteredHandler
-	implements HttpHandler, RegisteredHandler {
+	implements RegisteredHandler {
 
     @Override
     public String getPath() {
@@ -36,11 +32,6 @@ public class SetConfigurationValueHandler extends AbstractRegisteredHandler
 	}
 	response.append("<pre>");
 
-	httpExchange.sendResponseHeaders(200,
-		response.toString().getBytes().length);
-	OutputStream os = httpExchange.getResponseBody();
-	os.write(response.toString().getBytes());
-	os.close();
-
+	outputHtmlContent(response.toString());
     }
 }

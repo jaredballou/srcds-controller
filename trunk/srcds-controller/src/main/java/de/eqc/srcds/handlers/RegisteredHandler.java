@@ -10,8 +10,9 @@ import de.eqc.srcds.core.ServerController;
  * @author Holger Cremer
  */
 public interface RegisteredHandler {
-  void init(ServerController controller, Configuration config);
-  
-  String getPath();
-  HttpHandler getHttpHandler();
+    void init(ServerController controller, Configuration config);
+
+    String getPath();
+
+    HttpHandler getHttpHandler();
 }
