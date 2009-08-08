@@ -16,7 +16,7 @@ import com.sun.net.httpserver.HttpHandler;
 
 import de.eqc.srcds.configuration.Configuration;
 import de.eqc.srcds.core.LogFactory;
-import de.eqc.srcds.core.ServerController;
+import de.eqc.srcds.core.SourceDServerController;
 import de.eqc.srcds.core.Utils;
 import de.eqc.srcds.xmlbeans.enums.ResponseCode;
 import de.eqc.srcds.xmlbeans.impl.ControllerResponse;
@@ -32,7 +32,7 @@ public abstract class AbstractRegisteredHandler implements HttpHandler,
 	    .getLogger(AbstractRegisteredHandler.class);
 
     private Configuration config;
-    private ServerController serverController;
+    private SourceDServerController serverController;
 
     // created on demand
     private Map<String, String> parsedRequestParameter = null;
@@ -56,7 +56,7 @@ public abstract class AbstractRegisteredHandler implements HttpHandler,
      * ServerController, de.eqc.srcds.configuration.Configuration)
      */
     @Override
-    public void init(ServerController controller, Configuration config) {
+    public void init(SourceDServerController controller, Configuration config) {
 
 	this.serverController = controller;
 	this.config = config;
@@ -73,7 +73,7 @@ public abstract class AbstractRegisteredHandler implements HttpHandler,
     /**
      * @return the serverController
      */
-    protected ServerController getServerController() {
+    protected SourceDServerController getServerController() {
 
 	return this.serverController;
     }

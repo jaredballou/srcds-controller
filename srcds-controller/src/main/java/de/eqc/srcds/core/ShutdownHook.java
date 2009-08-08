@@ -2,34 +2,34 @@ package de.eqc.srcds.core;
 
 import java.util.logging.Logger;
 
-import com.sun.net.httpserver.HttpServer;
-
-import de.eqc.srcds.exceptions.NotRunningException;
-
-
 public class ShutdownHook extends Thread {
 
-  private static Logger    log = LogFactory.getLogger(ShutdownHook.class);
-  private ServerController controller;
-  private HttpServer       httpServer;
+    private static Logger log = LogFactory.getLogger(ShutdownHook.class);
+    
+    private Thread mainThread;
+    private HttpServerController httpServerController;
+    private SourceDServerController srcdsController;
 
-  public ShutdownHook(ServerController controller, HttpServer httpServer) {
-    this.controller = controller;
-    this.httpServer = httpServer;
-  }
+    public ShutdownHook(Thread mainThread, SourceDServerController srcdsController, HttpServerController httpServerController) {
 
-  @Override
-  public void run() {
-    log.info("Shutting down HTTP server...");
-    this.httpServer.stop(0);
-    try {
-      log.info("Stopping server process...");
-      this.controller.stopServer();
-    } catch (NotRunningException e) {
+	this.mainThread = mainThread;
+	this.srcdsController = srcdsController;
+	this.httpServerController = httpServerController;
     }
 
-    log.info("Controller is going down...");
+    @Override
+    public void run() {
 
-    // TODO: flush log
-  }
+	httpServerController.stopGraceful();
+	srcdsController.stopGraceful();
+
+	try {
+	    mainThread.join();
+	} catch (InterruptedException e) {
+
+	    log.info("Shutdown interrupted");
+	}
+	
+	// TODO: flush log
+    }
 }
