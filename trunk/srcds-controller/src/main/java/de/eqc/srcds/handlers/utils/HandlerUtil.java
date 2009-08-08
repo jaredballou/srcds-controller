@@ -10,7 +10,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
@@ -41,7 +40,7 @@ public final class HandlerUtil {
 
 	String pckgname = RegisteredHandler.class.getPackage().getName();
 	Collection<RegisteredHandler> handlers = new ArrayList<RegisteredHandler>();
-	List<String> classNames = null;
+	Collection<String> classNames = null;
 	try {
 	    String path = '/' + pckgname.replace('.', '/');
 	    URL resource = HandlerUtil.class.getResource(path);
@@ -70,10 +69,10 @@ public final class HandlerUtil {
 	return handlers;
     }
 
-    public static List<String> findHandlerClassNames(String path,
+    public static Collection<String> findHandlerClassNames(String path,
 	    String packageName) throws URISyntaxException, IOException {
 
-	List<String> classNames = new ArrayList<String>();
+	Collection<String> classNames = new ArrayList<String>();
 
 	if (path.contains(".jar!/")) {
 	    packageName = packageName.replaceAll("\\.", "/");
