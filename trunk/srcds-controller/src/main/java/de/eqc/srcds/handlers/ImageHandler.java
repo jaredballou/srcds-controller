@@ -25,12 +25,13 @@ public class ImageHandler extends AbstractRegisteredHandler implements
     @Override
     public void handleRequest(HttpExchange httpExchange) throws IOException {
 
-	StringBuilder builder = new StringBuilder();
-
 	String imageName = getParameter("name");
-	URL resourceUrl = getClass().getResource(
-		String.format("/images/%s", imageName));
+	String resource = String.format("/images/%s", imageName);
+	if (resource.contains("/")) {
+	    throw new IllegalArgumentException("Only plain file names are allowed as parameter value");
+	}
 
+	URL resourceUrl = getClass().getResource(resource);
 	String mimeType = ImageType.getMimeTypeForImageFile(imageName);
 
 	if (resourceUrl == null) {
