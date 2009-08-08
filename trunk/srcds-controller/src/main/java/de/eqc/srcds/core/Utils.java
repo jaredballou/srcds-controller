@@ -1,5 +1,7 @@
 package de.eqc.srcds.core;
 
+import static de.eqc.srcds.core.Constants.MILLIS_PER_SEC;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.Closeable;
@@ -75,5 +77,10 @@ public class Utils {
 	} catch (IOException excp) {
 	    // Ignore
 	}
+    }
+    
+    public static long millisToSecs(long millis) {
+	
+	return millis / MILLIS_PER_SEC;
     }
 }

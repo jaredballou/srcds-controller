@@ -1,6 +1,6 @@
 package de.eqc.srcds.core;
 
-import static de.eqc.srcds.configuration.Constants.LOGGING_FILENAME;
+import static de.eqc.srcds.core.Constants.LOGGING_FILENAME;
 
 import java.io.File;
 import java.io.FileInputStream;

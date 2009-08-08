@@ -1,7 +1,7 @@
 package de.eqc.srcds.core;
 
 import static de.eqc.srcds.configuration.Constants.HTTP_SERVER_PORT;
-import static de.eqc.srcds.configuration.Constants.HTTP_SERVER_SHUTDOWN_DELAY_SECS;
+import static de.eqc.srcds.core.Constants.HTTP_SERVER_SHUTDOWN_DELAY_MILLIS;
 
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
@@ -77,7 +77,7 @@ public class HttpServerController extends ServerController<HttpServer> {
 	    log.info(String.format("Unregistered handler at context %s",
 		    context.getPath()));	    
 	}
-        server.stop(HTTP_SERVER_SHUTDOWN_DELAY_SECS);
+        server.stop(HTTP_SERVER_SHUTDOWN_DELAY_MILLIS);
     }
 
     @Override
