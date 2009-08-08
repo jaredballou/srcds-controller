@@ -15,6 +15,8 @@ import de.eqc.srcds.enums.ImageType;
 public class ImageHandler extends AbstractRegisteredHandler implements
 	RegisteredHandler {
 
+    public static final String HANDLER_PATH = "/image";
+
     /*
      * @see
      * de.eqc.srcds.handlers.AbstractRegisteredHandler#handleRequest(com.sun
@@ -63,7 +65,6 @@ public class ImageHandler extends AbstractRegisteredHandler implements
      */
     @Override
     public String getPath() {
-
-	return "/image";
+	return HANDLER_PATH;
     }
 }

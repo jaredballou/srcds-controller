@@ -6,8 +6,12 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.eqc.srcds.core.Utils;
+import de.eqc.srcds.handlers.ImageHandler;
 
 /**
  * @author Holger Cremer
@@ -15,6 +19,8 @@ import de.eqc.srcds.core.Utils;
 public class SimpleTemplate {
     private Map<String, String> attribute = new HashMap<String, String>();
     private URL  template;
+    
+    private final static Pattern imgTagPattern = Pattern.compile("\\$\\{img:([\\w\\.\\-]*)\\}"); 
     
     /**
      * @param templatePath
@@ -35,7 +41,16 @@ public class SimpleTemplate {
     
     public String renderTemplate() throws IOException {
 	String templateContent = Utils.getUrlContent(this.template);
+
+	// add the images
+	Matcher matcher = imgTagPattern.matcher(templateContent);
+	while (matcher.find()) {
+	    MatchResult result = matcher.toMatchResult();
+	    String imageUrl = ImageHandler.HANDLER_PATH + "?name=" + result.group(1);
+	    templateContent = templateContent.replace(result.group(0), imageUrl);
+	}
 	
+	// add the attribute into the template
 	for (Entry<String, String> entry : this.attribute.entrySet()) {
 	    templateContent = templateContent.replace("${" + entry.getKey() + "}", entry.getValue());
 	}
