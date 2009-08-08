@@ -18,7 +18,7 @@ The following chapter gives a quick overview on all commands which are currently
 
 = Configuration =
 
-The controller configuration is stored in a XML properties file called _srcds-controller-config.xml_<br/>
+The controller configuration is stored in a XML properties file called _srcds-controller-config.xml_.<br/>
 Following enumeration shows all available configuration keys:
 
   * *srcds.controller.networking.httpserver.port*
