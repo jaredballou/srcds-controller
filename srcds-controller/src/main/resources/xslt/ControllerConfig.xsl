@@ -48,7 +48,7 @@
 						</xsl:for-each>
 					</table>
 					<br />
-					<input type="button" value="Cancel" onclick="javascript:history.back();" />
+					<input type="button" value="Cancel" onclick="javascript:window.location.href='/'" />
 					<input type="submit" value="Save" />
 				</form>
 			</body>
