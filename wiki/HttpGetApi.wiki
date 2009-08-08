@@ -3,7 +3,7 @@
 = Introduction =
 
 In order to control a SRCDS (Source Dedicated Server) instance remotely one is able to trigger certain actions by invocation of the GET interface of the controller component.
-The controller is most likely listening on the default TCP port 8080 - but can also be re-configured to use any possible port (depending on the user's permissions).
+The controller is most likely listening on the default TCP port 8888 - but can also be re-configured to use any possible port (depending on the user's permissions).
 The following chapter gives a quick overview on all commands which are currently available.
 
 = Available Commands =
@@ -11,4 +11,7 @@ The following chapter gives a quick overview on all commands which are currently
   * *start*: Starts the SRCDS instance (e.g. http://127.0.0.1:8080/start)
   * *stop*: Stops the SRCDS instance (e.g. http://127.0.0.1:8080/stop)
   * *status*: Provides information on the current state of the SRCDS instance (e.g. http://127.0.0.1:8080/status)
+  * *showServerConfig*: Shows the game-specific configuration of the SRCDS instance (e.g. http://127.0.0.1:8080/showServerConfig)
+  * *showConfig*: Shows the controller configuration (e.g. http://127.0.0.1:8080/showConfig)
+  * *setConfig*: Sets a configuration _key_ to a specified _value_ (e.g. http://127.0.0.1:8080/setConfig?_key_=_value_)
   * *shutdown*: Shuts the controller down (e.g. http://127.0.0.1:8080/shutdown)
