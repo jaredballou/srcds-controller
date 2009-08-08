@@ -42,11 +42,6 @@ public class CLI {
 
 	File configFile = new File(DEFAULT_CONFIG_FILENAME);
 
-	/*
-	 * This is for testing purposes only.
-	 */
-	configFile.delete();
-
 	this.config = new XmlPropertiesConfiguration(configFile);
 	this.serverController = new ServerController(this.config);
 
