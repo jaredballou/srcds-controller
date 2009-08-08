@@ -48,8 +48,8 @@
 						</xsl:for-each>
 					</table>
 					<br />
-					<input type="button" value="Cancel" onclick="javascript:window.location.href='/'" />
 					<input type="submit" value="Save" />
+					<input type="button" value="Cancel" onclick="javascript:window.location.href='/'" />
 				</form>
 			</body>
 		</html>
