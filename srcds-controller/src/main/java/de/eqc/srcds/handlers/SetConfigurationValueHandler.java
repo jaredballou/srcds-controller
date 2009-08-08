@@ -5,6 +5,9 @@ import java.io.IOException;
 import com.sun.net.httpserver.HttpExchange;
 
 import de.eqc.srcds.exceptions.ConfigurationException;
+import de.eqc.srcds.xmlbeans.enums.ResponseCode;
+import de.eqc.srcds.xmlbeans.impl.ControllerResponse;
+import de.eqc.srcds.xmlbeans.impl.Message;
 
 public class SetConfigurationValueHandler extends AbstractRegisteredHandler
 	implements RegisteredHandler {
@@ -15,23 +18,25 @@ public class SetConfigurationValueHandler extends AbstractRegisteredHandler
     }
 
     public void handleRequest(HttpExchange httpExchange) throws IOException {
-	StringBuilder response = new StringBuilder("<pre>");
 
 	String key = getParameter("key");
 	String value = getParameter("value");
 
+	ResponseCode code = ResponseCode.OK;
+	Message message = new Message();
 	if (key == null || value == null) {
-	    response.append("Either key or value parameter is missing<br/>");
+	    code = ResponseCode.FAILED;
+	    message.addMessage("Either key or value parameter is missing<br/>");
 	} else {
 	    try {
 		getConfig().setValue(key, value);
-		response.append("Set key " + key + " to value " + value);
+		message.addMessage(String.format("Set key %s to value %s", key, value));
 	    } catch (ConfigurationException e) {
-		response.append(e.getLocalizedMessage());
+		code = ResponseCode.FAILED;
+		message.addMessage(e.getLocalizedMessage());
 	    }
 	}
-	response.append("<pre>");
 
-	outputHtmlContent(response.toString());
+	outputContent(new ControllerResponse(code, message).toXml(), "text/xml");
     }
 }
