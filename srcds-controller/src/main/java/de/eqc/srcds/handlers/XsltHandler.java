@@ -1,19 +1,14 @@
 package de.eqc.srcds.handlers;
 
 
-import static de.eqc.srcds.configuration.Constants.*;
+import static de.eqc.srcds.configuration.Constants.SRCDS_EXECUTABLE;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.InetAddress;
-import java.net.URL;
 
 import com.sun.net.httpserver.HttpExchange;
 
 import de.eqc.srcds.handlers.utils.SimpleTemplate;
-import de.eqc.srcds.xmlbeans.enums.ResponseCode;
-import de.eqc.srcds.xmlbeans.impl.ControllerResponse;
-import de.eqc.srcds.xmlbeans.impl.Message;
 
 /**
  * @author Hannes
@@ -31,6 +26,9 @@ public class XsltHandler extends AbstractRegisteredHandler implements
 
 	String beanName = getParameter("bean");
 	String resource = String.format("/xslt/%s.xsl", beanName);
+	if (resource.contains("/")) {
+	    throw new IllegalArgumentException("Only plain file names are allowed as parameter value");
+	}
 	
 	SimpleTemplate template = new SimpleTemplate(resource);
 	template.setAttribute("hostname", InetAddress.getLocalHost().getHostName());
