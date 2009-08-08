@@ -157,8 +157,8 @@ public abstract class AbstractRegisteredHandler implements HttpHandler,
     protected void outputXmlContent(String content) throws IOException {
 
 	outputContent(content, "text/xml");
-    }
-
+    }   
+    
     /**
      * Writes the content to the stream. The stream is closed at the end, so
      * don't call this method twice!
@@ -170,14 +170,28 @@ public abstract class AbstractRegisteredHandler implements HttpHandler,
     protected void outputContent(String content, String contentType)
 	    throws IOException {
 
-	this.httpExchange.getResponseHeaders().add("Content-type", contentType);
-
-	httpExchange.sendResponseHeaders(200, content.getBytes().length);
-	OutputStream os = httpExchange.getResponseBody();
-	os.write(content.getBytes());
-	os.close();
+	outputContent(content.getBytes(), contentType);
     }
 
+    /**
+     * Writes the content to the stream. The stream is closed at the end, so
+     * don't call this method twice!
+     * 
+     * @param content
+     * @param contentType
+     * @throws IOException
+     */
+    protected void outputContent(byte[] bytes, String contentType)
+	    throws IOException {
+
+	this.httpExchange.getResponseHeaders().add("Content-type", contentType);
+
+	httpExchange.sendResponseHeaders(200, bytes.length);
+	OutputStream os = httpExchange.getResponseBody();
+	os.write(bytes);
+	os.close();
+    }    
+    
     /*
      * @see
      * com.sun.net.httpserver.HttpHandler#handle(com.sun.net.httpserver.HttpExchange
