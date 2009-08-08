@@ -5,12 +5,11 @@ import static de.eqc.srcds.configuration.Constants.SRCDS_EXECUTABLE;
 import static de.eqc.srcds.configuration.Constants.SRCDS_GAMETYPE;
 import static de.eqc.srcds.configuration.Constants.SRCDS_PARAMETERS;
 import static de.eqc.srcds.configuration.Constants.SRCDS_PATH;
-import static de.eqc.srcds.configuration.Constants.STARTUP_WAIT_TIME_MILLIS;
+import static de.eqc.srcds.core.Constants.STARTUP_WAIT_TIME_MILLIS;
 
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import de.eqc.srcds.configuration.Configuration;
 import de.eqc.srcds.enums.GameType;

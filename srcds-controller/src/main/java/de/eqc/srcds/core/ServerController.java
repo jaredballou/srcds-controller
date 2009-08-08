@@ -1,6 +1,6 @@
 package de.eqc.srcds.core;
 
-import static de.eqc.srcds.configuration.Constants.SERVER_POLL_INTERVAL_MILLIS;
+import static de.eqc.srcds.core.Constants.SERVER_POLL_INTERVAL_MILLIS;
 
 import java.util.logging.Logger;
 
