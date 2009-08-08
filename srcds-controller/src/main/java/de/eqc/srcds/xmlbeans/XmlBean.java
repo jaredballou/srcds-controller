@@ -15,7 +15,7 @@ public abstract class XmlBean implements Serializable {
     public String indent(String line, int level) {
 
 	StringBuilder sb = new StringBuilder();
-	for (int i = 0; i < INDENT_WIDTH * (level + 1); i++) {
+	for (int i = 0; i < INDENT_WIDTH * level; i++) {
 	    sb.append(" ");
 	}
 	return sb.append(line).toString();
