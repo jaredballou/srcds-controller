@@ -20,7 +20,7 @@ public class ShutdownHandler extends AbstractRegisteredHandler implements
 
 	ResponseCode code = ResponseCode.OK;
 	Message message = new Message("Server is going down...");
-	outputXmlContent(new ControllerResponse(code, message).toXml());
+	outputXmlContent(new ControllerResponse(code, message, false).toXml());
 	
 	System.exit(0);
     }
