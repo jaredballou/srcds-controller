@@ -17,17 +17,18 @@ public class Message extends XmlBean {
     
     public Message() {
 	
+	super(false);
 	this.items = new LinkedList<String>();
     }
-    
-    public Message(String message) {
 
-	this(Arrays.asList(new String[] {message}));
-    }
+    public Message(String ... messages) {
 
-    public Message(List<String> messages) {
-
-	this.items = messages;
+	super(false);
+	if (messages == null) {
+	    this.items = new LinkedList<String>();
+	} else {
+	    this.items = Arrays.asList(messages);
+	}
     }
 
     public void addMessage(String message) {
@@ -36,7 +37,7 @@ public class Message extends XmlBean {
     }
     
     @Override
-    public String toXml(int indent) {
+    protected String toXml(int indent) {
 
 	StringBuilder sb = new StringBuilder(header(indent));
 
