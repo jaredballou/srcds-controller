@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.regex.Pattern;
 
 import com.sun.net.httpserver.HttpExchange;
 
@@ -26,10 +27,11 @@ public class ImageHandler extends AbstractRegisteredHandler implements
     public void handleRequest(HttpExchange httpExchange) throws IOException {
 
 	String imageName = getParameter("name");
-	String resource = String.format("/images/%s", imageName);
-	if (resource.contains("/")) {
+	if (imageName.indexOf('/') > -1 || imageName.indexOf('\\') > -1) {
 	    throw new IllegalArgumentException("Only plain file names are allowed as parameter value");
 	}
+
+	String resource = String.format("/images/%s", imageName);
 
 	URL resourceUrl = getClass().getResource(resource);
 	String mimeType = ImageType.getMimeTypeForImageFile(imageName);
