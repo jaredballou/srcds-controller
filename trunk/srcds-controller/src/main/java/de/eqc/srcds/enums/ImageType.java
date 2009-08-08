@@ -12,8 +12,7 @@ public enum ImageType {
     private ImageType(String mimeType) {
 
 	this.mimeType = mimeType;
-    }
-    
+    }    
     
     public String getMimeType() {
 
@@ -22,7 +21,7 @@ public enum ImageType {
     
     public static String getMimeTypeForImageFile(String filename) {
 	
-	String mimeType = "text/plain";
+	String mimeType = "image/jpeg";
 	for (ImageType instance : values()) {
 	    
 	    if (filename.toUpperCase().endsWith(instance.name())) {
