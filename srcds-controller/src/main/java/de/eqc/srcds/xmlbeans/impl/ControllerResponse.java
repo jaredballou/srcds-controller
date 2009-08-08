@@ -11,21 +11,21 @@ public class ControllerResponse extends XmlBean {
      */
     private static final long serialVersionUID = -6455374990668467104L;
     protected ResponseCode code;
-    protected String message;
+    protected Message message;
     
-    public ControllerResponse(ResponseCode code, String message) {
+    public ControllerResponse(ResponseCode code, Message message) {
 
 	this.code = code;
 	this.message = message;
     }
 
     @Override
-    public String toXml() {
+    public String toXml(int indent) {
 
-	StringBuilder sb = new StringBuilder(header());
-	sb.append(indent(String.format("<ResponseCode>%s</ResponseCode>\n", code), 1));
-	sb.append(indent(String.format("<Message>%s</Message>\n", message), 1));
-	return sb.append(footer()).toString();
+	StringBuilder sb = new StringBuilder(header(indent));
+	sb.append(indent(String.format("<ResponseCode>%s</ResponseCode>\n", code), indent + 1));
+	sb.append(message.toXml(indent + 1));
+	return sb.append(footer(indent)).toString();
     }
 
 }
