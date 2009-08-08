@@ -8,9 +8,6 @@ import java.net.URL;
 import com.sun.net.httpserver.HttpExchange;
 
 import de.eqc.srcds.enums.ImageType;
-import de.eqc.srcds.xmlbeans.enums.ResponseCode;
-import de.eqc.srcds.xmlbeans.impl.ControllerResponse;
-import de.eqc.srcds.xmlbeans.impl.Message;
 
 /**
  * @author Hannes
@@ -35,16 +32,11 @@ public class ImageHandler extends AbstractRegisteredHandler implements
 	String mimeType = ImageType.getMimeTypeForImageFile(imageName);
 
 	if (resourceUrl == null) {
-	    Message message = new Message();
 	    if (imageName == null) {
-		message.addMessage("Parameter specify the parameter 'name'");
+		throw new IllegalArgumentException("Parameter specify the parameter 'name'");
 	    } else {
-		message.addMessage(String.format(
-			"Cannot find image for name %s", imageName));
+		throw new IllegalArgumentException(String.format("Cannot find image for name %s", imageName));
 	    }
-	    ControllerResponse cr = new ControllerResponse(ResponseCode.FAILED,
-		    message, false);
-	    builder.append(cr.toXml());
 	} else {
 	    ByteArrayOutputStream baos = new ByteArrayOutputStream();
 	    InputStream input = null;
