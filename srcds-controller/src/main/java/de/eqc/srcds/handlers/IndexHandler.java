@@ -1,13 +1,9 @@
 package de.eqc.srcds.handlers;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 
 import com.sun.net.httpserver.HttpExchange;
 
-import de.eqc.srcds.core.Utils;
 import de.eqc.srcds.handlers.utils.SimpleTemplate;
 
 /**

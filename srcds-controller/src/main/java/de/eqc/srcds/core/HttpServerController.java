@@ -18,7 +18,7 @@ import de.eqc.srcds.exceptions.InitializationException;
 import de.eqc.srcds.handlers.RegisteredHandler;
 import de.eqc.srcds.handlers.utils.HandlerUtil;
 
-public class HttpServerController extends ServerController<HttpServer> {
+public class HttpServerController extends AbstractServerController<HttpServer> {
 
     private final SourceDServerController srcdsController;
     private final List<HttpContext> contextList;
