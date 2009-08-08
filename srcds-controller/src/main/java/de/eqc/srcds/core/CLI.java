@@ -28,7 +28,6 @@ import de.eqc.srcds.configuration.impl.XmlPropertiesConfiguration;
 import de.eqc.srcds.enums.OperatingSystem;
 import de.eqc.srcds.exceptions.ConfigurationException;
 import de.eqc.srcds.exceptions.UnsupportedOSException;
-import de.eqc.srcds.handlers.IndexHandler;
 import de.eqc.srcds.handlers.RegisteredHandler;
 
 /**
@@ -73,6 +72,7 @@ public class CLI {
 	int port = config.getValue(HTTP_SERVER_PORT, Integer.class);
 	httpServer = HttpServer.create(new InetSocketAddress(port), 0);
 	log.info(String.format("Bound to TCP port %d.", port));
+	
 
 	Collection<RegisteredHandler> classes = getRegisterHandlerByReflectionClasses();
 	DefaultAuthenticator defaultAuthenticator = new DefaultAuthenticator();
