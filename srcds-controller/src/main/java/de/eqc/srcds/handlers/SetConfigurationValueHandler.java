@@ -37,6 +37,6 @@ public class SetConfigurationValueHandler extends AbstractRegisteredHandler
 	    }
 	}
 
-	outputContent(new ControllerResponse(code, message).toXml(), "text/xml");
+	outputXmlContent(new ControllerResponse(code, message).toXml());
     }
 }
