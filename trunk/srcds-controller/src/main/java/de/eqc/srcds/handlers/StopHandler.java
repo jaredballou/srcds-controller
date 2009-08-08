@@ -4,6 +4,10 @@ import java.io.IOException;
 
 import com.sun.net.httpserver.HttpExchange;
 
+import de.eqc.srcds.xmlbeans.enums.ResponseCode;
+import de.eqc.srcds.xmlbeans.impl.ControllerResponse;
+import de.eqc.srcds.xmlbeans.impl.Message;
+
 public class StopHandler extends AbstractRegisteredHandler implements
 	RegisteredHandler {
 
@@ -14,14 +18,16 @@ public class StopHandler extends AbstractRegisteredHandler implements
 
     public void handleRequest(HttpExchange httpExchange) throws IOException {
 
-	String response = "<pre>Server stopped successfully</pre>";
-
+	ResponseCode code = ResponseCode.OK;
+	Message message = new Message();
 	try {
 	    getServerController().stopServer();
+	    message.addMessage("Server stopped successfully");
 	} catch (Exception e) {
-	    response = "<pre>" + e.getMessage() + "</pre>";
+	    code = ResponseCode.FAILED;
+	    message.addMessage(e.getMessage());
 	}
 
-	outputHtmlContent(response);
+	outputXmlContent(new ControllerResponse(code, message).toXml());
     }
 }

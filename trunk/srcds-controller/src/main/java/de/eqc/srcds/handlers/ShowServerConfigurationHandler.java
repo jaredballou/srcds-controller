@@ -8,6 +8,9 @@ import java.io.IOException;
 import com.sun.net.httpserver.HttpExchange;
 
 import de.eqc.srcds.enums.GameType;
+import de.eqc.srcds.xmlbeans.enums.ResponseCode;
+import de.eqc.srcds.xmlbeans.impl.ControllerResponse;
+import de.eqc.srcds.xmlbeans.impl.Message;
 
 public class ShowServerConfigurationHandler extends AbstractRegisteredHandler
 	implements RegisteredHandler {
@@ -19,10 +22,8 @@ public class ShowServerConfigurationHandler extends AbstractRegisteredHandler
 
     public void handleRequest(HttpExchange httpExchange) throws IOException {
 
-	httpExchange.getResponseHeaders().add("Content-type",
-		"text/plain; charset=utf-8");
-	StringBuilder response = new StringBuilder();
-
+	ResponseCode code = ResponseCode.OK;
+	Message message = new Message();
 	try {
 	    GameType gameType = getServerController().getGameType();
 	    File srcdsPath = getServerController().getSrcdsPath();
@@ -32,25 +33,30 @@ public class ShowServerConfigurationHandler extends AbstractRegisteredHandler
 			    .getImplementation().getDirectory(),
 		    File.separator, "cfg", File.separator, "server.cfg"));
 	    if (configFile.exists()) {
-		response.append(String.format(
+		message.addMessage(String.format(
 			"Server configuration file: %s\n\n", configFile
 				.getPath()));
 		BufferedReader br = new BufferedReader(new FileReader(
 			configFile));
 		String line;
 		while ((line = br.readLine()) != null) {
-		    response.append(line + "\n");
+		    message.addMessage(line + "\n");
 		}
 	    } else {
-		response.append(String.format(
+		code = ResponseCode.FAILED;
+		message.addMessage(String.format(
 			"Unable to find server configuration file: %s",
 			configFile.getPath()));
 	    }
 	} catch (Exception e) {
-	    response.append(e.getLocalizedMessage());
+	    code = ResponseCode.FAILED;
+	    message.addMessage(e.getLocalizedMessage());
 	}
 
-	outputHtmlContent(response.toString());
-
+	if (code == ResponseCode.OK) {
+	    outputContent(message.toString(), "text/plain");
+	} else {
+	    outputXmlContent(new ControllerResponse(code, message).toXml());
+	}
     }
 }

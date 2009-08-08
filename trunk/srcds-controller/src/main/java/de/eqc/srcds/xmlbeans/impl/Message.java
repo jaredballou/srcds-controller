@@ -45,12 +45,22 @@ public class Message extends XmlBean {
 	} else if (items.size() == 1) {
 	    sb.append(indent(items.get(0) + "\n", indent + 1));
 	} else {
-	    for (String item : items) {
-		    sb.append(indent(String.format("<Item>%s</Item>\n", item), indent + 1));
+	    for (String message : items) {
+		    sb.append(indent(String.format("<Item>%s</Item>\n", message), indent + 1));
 	    }
 	}
 
 	return sb.append(footer(indent)).toString();
+    }
+    
+    @Override
+    public String toString() {
+    
+	StringBuilder sb = new StringBuilder();
+        for (String message : items) {
+            sb.append(message + "\n");
+        }
+        return sb.toString();
     }
 
 }
