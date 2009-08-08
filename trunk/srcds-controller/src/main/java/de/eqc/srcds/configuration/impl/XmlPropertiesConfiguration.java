@@ -1,21 +1,24 @@
 package de.eqc.srcds.configuration.impl;
 
-import static de.eqc.srcds.configuration.Constants.*;
+import static de.eqc.srcds.configuration.Constants.HTTP_SERVER_PORT;
+import static de.eqc.srcds.configuration.Constants.SRCDS_EXECUTABLE;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.InvalidPropertiesFormatException;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import de.eqc.srcds.configuration.Configuration;
 import de.eqc.srcds.core.SourceDServerController;
-import de.eqc.srcds.enums.GameType;
 import de.eqc.srcds.exceptions.ConfigurationException;
+import de.eqc.srcds.xmlbeans.impl.ControllerConfig;
 
 public class XmlPropertiesConfiguration implements Configuration {
 
@@ -111,16 +114,18 @@ public class XmlPropertiesConfiguration implements Configuration {
 	@Override
 	public String toXml() {
 		
-		String ret = null;
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		try {
-			properties.storeToXML(baos, null);
-			baos.flush();
-			baos.close();
-			ret = new String(baos.toByteArray());
-		} catch (IOException e) {
-			ret = "Unable to create XML output for configuration";
-		}
-		return ret;
+		return new ControllerConfig(this).toXml();
+	}
+
+	@Override
+	public Map<String, String> getData() {
+
+	    Map<String, String> data = new HashMap<String, String>();
+	    
+	    for (Entry<Object, Object> entry : properties.entrySet()) {
+		data.put(entry.getKey().toString(), entry.getValue().toString());
+	    }
+	    
+	    return data;
 	}
 }

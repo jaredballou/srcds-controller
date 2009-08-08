@@ -1,5 +1,7 @@
 package de.eqc.srcds.configuration;
 
+import java.util.Map;
+
 import de.eqc.srcds.exceptions.ConfigurationException;
 
 public interface Configuration {
@@ -9,4 +11,6 @@ public interface Configuration {
 	public <T> void setValue(String key, T value) throws ConfigurationException;
 
 	public String toXml();
+	
+	public Map<String, String> getData();
 }
