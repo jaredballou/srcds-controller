@@ -27,7 +27,7 @@ import de.eqc.srcds.exceptions.StartupFailedException;
  * @author Hannes
  * @author Holger
  */
-public class SourceDServerController extends Controller<Process> {
+public class SourceDServerController extends ServerController<Process> {
 
     public SourceDServerController(Configuration config)
 	    throws ConfigurationException {
