@@ -1,6 +1,7 @@
 package de.eqc.srcds.handlers;
 
 import java.io.IOException;
+import java.net.InetAddress;
 
 import com.sun.net.httpserver.HttpExchange;
 
@@ -26,6 +27,7 @@ public class IndexHandler extends AbstractRegisteredHandler implements
     public void handleRequest(HttpExchange httpExchange) throws IOException {
 
 	SimpleTemplate template = new SimpleTemplate(INDEX_HTML);
+	template.setAttribute("hostname", InetAddress.getLocalHost().getHostName());
 	
 	outputHtmlContent(template.renderTemplate());
     }
