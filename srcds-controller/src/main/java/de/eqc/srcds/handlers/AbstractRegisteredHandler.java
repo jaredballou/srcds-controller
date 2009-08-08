@@ -119,13 +119,17 @@ public abstract class AbstractRegisteredHandler implements HttpHandler,
 	}
     }
 
+    protected Map<String, String> getParameters() throws UnsupportedEncodingException {
+	parseRequestQuery();
+	return this.parsedRequestParameter;
+    }
+    
     protected String getParameter(String getKey) throws UnsupportedEncodingException {
 	parseRequestQuery();
 	return this.parsedRequestParameter.get(getKey);
     }
 
     protected String getPostParameter(String postKey) throws IOException {
-
 	parsePostRequest();
 	return this.parsedPostParameter.get(postKey);
     }

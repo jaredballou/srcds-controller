@@ -1,5 +1,8 @@
 package de.eqc.srcds.handlers;
 
+
+import static de.eqc.srcds.configuration.Constants.*;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
@@ -31,6 +34,7 @@ public class XsltHandler extends AbstractRegisteredHandler implements
 	
 	SimpleTemplate template = new SimpleTemplate(resource);
 	template.setAttribute("hostname", InetAddress.getLocalHost().getHostName());
+	template.setAttribute("srcds-executable-key", SRCDS_EXECUTABLE);
 
 	outputXmlContent(template.renderTemplate());
     }
