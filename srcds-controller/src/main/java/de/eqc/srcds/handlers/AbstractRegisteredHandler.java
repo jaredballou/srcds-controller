@@ -81,7 +81,7 @@ public abstract class AbstractRegisteredHandler implements HttpHandler,
 	if (this.parsedRequestParameter == null) {
 	    this.parsedRequestParameter = new HashMap<String, String>();
 
-	    String requestQuery = this.httpExchange.getRequestURI().getQuery();
+	    String requestQuery = this.httpExchange.getRequestURI().getRawQuery();
 	    if (requestQuery == null || requestQuery.isEmpty()) {
 		return;
 	    }
