@@ -28,14 +28,11 @@ public class XsltHandler extends AbstractRegisteredHandler implements
 	String beanName = getParameter("bean");	
 	URL resourceUrl = getClass().getResource(String.format("/xslt/%s.xsl", beanName));
 	if (resourceUrl == null) {
-	    Message message = new Message();
 	    if (beanName == null) {
-		message.addMessage("Parameter specify the parameter 'bean'");
+		throw new IllegalArgumentException("Parameter specify the parameter 'bean'");
 	    } else {
-		message.addMessage(String.format("Cannot find XSL for bean %s", beanName));
+		throw new IllegalArgumentException(String.format("Cannot find XSLT for name %s", beanName));
 	    }
-	    ControllerResponse cr = new ControllerResponse(ResponseCode.FAILED, message, false);
-	    builder.append(cr.toXml());
 	} else {
         	InputStream input = null;
         	try {
