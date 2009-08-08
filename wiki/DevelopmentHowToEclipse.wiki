@@ -1,0 +1,12 @@
+#summary How to participate in the development using Eclipse IDE
+
+= Prerequisites =
+
+ * Eclipse IDE
+ * Subversion
+ * Apache Maven
+
+= Get the project into Eclipse =
+
+ * Go to your Eclipse workspace directory and go the following: {{{svn checkout https://srcds-controller.googlecode.com/svn/trunk/ srcds-controller --username &lt;your username&gt;}}}
+ * Go to the new _srcds-controller_ directory and create the project files: {{{mvn eclipse:eclipse&gt;}}}
