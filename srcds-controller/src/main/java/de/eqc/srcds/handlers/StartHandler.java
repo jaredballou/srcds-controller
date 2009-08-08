@@ -25,8 +25,7 @@ public class StartHandler extends AbstractRegisteredHandler implements
 	    getServerController().startServer();
 	    message.addMessage("Server started successfully");
 	} catch (Exception e) {
-	    code = ResponseCode.FAILED;
-	    message.addMessage(e.getMessage());
+	    throw new IllegalStateException(e);
 	}
 
 	outputXmlContent(new ControllerResponse(code, message).toXml());
