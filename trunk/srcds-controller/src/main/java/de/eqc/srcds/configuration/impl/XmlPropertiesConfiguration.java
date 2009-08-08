@@ -91,14 +91,6 @@ public class XmlPropertiesConfiguration implements Configuration {
 		properties.setProperty(HTTP_SERVER_PORT, "8888");
 		properties.setProperty(SRCDS_EXECUTABLE, "srcds_run");
 		
-		/*
-		 * This block is for testing purposes only.
-		 */
-		setValue(AUTOSTART, true);
-		setValue(SRCDS_PATH, "l4d");
-		setValue(SRCDS_PARAMETERS, "+hostport 27015 +maxplayers 14 -tickrate 100 +exec server_unrest.cfg +map l4d_vs_airport01_greenhouse.bsp");
-		setValue(SRCDS_GAMETYPE, GameType.LEFT4DEAD);
-		
 		store();	
 	}
 	

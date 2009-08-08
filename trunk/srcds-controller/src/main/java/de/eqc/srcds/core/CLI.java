@@ -1,6 +1,10 @@
 package de.eqc.srcds.core;
 
+import static de.eqc.srcds.configuration.Constants.AUTOSTART;
 import static de.eqc.srcds.configuration.Constants.DEFAULT_CONFIG_FILENAME;
+import static de.eqc.srcds.configuration.Constants.SRCDS_GAMETYPE;
+import static de.eqc.srcds.configuration.Constants.SRCDS_PARAMETERS;
+import static de.eqc.srcds.configuration.Constants.SRCDS_PATH;
 
 import java.io.File;
 import java.util.logging.Level;
@@ -8,6 +12,7 @@ import java.util.logging.Logger;
 
 import de.eqc.srcds.configuration.Configuration;
 import de.eqc.srcds.configuration.impl.XmlPropertiesConfiguration;
+import de.eqc.srcds.enums.GameType;
 import de.eqc.srcds.enums.OperatingSystem;
 import de.eqc.srcds.exceptions.UnsupportedOSException;
 
@@ -33,6 +38,15 @@ public class CLI {
 	File configFile = new File(DEFAULT_CONFIG_FILENAME);
 
 	this.config = new XmlPropertiesConfiguration(configFile);
+	
+	/*
+	 * This block is for testing purposes only.
+	 */
+	config.setValue(AUTOSTART, true);
+	config.setValue(SRCDS_PATH, "l4d");
+	config.setValue(SRCDS_PARAMETERS, "+hostport 27015 +maxplayers 14 -tickrate 100 +exec server_unrest.cfg +map l4d_vs_airport01_greenhouse.bsp");
+	config.setValue(SRCDS_GAMETYPE, GameType.LEFT4DEAD);	
+	
 	this.srcdsController = new SourceDServerController(this.config);
 	this.httpServerController = new HttpServerController(config, srcdsController);
 	
