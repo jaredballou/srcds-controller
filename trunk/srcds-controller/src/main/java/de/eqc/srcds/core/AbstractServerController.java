@@ -12,7 +12,7 @@ import de.eqc.srcds.exceptions.NotRunningException;
 import de.eqc.srcds.exceptions.StartupFailedException;
 
 
-public abstract class ServerController<T> extends Thread {
+public abstract class AbstractServerController<T> extends Thread {
 
     protected final Configuration config;
     protected final Logger log;
@@ -21,7 +21,7 @@ public abstract class ServerController<T> extends Thread {
     private final String subject;
     private boolean autostart;
     
-    public ServerController(String subject, Configuration config) {
+    public AbstractServerController(String subject, Configuration config) {
 
 	this.autostart = true;
 	this.running = false;
