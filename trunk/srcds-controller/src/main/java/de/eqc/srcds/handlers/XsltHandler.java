@@ -25,10 +25,11 @@ public class XsltHandler extends AbstractRegisteredHandler implements
     public void handleRequest(HttpExchange httpExchange) throws IOException {
 
 	String beanName = getParameter("bean");
-	String resource = String.format("/xslt/%s.xsl", beanName);
-	if (resource.contains("/")) {
+	if (beanName.indexOf('/') > -1 || beanName.indexOf('\\') > -1) {
 	    throw new IllegalArgumentException("Only plain file names are allowed as parameter value");
 	}
+	
+	String resource = String.format("/xslt/%s.xsl", beanName);
 	
 	SimpleTemplate template = new SimpleTemplate(resource);
 	template.setAttribute("hostname", InetAddress.getLocalHost().getHostName());
