@@ -4,6 +4,10 @@ import java.io.IOException;
 
 import com.sun.net.httpserver.HttpExchange;
 
+import de.eqc.srcds.xmlbeans.enums.ResponseCode;
+import de.eqc.srcds.xmlbeans.impl.ControllerResponse;
+import de.eqc.srcds.xmlbeans.impl.Message;
+
 public class StartHandler extends AbstractRegisteredHandler implements
 	RegisteredHandler {
 
@@ -15,14 +19,16 @@ public class StartHandler extends AbstractRegisteredHandler implements
     @Override
     public void handleRequest(HttpExchange httpExchange) throws IOException {
 
-	String response = "<pre>Server started successfully</pre>";
-
+	ResponseCode code = ResponseCode.OK;
+	Message message = new Message();
 	try {
 	    getServerController().startServer();
+	    message.addMessage("Server started successfully");
 	} catch (Exception e) {
-	    response = "<pre>" + e.getMessage() + "</pre>";
+	    code = ResponseCode.FAILED;
+	    message.addMessage(e.getMessage());
 	}
 
-	outputHtmlContent(response);
+	outputXmlContent(new ControllerResponse(code, message).toXml());
     }
 }

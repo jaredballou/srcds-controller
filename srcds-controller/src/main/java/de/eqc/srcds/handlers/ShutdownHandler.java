@@ -4,6 +4,10 @@ import java.io.IOException;
 
 import com.sun.net.httpserver.HttpExchange;
 
+import de.eqc.srcds.xmlbeans.enums.ResponseCode;
+import de.eqc.srcds.xmlbeans.impl.ControllerResponse;
+import de.eqc.srcds.xmlbeans.impl.Message;
+
 public class ShutdownHandler extends AbstractRegisteredHandler implements
 	RegisteredHandler {
 
@@ -13,7 +17,11 @@ public class ShutdownHandler extends AbstractRegisteredHandler implements
     }
 
     public void handleRequest(HttpExchange httpExchange) throws IOException {
-	System.out.println("Controller is going down...");
+
+	ResponseCode code = ResponseCode.OK;
+	Message message = new Message("Server is going down...");
+	outputXmlContent(new ControllerResponse(code, message).toXml());
+	
 	System.exit(0);
     }
 }

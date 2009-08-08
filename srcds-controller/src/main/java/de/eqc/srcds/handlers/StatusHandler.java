@@ -4,6 +4,10 @@ import java.io.IOException;
 
 import com.sun.net.httpserver.HttpExchange;
 
+import de.eqc.srcds.xmlbeans.enums.ResponseCode;
+import de.eqc.srcds.xmlbeans.impl.ControllerResponse;
+import de.eqc.srcds.xmlbeans.impl.Message;
+
 public class StatusHandler extends AbstractRegisteredHandler implements
 	RegisteredHandler {
 
@@ -13,10 +17,9 @@ public class StatusHandler extends AbstractRegisteredHandler implements
     }
 
     public void handleRequest(HttpExchange httpExchange) throws IOException {
-
-	String response = "<pre>" + getServerController().getServerState()
-		+ "</pre>";
-
-	outputHtmlContent(response);
+	
+	ResponseCode code = ResponseCode.OK;
+	Message message = new Message(getServerController().getServerState().name());
+	outputXmlContent(new ControllerResponse(code, message).toXml());
     }
 }
