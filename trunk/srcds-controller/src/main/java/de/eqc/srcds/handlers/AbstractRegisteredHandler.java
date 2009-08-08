@@ -4,11 +4,14 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import de.eqc.srcds.configuration.Configuration;
+import de.eqc.srcds.core.LogFactory;
 import de.eqc.srcds.core.ServerController;
 
 /**
@@ -17,6 +20,8 @@ import de.eqc.srcds.core.ServerController;
 public abstract class AbstractRegisteredHandler implements HttpHandler,
 	RegisteredHandler {
 
+    private static Logger log = LogFactory.getLogger(AbstractRegisteredHandler.class);
+    
     private Configuration config;
     private ServerController serverController;
 
@@ -119,10 +124,13 @@ public abstract class AbstractRegisteredHandler implements HttpHandler,
 	this.httpExchange = httpExchange;
 	this.parsedRequestParameter = null;
 
-	this.handleRequest(httpExchange);
-
+	try {
+	    this.handleRequest(httpExchange);
+	} catch (Exception e) {
+	    log.log(Level.WARNING, String.format("Exception in request handler '%s': %s",this.getPath(), e.getMessage()) , e);
+	}
     }
 
     public abstract void handleRequest(HttpExchange httpExchange)
-	    throws IOException;
+	    throws Exception;
 }
