@@ -11,6 +11,14 @@ public abstract class XmlBean implements Serializable {
     private static final long serialVersionUID = 6007738341162785134L;
     private static final int INDENT_WIDTH = 2;
     private static final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n"; 
+    private static final String XSLT_HEADER = "<?xml-stylesheet type=\"text/xsl\" href=\"/xslt?bean=%CLASSNAME%\" ?>\n";
+    protected final boolean stylesheet;
+    
+    
+    public XmlBean(boolean stylesheet) {
+
+	this.stylesheet = stylesheet;
+    }
     
     public String indent(String line, int level) {
 
@@ -37,8 +45,13 @@ public abstract class XmlBean implements Serializable {
     
     public String toXml() {
 	
-	return XML_HEADER + toXml(0);
+	StringBuilder sb = new StringBuilder(XML_HEADER);
+	if (stylesheet) {
+	    sb.append(XSLT_HEADER.replaceAll("%CLASSNAME%", getClass().getSimpleName()));
+	}
+	sb.append(toXml(0));
+	return sb.toString();
     }
 
-    public abstract String toXml(int indent);
+    protected abstract String toXml(int indent);
 }

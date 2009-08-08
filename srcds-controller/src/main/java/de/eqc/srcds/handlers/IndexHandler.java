@@ -28,7 +28,7 @@ public class IndexHandler extends AbstractRegisteredHandler implements
 
 	URL indexHtml = getClass().getResource(INDEX_HTML);
 	if (indexHtml == null) {
-	    throw new IllegalStateException("Can't find: " + INDEX_HTML);
+	    throw new IOException(String.format("Cannot find file %s", INDEX_HTML));
 	}
 	InputStream input = null;
 	try {
