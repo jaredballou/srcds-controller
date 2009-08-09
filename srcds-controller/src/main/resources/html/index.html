@@ -13,7 +13,7 @@
 		<script type="text/javascript">
         <!--
         function PopupWindow() {
-        myWindow = window.open(".","${hostname}","status=1,menubar=0,resizable=0,width=640,height=480");
+        myWindow = window.open(".","${hostname}","status=0,menubar=0,resizable=0,width=640,height=480");
         }
         // -->
         </script>        
@@ -33,6 +33,6 @@
 		<li><a href="editConfigFiles"><img width="48" height="24" src="${img:icon_editconfigfiles.png}" />Edit the game-specific configuration files</a></li>
 		<li><a href="shutdown"><img width="48" height="24" src="${img:icon_shutdown.png}" />Shutdown the controller</a></li>
 		</ul>
-        <a href="#" onclick="javascript: PopupWindow()">Open this window as a popup</a>
+        <a href="#" onclick="javascript: PopupWindow()">Open as a popup</a>
 	</body>
 </html>
