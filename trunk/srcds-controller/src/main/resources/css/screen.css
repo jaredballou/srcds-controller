@@ -60,7 +60,7 @@ td.tableData {
 	background-color: #e6f3e5;	
 }
 
-h2.response, a.response, table.response, p.response, form.input.response, form.select.response, form.textarea.response  {
+h2.response, a.response, table.response, p.response, form input.response, form select.response, form textarea.response  {
     margin-left: 98px;
 }
 
