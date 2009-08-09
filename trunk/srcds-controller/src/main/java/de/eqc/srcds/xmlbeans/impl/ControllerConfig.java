@@ -40,8 +40,8 @@ public class ControllerConfig extends XmlBean {
 		}
 		sbEnums.append(indent("</Enumeration>\n", indent + 2));
 	    }
-	    
-	    sbEntries.append(indent(String.format("<Entry type=\"%s\" description=\"%s\">\n", registryEntry.getDataType().getSimpleName(), registryEntry.getDescription()), indent + 1));
+
+	    sbEntries.append(indent(String.format("<Entry type=\"%s\" description=\"%s\" enumeration=\"%s\">\n", registryEntry.getDataType().getSimpleName(), registryEntry.getDescription(), registryEntry.isEnumerationType()), indent + 1));
 	    sbEntries.append(indent(String.format("<Key>%s</Key>\n", entry.getKey()), indent + 2));
 	    sbEntries.append(indent(String.format("<Value>%s</Value>\n", entry.getValue()), indent + 2));
 	    sbEntries.append(indent("</Entry>\n", indent + 1));
