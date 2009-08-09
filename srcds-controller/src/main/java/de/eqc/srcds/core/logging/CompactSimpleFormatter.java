@@ -60,7 +60,7 @@ public class CompactSimpleFormatter extends Formatter {
 	sb.append("] ");
 
 	String message = formatMessage(record);
-	sb.append(record.getLevel().getLocalizedName());
+	sb.append(record.getLevel().getName());
 	sb.append(": ");
 	sb.append(message);
 	sb.append(lineSeparator);
