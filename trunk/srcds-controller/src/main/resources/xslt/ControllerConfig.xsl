@@ -56,7 +56,22 @@
 													</xsl:choose>
 												</xsl:for-each>
 											</select>
-										</xsl:when>										
+										</xsl:when>	
+										<xsl:when test="@type = 'Password'">
+											<xsl:variable name="minFieldLength">20</xsl:variable>
+											<xsl:variable name="maxFieldLength">50</xsl:variable>
+											<xsl:choose>
+												<xsl:when test="string-length(Value) &lt; $minFieldLength">
+													<input type="password" name="{Key}" value="{Value}" size="{$minFieldLength}" />
+												</xsl:when>
+												<xsl:when test="string-length(Value) &gt; $maxFieldLength - 1">
+													<input type="password" name="{Key}" value="{Value}" size="{$maxFieldLength}" />
+												</xsl:when>
+												<xsl:otherwise>
+													<input type="password" name="{Key}" value="{Value}" size="{string-length(Value) + 1}" />
+												</xsl:otherwise>
+											</xsl:choose>
+										</xsl:when>
 										<xsl:otherwise>
 											<xsl:variable name="minFieldLength">30</xsl:variable>
 											<xsl:variable name="maxFieldLength">80</xsl:variable>

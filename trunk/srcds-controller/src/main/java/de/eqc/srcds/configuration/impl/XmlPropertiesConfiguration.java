@@ -1,20 +1,14 @@
 package de.eqc.srcds.configuration.impl;
 
-import static de.eqc.srcds.configuration.ConfigurationRegistry.AUTOSTART;
-import static de.eqc.srcds.configuration.ConfigurationRegistry.HTTP_SERVER_PORT;
-import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_EXECUTABLE;
-import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_GAMETYPE;
-import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_PARAMETERS;
-import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_PATH;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.InvalidPropertiesFormatException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Map.Entry;
@@ -70,6 +64,14 @@ public class XmlPropertiesConfiguration implements Configuration {
 	    log.info(String.format("%s = %s", key, value));
 	}
 
+	@Override
+	public void removeValue(String key) throws ConfigurationException {
+	    
+	    properties.remove(key);
+	    store();
+	    log.info(String.format("Removed key %s", key));
+	}
+	
 	private void loadConfiguration() throws ConfigurationException {
 		
 		properties = new Properties();
@@ -78,6 +80,7 @@ public class XmlPropertiesConfiguration implements Configuration {
 			FileInputStream fis = new FileInputStream(propertiesFile);
 			this.properties.loadFromXML(fis);
 			fis.close();
+			validateConfiguration();
 		} catch (InvalidPropertiesFormatException e) {
 			log.warning("Configuration file seems to be corrupted - creating default");
 			createDefaultConfiguration();
@@ -86,6 +89,32 @@ public class XmlPropertiesConfiguration implements Configuration {
 		}
 	}
 
+	private void validateConfiguration() throws ConfigurationException {
+	    
+	    List<Object> keysToRemove = new LinkedList<Object>();
+	    for (Entry<Object, Object> entry : properties.entrySet()) {
+		ConfigurationEntry<?> registryEntry = ConfigurationRegistry.getEntryByKey(entry.getKey().toString());
+		if (registryEntry == null) {
+		    keysToRemove.add(entry.getKey());
+		}
+	    }
+	    for (Object keyToRemove : keysToRemove) {
+		removeValue(keyToRemove.toString());
+		log.info(String.format("Configuration entry %s is not an allowed entry - thus removed", keyToRemove.toString()));
+	    }
+	    for (ConfigurationEntry<?> registryEntry : ConfigurationRegistry.getEntries()) {
+		if (!containsKey(registryEntry.getKey())) {
+		    setValue(registryEntry.getKey(), registryEntry.getDefaultValue());
+		    log.info(String.format("Configuration entry %s is missing in configuration - thus added with default value", registryEntry.getKey()));
+		}
+	    }
+	}
+	
+	private boolean containsKey(String key) {
+	    
+	    return properties.get(key) != null;
+	}
+	
 	private void createDefaultConfiguration() throws ConfigurationException {
 		
 		if (propertiesFile.exists()) {
@@ -93,8 +122,8 @@ public class XmlPropertiesConfiguration implements Configuration {
 		}
 
 		properties = new Properties();
-		for (ConfigurationEntry<?> entry : ConfigurationRegistry.getEntries()) {
-			setValue(entry.getKey(), entry.getDefaultValue());
+		for (ConfigurationEntry<?> registryEntry : ConfigurationRegistry.getEntries()) {
+			setValue(registryEntry.getKey(), registryEntry.getDefaultValue());
 		}
 		
 		store();	
@@ -132,15 +161,4 @@ public class XmlPropertiesConfiguration implements Configuration {
 	    return data;
 	}
 
-//	@Override
-//	public Map<String, Collection<String>> getEnumValues() {
-//
-//	    Map<String, Collection<String>> enumValues = new HashMap<String, Collection<String>>();
-//	    
-//	    for (Entry<Object, Object> entry : properties.entrySet()) {
-//		
-//	    }
-//
-//	    return enumValues;
-//	}
 }

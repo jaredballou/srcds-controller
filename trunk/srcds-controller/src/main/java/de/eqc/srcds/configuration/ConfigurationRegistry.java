@@ -3,6 +3,7 @@ package de.eqc.srcds.configuration;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.eqc.srcds.configuration.datatypes.Password;
 import de.eqc.srcds.enums.GameType;
 
 public final class ConfigurationRegistry {
@@ -34,7 +35,10 @@ public final class ConfigurationRegistry {
     private static List<ConfigurationEntry<?>> entries;
     static {
 	entries = new LinkedList<ConfigurationEntry<?>>();
-	entries.add(new ConfigurationEntry<Integer>(HTTP_SERVER_PORT, 8888, "HTTP Server Port"));
+	entries.add(new ConfigurationEntry<Integer>(HTTP_SERVER_PORT, 8888, "HTTP Server Port"));	
+	entries.add(new ConfigurationEntry<String>(SYNC_URL, "http://", "Synchronization URL"));
+	entries.add(new ConfigurationEntry<String>(SYNC_USERNAME, "admin", "Synchronization Username"));
+	entries.add(new ConfigurationEntry<Password>(SYNC_PASSWORD, new Password("joshua"), "Synchronization Password"));	
 	entries.add(new ConfigurationEntry<Boolean>(AUTOSTART, false, "SRCDS Autostart"));
 	entries.add(new ConfigurationEntry<String>(SRCDS_PATH, "./", "SRCDS Path"));
 	entries.add(new ConfigurationEntry<String>(SRCDS_EXECUTABLE, "srcds_run", "SRCDS Executable"));
