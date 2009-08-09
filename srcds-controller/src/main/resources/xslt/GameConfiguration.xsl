@@ -18,12 +18,13 @@
 				</style>
 			</head>		
 			<body>
-                <div id="header">Source Dedicated Server Controller @ ${hostname} - Response</div>
+                <div id="header">Source Dedicated Server Controller @ ${hostname} - Edit Game Configuration</div>
                 <br/>
                 <img src="${img:header_index.png}" />
                 <br/>
-   				<h2 class="response">Game Configuration @ ${hostname}</h2>
+   				<h2 class="response">Edit Game Configuration</h2>
 				<form method="post">
+					Configuration&#160;File:&#160;
 					<select name="id" onchange="window.location.href='?id=' + this.selectedIndex" class="response">
 						<xsl:for-each select="ConfigurationFiles/ConfigurationFile">
 							<xsl:choose>
@@ -38,6 +39,7 @@
 					</select>
 					<br/><br/>
 					<textarea name="content" class="response"><xsl:value-of select="/GameConfiguration/FileContent" /></textarea>
+					<br />
 					<br />
 					<input type="submit" value="Save" class="response"/>
 					<input type="button" value="Cancel" onclick="javascript:window.location.href='/'" />
