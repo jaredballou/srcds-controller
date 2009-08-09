@@ -6,6 +6,7 @@ body {
     background-repeat: repeat-x;
     background-position: top;
     margin: 0px;
+	padding: 10px;
 }
 
 #header {
@@ -19,7 +20,7 @@ body {
 }
 
 li {
-    margin: 10px;
+    margin: 0px;
     list-style-type: none;
 }
 
