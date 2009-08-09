@@ -18,16 +18,20 @@
 				</style>
 			</head>		
 			<body>
-				<h2>Controller Configuration @ ${hostname}</h2>
+                <div id="header">Source Dedicated Server Controller @ ${hostname} - Response</div>
+                <br/>
+                <img src="${img:header_index.png}" />
+                <br/>
+				<h2 class="response">Controller Configuration @ ${hostname}</h2>
 				<form method="get">
-					<table border="1">
+					<table class="response" border="0">
 						<tr class="tableHeaders">
 							<th>Entry</th>
 							<th>Value</th>
 						</tr>
 						<xsl:for-each select="Entry">
 							<tr>
-								<td>
+								<td class="tableData">
 									<xsl:value-of select="@description" />
 								</td>
 								<td>
@@ -101,7 +105,7 @@
 						</xsl:for-each>
 					</table>
 					<br />
-					<input type="submit" value="Save" />
+					<input type="submit" value="Save" classe="response"/>
 					<input type="button" value="Cancel" onclick="javascript:window.location.href='/'" />
 				</form>
 			</body>
