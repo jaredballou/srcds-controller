@@ -12,7 +12,7 @@
 			<head>
 				<title>Source Dedicated Server Controller @ ${hostname}</title>
 				<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
-				<link rel="icon" href="${img:favicon.ico}" type="image/x-icon">
+				<link rel="icon" href="${img:favicon.ico}" type="image/x-icon"></link>
 				<style type="text/css">
 				  @import url("${css:textmode.css}") braille, embossed, handheld, speech, tty;
 				  @import url("${css:screen.css}") screen, print, projection, tv;
