@@ -35,7 +35,7 @@ public class SourceDServerController extends AbstractServerController<Process> {
 	
 	try {
 	    if (config.getValue(AUTOSTART, Boolean.class)) {
-		setAutostart(true);
+		setAutostart(config.getValue(AUTOSTART, Boolean.class));
 	    }
 	} catch (ConfigurationException e) {
 	    log.warning(String.format("Autostart configuration is missing: %s", e.getLocalizedMessage()));
