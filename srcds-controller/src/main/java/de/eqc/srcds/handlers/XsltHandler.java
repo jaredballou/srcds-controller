@@ -29,7 +29,7 @@ public class XsltHandler extends AbstractRegisteredHandler implements
 	    throw new IllegalArgumentException("Only plain file names are allowed as parameter value");
 	}
 	
-	String resource = String.format("/xslt/%s.xsl", name);
+	String resource = String.format("/xslt/%s", name);
 	
 	SimpleTemplate template = new SimpleTemplate(resource);
 	template.setAttribute("hostname", InetAddress.getLocalHost().getHostName());

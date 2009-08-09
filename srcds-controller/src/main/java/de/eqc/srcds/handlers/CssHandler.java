@@ -31,7 +31,7 @@ public class CssHandler extends AbstractRegisteredHandler implements
 	    throw new IllegalArgumentException("Only plain file names are allowed as parameter value");
 	}
 	
-	String resource = String.format("/css/%s.css", name);
+	String resource = String.format("/css/%s", name);
 	
 	SimpleTemplate template = new SimpleTemplate(resource);
 	outputTextContent(template.renderTemplate());
