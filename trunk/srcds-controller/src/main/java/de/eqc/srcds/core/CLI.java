@@ -1,9 +1,6 @@
 package de.eqc.srcds.core;
 
-import static de.eqc.srcds.configuration.ConfigurationRegistry.AUTOSTART;
-import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_GAMETYPE;
-import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_PARAMETERS;
-import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_PATH;
+import static de.eqc.srcds.configuration.ConfigurationRegistry.*;
 import static de.eqc.srcds.core.Constants.DEFAULT_CONFIG_FILENAME;
 
 import java.io.File;
@@ -14,6 +11,7 @@ import de.eqc.srcds.configuration.Configuration;
 import de.eqc.srcds.configuration.impl.XmlPropertiesConfiguration;
 import de.eqc.srcds.enums.GameType;
 import de.eqc.srcds.enums.OperatingSystem;
+import de.eqc.srcds.exceptions.ConfigurationException;
 import de.eqc.srcds.exceptions.UnsupportedOSException;
 
 /**
@@ -31,13 +29,15 @@ public class CLI {
 
     private SourceDServerController srcdsController;
 
-    public void startup() throws Exception {
+    public void startup(String ... arguments) throws Exception {
 
 	this.checkOS();
 
 	File configFile = new File(DEFAULT_CONFIG_FILENAME);
 
 	this.config = new XmlPropertiesConfiguration(configFile);
+
+	processCommandlineArguments(arguments);
 	
 	/*
 	 * This block is for testing purposes only.
@@ -73,6 +73,21 @@ public class CLI {
 	System.out.println("Exiting...");
     }
 
+    private void processCommandlineArguments(String ... arguments) throws ConfigurationException {
+
+	for (int i = 0; i < arguments.length; i++) {
+	    String argument = arguments[i].trim();
+	    if (argument.equals("-httpServerPort") && i < argument.length() - 1) {
+		String value = arguments[i + 1];
+		config.setValue(HTTP_SERVER_PORT, value);
+	    }
+	    if (argument.equals("-srcdsExecutable") && i < argument.length() - 1) {
+		String value = arguments[i + 1];
+		config.setValue(SRCDS_EXECUTABLE, value);
+	    }	    
+	}	
+    }
+    
     private void checkOS() throws UnsupportedOSException {
 
 	OperatingSystem os = OperatingSystem.getCurrent();
@@ -89,7 +104,7 @@ public class CLI {
     public static void main(String[] args) {
 
 	try {
-	    new CLI().startup();
+	    new CLI().startup(args);
 	} catch (Exception e) {
 	    log.log(Level.WARNING, e.getMessage(), e);
 	}
