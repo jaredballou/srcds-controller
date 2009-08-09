@@ -52,19 +52,47 @@ public class Utils {
 	}
 	return builder.toString();
     }
-    
+
     /**
      * @param file
      * @param newContent
-     * @throws IOException 
+     * @throws IOException
      */
-    public static void saveToFile(File file, String fileContent) throws IOException {
-	BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(file));
+    public static void saveToFile(File file, String fileContent)
+	    throws IOException {
+
+	BufferedOutputStream output = new BufferedOutputStream(
+		new FileOutputStream(file));
 	try {
 	    output.write(fileContent.getBytes());
 	} finally {
 	    closeQuietly(output);
 	}
+    }
+
+/**
+     * Escapes the characters '>', '<', '&' to ensure valid xml.
+     * 
+     * @param source
+     * @return
+     */
+    public static String escapeForXml(String source) {
+	source = source.replace("&", "&amp;");
+	source = source.replace("<", "&lt;");
+	source = source.replace(">", "&gt;");
+	return source;
+    }
+    
+    /**
+     * The reverse function for {@link #escapeForXml(String)}.
+     * @param source
+     * @return
+     */
+    public static String unEscapeForXml(String source) {
+	source = source.replace("&gt;", ">");
+	source = source.replace("&lt;", "<");
+	source = source.replace("&amp;", "&");
+	return source;
     }
 
     public static void closeQuietly(Closeable closeable) {
@@ -78,9 +106,9 @@ public class Utils {
 	    // Ignore
 	}
     }
-    
+
     public static long millisToSecs(long millis) {
-	
+
 	return millis / MILLIS_PER_SEC;
     }
 }
