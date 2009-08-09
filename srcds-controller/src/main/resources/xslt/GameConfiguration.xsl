@@ -23,8 +23,8 @@
                 <img src="${img:header_index.png}" />
                 <br/>
    				<h2 class="response">Game Configuration @ ${hostname}</h2>
-				<form method="post" class="response">
-					<select name="id" onchange="window.location.href='?id=' + this.selectedIndex">
+				<form method="post">
+					<select name="id" onchange="window.location.href='?id=' + this.selectedIndex" class="response">
 						<xsl:for-each select="ConfigurationFiles/ConfigurationFile">
 							<xsl:choose>
 								<xsl:when test="@id = /GameConfiguration/FileContent/@id">
@@ -37,7 +37,7 @@
 						</xsl:for-each>
 					</select>
 					<br/><br/>
-					<textarea name="content"><xsl:value-of select="/GameConfiguration/FileContent" /></textarea>
+					<textarea name="content" class="response"><xsl:value-of select="/GameConfiguration/FileContent" /></textarea>
 					<br />
 					<input type="submit" value="Save" class="response"/>
 					<input type="button" value="Cancel" onclick="javascript:window.location.href='/'" />
