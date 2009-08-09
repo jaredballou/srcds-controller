@@ -18,7 +18,7 @@
 			var windowed = false;
 			if (query) 
 			{
-			 	var params = q.substring(1).split("&");
+			 	var params = query.substring(1).split("&");
 			 	for(var i = 0; i < params.length; i++) 
 				{
 			  		var param = params[i];
@@ -60,7 +60,7 @@
 		<li><a href="shutdown"><img width="48" height="24" src="${img:icon_shutdown.png}" />Shutdown the controller</a></li>
 		</ul>
         <p class="footer">
-        <a name="popupshow" id="popupshow" href="#" onclick="javascript: PopupWindow()">Open as a popup</a>
+        <a name="popupshow" id="popupshow" href="#" onclick="javascript: PopupWindow()">Open as a popup | </a>
         <a href="http://www.earthquake-clan.de/srcds/">Visit Homepage</a>srcds-controller v0.1
         </p>
 	</body>
