@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import de.eqc.srcds.configuration.Configuration;
 import de.eqc.srcds.configuration.impl.XmlPropertiesConfiguration;
+import de.eqc.srcds.core.logging.LogFactory;
 import de.eqc.srcds.enums.GameType;
 import de.eqc.srcds.enums.OperatingSystem;
 import de.eqc.srcds.exceptions.ConfigurationException;

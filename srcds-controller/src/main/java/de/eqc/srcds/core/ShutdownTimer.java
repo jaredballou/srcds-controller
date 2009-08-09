@@ -3,6 +3,8 @@ package de.eqc.srcds.core;
 import java.util.TimerTask;
 import java.util.logging.Logger;
 
+import de.eqc.srcds.core.logging.LogFactory;
+
 public class ShutdownTimer extends TimerTask {
 
     private static Logger log = LogFactory.getLogger(ShutdownTimer.class);

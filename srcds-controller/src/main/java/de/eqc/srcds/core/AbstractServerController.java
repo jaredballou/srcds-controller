@@ -5,6 +5,7 @@ import static de.eqc.srcds.core.Constants.SERVER_POLL_INTERVAL_MILLIS;
 import java.util.logging.Logger;
 
 import de.eqc.srcds.configuration.Configuration;
+import de.eqc.srcds.core.logging.LogFactory;
 import de.eqc.srcds.enums.ServerState;
 import de.eqc.srcds.exceptions.AlreadyRunningException;
 import de.eqc.srcds.exceptions.ConfigurationException;

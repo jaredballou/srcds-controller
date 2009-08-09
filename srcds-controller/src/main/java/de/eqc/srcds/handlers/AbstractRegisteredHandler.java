@@ -13,9 +13,9 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import de.eqc.srcds.configuration.Configuration;
-import de.eqc.srcds.core.LogFactory;
 import de.eqc.srcds.core.SourceDServerController;
 import de.eqc.srcds.core.Utils;
+import de.eqc.srcds.core.logging.LogFactory;
 import de.eqc.srcds.xmlbeans.enums.ResponseCode;
 import de.eqc.srcds.xmlbeans.impl.ControllerResponse;
 import de.eqc.srcds.xmlbeans.impl.Message;

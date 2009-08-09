@@ -1,4 +1,4 @@
-package de.eqc.srcds.core;
+package de.eqc.srcds.core.logging;
 
 import static de.eqc.srcds.core.Constants.LOGGING_FILENAME;
 
