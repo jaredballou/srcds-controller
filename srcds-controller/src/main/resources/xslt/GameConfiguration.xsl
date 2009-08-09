@@ -12,7 +12,8 @@
 			<head>
 				<title>Source Dedicated Server Controller @ ${hostname}</title>
 				<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
-				<style type="text/css">
+				<link rel="icon" href="${img:favicon.ico}" type="image/x-icon"></link>
+        		<style type="text/css">
 				  @import url("${css:textmode.css}") braille, embossed, handheld, speech, tty;
 				  @import url("${css:screen.css}") screen, print, projection, tv;
 				</style>
@@ -24,7 +25,6 @@
                 <br/>
    				<h2 class="response">Edit Game Configuration</h2>
 				<form method="post">
-					<div class="response">
 						Configuration&#160;File:&#160;
 						<select name="id" onchange="window.location.href='?id=' + this.selectedIndex" class="response">
 							<xsl:for-each select="ConfigurationFiles/ConfigurationFile">
@@ -44,7 +44,6 @@
 						<br />
 						<input type="submit" value="Save" class="response"/>
 						<input type="button" value="Cancel" onclick="javascript:window.location.href='/'" />
-					</div>
 				</form>
 			</body>
 		</html>
