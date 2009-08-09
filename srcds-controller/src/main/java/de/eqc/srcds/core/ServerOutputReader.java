@@ -1,6 +1,6 @@
 package de.eqc.srcds.core;
 
-import static de.eqc.srcds.core.Constants.SERVER_POLL_INTERVAL_MILLIS;
+import static de.eqc.srcds.core.Constants.OUTPUT_READING_DELAY_MILLIS;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,9 +33,7 @@ public class ServerOutputReader extends Thread {
 	try {
 	    String line;	    
 	    while ((line = br.readLine()) != null && running) {
-//		if (line.startsWith("players :")) {
 		    log.info(line.trim());
-//		}
 		    safeSleep();
 	    }
 	} catch (IOException e) {
@@ -58,7 +56,7 @@ public class ServerOutputReader extends Thread {
     private void safeSleep() {
 
 	try {
-	    Thread.sleep(SERVER_POLL_INTERVAL_MILLIS);
+	    Thread.sleep(OUTPUT_READING_DELAY_MILLIS);
 	} catch (InterruptedException e) {
 	    stopGraceful();
 	}
