@@ -7,7 +7,7 @@
 		doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"
 		doctype-public="-//W3C//DTD XHTML 1.1//EN" />
 
-	<xsl:template match="/ControllerConfig">
+	<xsl:template match="/ControllerConfiguration">
 		<html>
 			<head>
 				<title>Source Dedicated Server Controller @ ${hostname}</title>
