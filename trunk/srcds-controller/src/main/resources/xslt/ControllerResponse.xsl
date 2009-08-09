@@ -18,6 +18,10 @@
 				</style>
 			</head>
 			<body>
+                <div id="header">Source Dedicated Server Controller @ ${hostname} - Response</div>
+                <br/>
+                <img src="${img:header_index.png}" />
+                <br/>
 				<h2>ControllerResponse</h2>
 				Status: <xsl:value-of select="/ControllerResponse/ResponseCode" /><br/>
 				<table border="1">
@@ -33,7 +37,7 @@
 					</xsl:for-each>
 				</table>
                 <br />
-                <a href="/" style="color: #000">Back to main page</a>
+                <a href="/">Back to main page</a>
 			</body>
 		</html>
 	</xsl:template>
