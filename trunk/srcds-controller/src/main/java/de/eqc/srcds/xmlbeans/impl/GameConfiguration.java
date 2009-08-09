@@ -48,7 +48,7 @@ public class GameConfiguration extends XmlBean {
         	sb.append(indent(String.format("<FileContent id=\"%d\">", selectedFileIndex), indent + 1));
         	sb.append("<![CDATA[");
         	sb.append(Utils.getFileContent(file));
-        	sb.append("]]]]>\n");
+        	sb.append("]]>");
         	sb.append(indent("</FileContent>\n", indent + 1));
 	} catch(Exception e) {
 	    sb.append("<Error>Unable to load required resources</Error>");
