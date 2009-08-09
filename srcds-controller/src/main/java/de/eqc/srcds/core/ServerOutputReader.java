@@ -33,9 +33,9 @@ public class ServerOutputReader extends Thread {
 	try {
 	    String line;	    
 	    while ((line = br.readLine()) != null && running) {
-		if (line.startsWith("players :")) {
+//		if (line.startsWith("players :")) {
 		    log.info(line.trim());
-		}
+//		}
 	    }
 	} catch (IOException e) {
 	    log.info(String.format("Error while reading server output: %s", e.getLocalizedMessage()));
