@@ -77,11 +77,13 @@ public class CLI {
 
 	for (int i = 0; i < arguments.length; i++) {
 	    String argument = arguments[i].trim();
-	    if (argument.equals("-httpServerPort") && i < argument.length() - 1) {
+	    if (argument.equals("--help")) {
+		System.out.println("Usage: java -jar <jarfile> [--httpServerPort <port>] [--srcdsExecutable <file>]");
+		System.exit(0);
+	    } else if (argument.equals("--httpServerPort") && i < argument.length() - 1) {
 		String value = arguments[i + 1];
 		config.setValue(HTTP_SERVER_PORT, value);
-	    }
-	    if (argument.equals("-srcdsExecutable") && i < argument.length() - 1) {
+	    } else if (argument.equals("--srcdsExecutable") && i < argument.length() - 1) {
 		String value = arguments[i + 1];
 		config.setValue(SRCDS_EXECUTABLE, value);
 	    }	    
