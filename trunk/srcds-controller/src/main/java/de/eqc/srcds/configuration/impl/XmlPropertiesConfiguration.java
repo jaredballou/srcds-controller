@@ -19,7 +19,7 @@ import de.eqc.srcds.configuration.ConfigurationEntry;
 import de.eqc.srcds.configuration.ConfigurationRegistry;
 import de.eqc.srcds.core.SourceDServerController;
 import de.eqc.srcds.exceptions.ConfigurationException;
-import de.eqc.srcds.xmlbeans.impl.ControllerConfig;
+import de.eqc.srcds.xmlbeans.impl.ControllerConfiguration;
 
 public class XmlPropertiesConfiguration implements Configuration {
 
@@ -154,7 +154,7 @@ public class XmlPropertiesConfiguration implements Configuration {
 	@Override
 	public String toXml() {
 		
-		return new ControllerConfig(this).toXml();
+		return new ControllerConfiguration(this).toXml();
 	}
 
 	@Override
