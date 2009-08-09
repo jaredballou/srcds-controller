@@ -32,15 +32,18 @@ public class ServerOutputReader extends Thread {
 	running = true;
 	log.info("Reading server output started");
 	try {
-	    String line;	    
+	    String line;
 	    while ((line = br.readLine()) != null && running) {
-		if(line.contains("connected, address") || line.contains("disconnected") || line.contains("players :")) {
+		if (line.contains("connected, address")
+			|| line.contains("disconnect")
+			|| line.contains("players :")) {
 		    log.info(line.trim());
 		}
-//		safeSleep();
+		// safeSleep();
 	    }
 	} catch (IOException e) {
-	    log.info(String.format("Error while reading server output: %s", e.getLocalizedMessage()));
+	    log.info(String.format("Error while reading server output: %s", e
+		    .getLocalizedMessage()));
 	} finally {
 	    log.info("Reading server output stopped");
 	}
@@ -63,5 +66,5 @@ public class ServerOutputReader extends Thread {
 	} catch (InterruptedException e) {
 	    stopGraceful();
 	}
-    }    
+    }
 }
