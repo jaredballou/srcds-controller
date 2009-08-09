@@ -24,6 +24,8 @@
 						</tr>
 					</xsl:for-each>
 				</table>
+                <br />
+                <a href="/" style="color:#000">Back to main page</a>
 			</body>
 		</html>
 	</xsl:template>
