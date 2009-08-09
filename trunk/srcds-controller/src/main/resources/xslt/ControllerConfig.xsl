@@ -105,9 +105,11 @@
 						</xsl:for-each>
 					</table>
 					<br />
-					<input type="submit" value="Save" classe="response"/>
+					<p class="response">
+                    <input type="submit" value="Save" />
 					<input type="button" value="Cancel" onclick="javascript:window.location.href='/'" />
-				</form>
+					</p>
+                </form>
 			</body>
 		</html>
 	</xsl:template>
