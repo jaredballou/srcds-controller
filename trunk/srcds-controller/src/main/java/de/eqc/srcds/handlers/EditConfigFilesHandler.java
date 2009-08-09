@@ -10,6 +10,7 @@ import com.sun.net.httpserver.HttpExchange;
 import de.eqc.srcds.core.Utils;
 import de.eqc.srcds.exceptions.ConfigurationException;
 import de.eqc.srcds.handlers.utils.SimpleTemplate;
+import de.eqc.srcds.xmlbeans.impl.GameConfiguration;
 
 
 /**
@@ -25,20 +26,20 @@ public class EditConfigFilesHandler extends AbstractRegisteredHandler {
 	List<String> filesForEdit = getServerController().getGameType().getImplementation().getFilesForEdit();
 
 	if (isPost()) {
-	    String fileIdParam = getPostParameter("fileId");
+	    String fileIdParam = getPostParameter("id");
 	    String newContent = getPostParameter("content");
 	    if (fileIdParam == null || newContent == null) {
-		throw new IllegalArgumentException("fileId or content was null!");
+		throw new IllegalArgumentException("id or content was null");
 	    }
-	    saveFile(filesForEdit.get(Integer.parseInt(fileIdParam)), newContent);
+	    int fileId = Integer.parseInt(fileIdParam);
+	    saveFile(fileId, filesForEdit.get(fileId), newContent);
 	} else {
-	    String fileIdParam = getParameter("fileId");
-	    if (fileIdParam == null) {
-		listFilesForEdit(filesForEdit);
-	    } else {
-		int fileId = Integer.parseInt(fileIdParam);
-		showFile(fileId, filesForEdit.get(fileId));
+	    String fileIdParam = getParameter("id");
+	    int fileId = 0;
+	    if (fileIdParam != null) {
+		fileId = Integer.parseInt(fileIdParam);
 	    }
+	    showFile(fileId, filesForEdit.get(fileId));
 	}
     }
 
@@ -48,16 +49,16 @@ public class EditConfigFilesHandler extends AbstractRegisteredHandler {
      * @throws IOException 
      * @throws ConfigurationException 
      */
-    private void saveFile(String file, String newContent) throws IOException, ConfigurationException {
+    private void saveFile(int fileId, String file, String newContent) throws IOException, ConfigurationException {
 	File fileToEdit = new File(getConfig().getValue("srcds.controller.srcds.path",String.class), file);
 	
 	// TODO: unescape content!
-	
 	Utils.saveToFile(fileToEdit, newContent);
-	
-	SimpleTemplate template = new SimpleTemplate("/html/editConfigFiles/fileSaved.html");
-	template.setAttribute("url", this.getPath());
-	outputHtmlContent(template.renderTemplate());
+
+	showFile(fileId, file);
+//	SimpleTemplate template = new SimpleTemplate("/html/editConfigFiles/fileSaved.html");
+//	template.setAttribute("url", this.getPath());
+//	outputHtmlContent(template.renderTemplate());
     }
 
     /**
@@ -69,28 +70,12 @@ public class EditConfigFilesHandler extends AbstractRegisteredHandler {
     private void showFile(int fileId, String file) throws FileNotFoundException, IOException, ConfigurationException {
 	File fileToEdit = new File(getConfig().getValue("srcds.controller.srcds.path",String.class), file);
 	
-	String content = Utils.getFileContent(fileToEdit);
-	// TODO: escape the content!
-	
-	SimpleTemplate template = new SimpleTemplate("/html/editConfigFiles/showFile.html");
-	template.setAttribute("fileId", String.valueOf(fileId));
-	template.setAttribute("content", content);
-	
-	outputHtmlContent(template.renderTemplate());
-    }
-
-    /**
-     * @param filesForEdit
-     * @throws IOException 
-     */
-    private void listFilesForEdit(List<String> filesForEdit) throws IOException {
-	StringBuilder builder = new StringBuilder();
-	builder.append("<html><body><ul>");
-	for (int i=0; i<filesForEdit.size(); i++) {
-	    builder.append("<li><a href='?fileId=").append(i).append("'>").append(filesForEdit.get(i)).append("</li>");
+	if (!fileToEdit.exists()) {
+	    throw new FileNotFoundException(String.format("Cannot find file %s", file));
 	}
-	builder.append("</ul></body></html>");
-	outputHtmlContent(builder.toString());
+
+	GameConfiguration gameConfiguration = new GameConfiguration(getConfig(), fileId);
+	outputXmlContent(gameConfiguration.toXml());
     }
 
     /*
