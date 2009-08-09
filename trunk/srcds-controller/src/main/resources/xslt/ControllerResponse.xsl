@@ -23,10 +23,16 @@
                 <img src="${img:header_index.png}" />
                 <br/>
 				<h2 class="response">Response from Controller</h2>
-				<p class="response">Status: <xsl:value-of select="/ControllerResponse/ResponseCode" /><br/></p>
 				<table border="0" class="response">
 					<tr class="tableHeaders">
-						<th>Message</th>
+						<xsl:choose>
+							<xsl:when test="ResponseCode = 'OK'">
+								<th class="messageInfo">Information</th>
+							</xsl:when>
+							<xsl:otherwise>
+								<th class="messageError">Error</th>
+							</xsl:otherwise>
+						</xsl:choose>					
 					</tr>
 					<xsl:for-each select="Message/Item">
 						<tr>
