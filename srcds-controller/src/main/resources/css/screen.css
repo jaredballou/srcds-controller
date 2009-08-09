@@ -48,3 +48,10 @@ p.footer {
 p.footer.a {
 	color: #50A64A;
 }
+
+tr.tableHeaders {
+	color: #FFFFFF;
+	background-color: #5cb553;	
+}
+
+
