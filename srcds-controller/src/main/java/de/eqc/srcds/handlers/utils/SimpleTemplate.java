@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.eqc.srcds.core.Utils;
+import de.eqc.srcds.handlers.CssHandler;
 import de.eqc.srcds.handlers.ImageHandler;
 
 /**
