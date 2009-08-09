@@ -11,7 +11,7 @@ public abstract class XmlBean implements Serializable {
     private static final long serialVersionUID = 6007738341162785134L;
     private static final int INDENT_WIDTH = 2;
     private static final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n"; 
-    private static final String XSLT_HEADER = "<?xml-stylesheet type=\"text/xsl\" href=\"/xslt?bean=%CLASSNAME%\" ?>\n";
+    private static final String XSLT_HEADER = "<?xml-stylesheet type=\"text/xsl\" href=\"/xslt?name=%CLASSNAME%\" ?>\n";
     protected final boolean stylesheet;
     
     
