@@ -14,6 +14,7 @@ public class ShutdownHook extends Thread {
 
     public ShutdownHook(Thread mainThread, SourceDServerController srcdsController, HttpServerController httpServerController) {
 
+	setName(getClass().getSimpleName());
 	this.mainThread = mainThread;
 	this.srcdsController = srcdsController;
 	this.httpServerController = httpServerController;

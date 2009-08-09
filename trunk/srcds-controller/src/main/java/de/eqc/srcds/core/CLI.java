@@ -32,6 +32,8 @@ public class CLI {
 
     public void startup(String ... arguments) throws Exception {
 
+	Thread.currentThread().setName(getClass().getSimpleName());
+	
 	this.checkOS();
 
 	File configFile = new File(DEFAULT_CONFIG_FILENAME);

@@ -11,6 +11,7 @@ public class ShutdownTimer extends TimerTask {
 
     public ShutdownTimer(long delayInSecs) {
 
+	Thread.currentThread().setName(getClass().getSimpleName());
 	log.warning(String.format("Controller is going down in %d seconds",
 		delayInSecs));
     }
