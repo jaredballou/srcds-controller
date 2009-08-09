@@ -42,6 +42,13 @@
 												<option name="{Key}" value="false" />
 											</select>
 										</xsl:when>
+										<xsl:when test="@type = 'GameType'">
+											<select name="{Key}">
+												<xsl:for-each select="/ControllerConfig/Metadata/Enumeration[@name='GameType']/Value">
+													<option value="{.}" selected="selected"><xsl:value-of select="." /></option>
+												</xsl:for-each>
+											</select>
+										</xsl:when>										
 										<xsl:otherwise>
 											<xsl:variable name="minFieldLength">30</xsl:variable>
 											<xsl:variable name="maxFieldLength">80</xsl:variable>
