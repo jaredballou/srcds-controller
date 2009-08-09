@@ -8,6 +8,7 @@ import java.net.InetAddress;
 
 import com.sun.net.httpserver.HttpExchange;
 
+import de.eqc.srcds.core.RuntimeUtil;
 import de.eqc.srcds.handlers.utils.SimpleTemplate;
 
 /**
@@ -33,6 +34,7 @@ public class XsltHandler extends AbstractRegisteredHandler implements
 	
 	SimpleTemplate template = new SimpleTemplate(resource);
 	template.setAttribute("hostname", InetAddress.getLocalHost().getHostName());
+	template.setAttribute("version", RuntimeUtil.getProjectVersion());
 	template.setAttribute("srcds-executable-key", SRCDS_EXECUTABLE);
 
 	outputXmlContent(template.renderTemplate());

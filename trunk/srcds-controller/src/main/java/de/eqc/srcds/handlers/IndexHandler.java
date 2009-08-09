@@ -5,6 +5,7 @@ import java.net.InetAddress;
 
 import com.sun.net.httpserver.HttpExchange;
 
+import de.eqc.srcds.core.RuntimeUtil;
 import de.eqc.srcds.handlers.utils.SimpleTemplate;
 
 /**
@@ -28,6 +29,7 @@ public class IndexHandler extends AbstractRegisteredHandler implements
 
 	SimpleTemplate template = new SimpleTemplate(INDEX_HTML);
 	template.setAttribute("hostname", InetAddress.getLocalHost().getHostName());
+	template.setAttribute("version", RuntimeUtil.getProjectVersion());
 	
 	outputHtmlContent(template.renderTemplate());
     }
