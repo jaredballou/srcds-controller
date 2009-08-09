@@ -193,6 +193,7 @@ public abstract class AbstractRegisteredHandler implements HttpHandler,
 	httpExchange.sendResponseHeaders(200, bytes.length);
 	OutputStream os = httpExchange.getResponseBody();
 	os.write(bytes);
+	os.flush();
 	os.close();
     }    
     
