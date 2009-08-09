@@ -64,3 +64,9 @@ h2.response, a.response, table.response, p.response, form.input.response {
     margin-left: 98px;
 }
 
+textarea {
+	width: 600px;
+	height: 400px;
+	border: thin;
+}
+
