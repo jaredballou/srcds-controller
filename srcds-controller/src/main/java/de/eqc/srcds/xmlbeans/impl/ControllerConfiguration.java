@@ -8,11 +8,11 @@ import de.eqc.srcds.configuration.ConfigurationRegistry;
 import de.eqc.srcds.xmlbeans.XmlBean;
 
 
-public class ControllerConfig extends XmlBean {
+public class ControllerConfiguration extends XmlBean {
 
     private final Configuration config;
     
-    public ControllerConfig(Configuration config) {
+    public ControllerConfiguration(Configuration config) {
 
 	super(true);
 	this.config = config;
