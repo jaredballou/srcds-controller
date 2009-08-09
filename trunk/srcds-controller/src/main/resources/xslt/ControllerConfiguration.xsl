@@ -18,11 +18,11 @@
 				</style>
 			</head>		
 			<body>
-                <div id="header">Source Dedicated Server Controller @ ${hostname} - Response</div>
+                <div id="header">Source Dedicated Server Controller @ ${hostname} - Edit Controller Configuration</div>
                 <br/>
                 <img src="${img:header_index.png}" />
                 <br/>
-				<h2 class="response">Controller Configuration @ ${hostname}</h2>
+				<h2 class="response">Edit Controller Configuration</h2>
 				<form method="get">
 					<table class="response" border="0">
 						<tr class="tableHeaders">
