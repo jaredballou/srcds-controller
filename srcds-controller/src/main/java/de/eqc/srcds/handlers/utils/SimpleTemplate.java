@@ -34,8 +34,7 @@ public class SimpleTemplate {
 	if (this.template == null) {
 	    throw new FileNotFoundException(String.format("Cannot find the template '%s'", templatePath));
 	}
-    }
-    
+    }    
     
     public void setAttribute(String key, String value) {
 	this.attribute.put(key, value);
