@@ -19,6 +19,7 @@ public class ServerOutputReader extends Thread {
 
     public ServerOutputReader(InputStream inputStream) {
 
+	setName(getClass().getSimpleName());
 	this.running = false;
 	this.inputStream = inputStream;
     }
