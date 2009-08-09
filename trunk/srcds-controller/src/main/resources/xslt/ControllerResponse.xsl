@@ -22,22 +22,22 @@
                 <br/>
                 <img src="${img:header_index.png}" />
                 <br/>
-				<h2>ControllerResponse</h2>
+				<h2 class="response">Response from Controller</h2>
 				Status: <xsl:value-of select="/ControllerResponse/ResponseCode" /><br/>
-				<table border="1">
+				<table border="0" class="response">
 					<tr class="tableHeaders">
 						<th>Message</th>
 					</tr>
 					<xsl:for-each select="Message/Item">
 						<tr>
-							<td>
+							<td class="tableData">
 								<xsl:value-of select="." />
 							</td>
 						</tr>
 					</xsl:for-each>
 				</table>
                 <br />
-                <a href="/">Back to main page</a>
+                <a href="/" class="response">Back to main page</a>
 			</body>
 		</html>
 	</xsl:template>
