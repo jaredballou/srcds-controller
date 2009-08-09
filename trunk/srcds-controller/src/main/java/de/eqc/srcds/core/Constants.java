@@ -15,6 +15,8 @@ public final class Constants {
 
     public static final int SHUTDOWN_DELAY_MILLIS = 3000;
     
+    public static final int OUTPUT_READING_DELAY_MILLIS = 500;
+    
     public static final int HTTP_SERVER_SHUTDOWN_DELAY_SECS = 2;
 
     public static final int SERVER_POLL_INTERVAL_MILLIS = 1000;
