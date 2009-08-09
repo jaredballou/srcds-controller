@@ -16,6 +16,8 @@ import de.eqc.srcds.handlers.utils.SimpleTemplate;
 public class CssHandler extends AbstractRegisteredHandler implements
 	RegisteredHandler {
 
+    public static final String HANDLER_PATH = "/css";
+
     /*
      * @see
      * de.eqc.srcds.handlers.AbstractRegisteredHandler#handleRequest(com.sun
@@ -40,6 +42,6 @@ public class CssHandler extends AbstractRegisteredHandler implements
      */
     @Override
     public String getPath() {
-	return "/css";
+	return HANDLER_PATH;
     }
 }
