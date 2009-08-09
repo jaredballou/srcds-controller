@@ -7,16 +7,48 @@
 		<title>Source Dedicated Server Controller @ ${hostname}</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
 		<style>
+		  @media braille, embossed, handheld, speech, tty 
+		  {
+			body {
+				background-color: #FFFFFF;
+				margin: 0px;
+			}
+			
+			#header {
+				font-weight: bold;
+				color: #fff;
+				background-color: #000;
+				text-align: center;
+			}
+			
+			li {
+				list-style-type: none;
+			}
+			
+			img {
+				display: none;
+				border: 0px;
+				vertical-align: middle;
+			}
+		  }
+
+		  @media screen, print, projection, tv 
+		  {
 			body {
 				font-family: Verdana, Arial;
 				font-size: 12px;
+				background-color: #FFFFFF;
+				background-image: url(${img:background.png});
+				background-repeat: repeat-x;
+				background-position: top;
+				margin: 0px;
 			}
 			
 			#header {
 				font-size: 16px;
 				font-weight: bold;
 				color: #fff;
-				background-color: #888;
+				background-color: #50a64a;
 				text-align: center;
 				width: 100%;
 				padding: 3px;
@@ -24,12 +56,14 @@
 			
 			li {
 				margin: 10px;
+				list-style-type: none;
 			}
 			
 			img {
 				border: 0px;
 				vertical-align: middle;
 			}
+		  }
 		</style>
 	</head>
 	<body>
@@ -38,14 +72,14 @@
 		<img src="${img:header_index.png}" />
 		<br/>
 		<ul>
-		<li><a href="start"><img src="${img:icon_start.gif}" /></a> Start the SRCDS instance</li>
-		<li><a href="stop"><img src="${img:icon_stop.gif}" /></a> Stop the SRCDS instance</li>
-		<li><a href="restart"><img src="${img:icon_restart.gif}" /></a> Restart the SRCDS instance</li>
-		<li><a href="status"><img src="${img:icon_status.gif}" /></a> Show information on the current state of the SRCDS instance</li> 
-		<li><a href="editConfig"><img src="${img:icon_showconfig.gif}" /></a> Edit the controller configuration </li>
-		<li><a href="setConfig"><img src="${img:icon_setconfig.gif}" /></a> Set a configuration key to a specified value (e.g. setConfig?key=value)</li>
-		<li><a href="editConfigFiles"><img src="${img:icon_editconfig.gif}" /></a> Edit the game-specific configuration files</li>
-		<li><a href="shutdown"><img src="${img:icon_shutdown.gif}" /></a> Shutdown the controller</li>
+		<li><a href="start"><img src="${img:icon_start.png}" /></a> Start the SRCDS instance</li>
+		<li><a href="stop"><img src="${img:icon_stop.png}" /></a> Stop the SRCDS instance</li>
+		<li><a href="restart"><img src="${img:icon_restart.png}" /></a> Restart the SRCDS instance</li>
+		<li><a href="status"><img src="${img:icon_status.png}" /></a> Show information on the current state of the SRCDS instance</li> 
+		<li><a href="editConfig"><img src="${img:icon_editconfig.png}" /></a> Edit the controller configuration </li>
+		<li><a href="setConfig"><img src="${img:icon_setconfig.png}" /></a> Set a configuration key to a specified value (e.g. setConfig?key=value)</li>
+		<li><a href="editConfigFiles"><img src="${img:icon_editconfigfiles.png}" /></a> Edit the game-specific configuration files</li>
+		<li><a href="shutdown"><img src="${img:icon_shutdown.png}" /></a> Shutdown the controller</li>
 		</ul>
 	</body>
 </html>
