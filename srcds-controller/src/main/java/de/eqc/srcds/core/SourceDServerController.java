@@ -129,6 +129,7 @@ public class SourceDServerController extends AbstractServerController<Process> {
 		File srcdsPath = getSrcdsPath();
 
 		ProcessBuilder pb = new ProcessBuilder(parseCommandLine());
+		pb.redirectErrorStream(true);
 		pb.directory(srcdsPath);
 		server = pb.start();
 
