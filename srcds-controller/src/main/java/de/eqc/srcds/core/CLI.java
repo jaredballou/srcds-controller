@@ -1,9 +1,9 @@
 package de.eqc.srcds.core;
 
-import static de.eqc.srcds.configuration.Constants.AUTOSTART;
-import static de.eqc.srcds.configuration.Constants.SRCDS_GAMETYPE;
-import static de.eqc.srcds.configuration.Constants.SRCDS_PARAMETERS;
-import static de.eqc.srcds.configuration.Constants.SRCDS_PATH;
+import static de.eqc.srcds.configuration.ConfigurationRegistry.AUTOSTART;
+import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_GAMETYPE;
+import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_PARAMETERS;
+import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_PATH;
 import static de.eqc.srcds.core.Constants.DEFAULT_CONFIG_FILENAME;
 
 import java.io.File;
