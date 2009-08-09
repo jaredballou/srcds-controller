@@ -42,10 +42,11 @@
 												<option name="{Key}" value="false" />
 											</select>
 										</xsl:when>
-										<xsl:when test="@type = 'GameType'">
+										<xsl:when test="@enumeration = 'true'">
 											<xsl:variable name="Value" select="Value" />
+											<xsl:variable name="EnumType" select="@type" />
 											<select name="{Key}">
-												<xsl:for-each select="/ControllerConfig/Metadata/Enumeration[@name='GameType']/Value">
+												<xsl:for-each select="/ControllerConfig/Metadata/Enumeration[@name=$EnumType]/Value">
 													<xsl:choose>
 														<xsl:when test="$Value = .">
 															<option value="{.}" selected="selected"><xsl:value-of select="." />*</option>
