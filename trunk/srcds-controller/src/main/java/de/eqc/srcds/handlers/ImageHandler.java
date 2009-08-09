@@ -50,7 +50,13 @@ public class ImageHandler extends AbstractRegisteredHandler implements
 
 		byte[] buffer = new byte[1024];
 		for (int len = 0; (len = input.read(buffer)) != -1;) {
-		    baos.write(buffer);
+		    if (len < 1024) {
+			byte[] smallerBuffer = new byte[len];
+			System.arraycopy(buffer, 0, smallerBuffer, 0, len);
+			baos.write(smallerBuffer);
+		    } else {
+			baos.write(buffer);
+		    }
 		}
 	    } finally {
 		if (input != null) {

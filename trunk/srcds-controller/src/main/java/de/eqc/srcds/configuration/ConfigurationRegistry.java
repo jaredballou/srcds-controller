@@ -15,6 +15,12 @@ public final class ConfigurationRegistry {
     
     public static final String HTTP_SERVER_PORT = "srcds.controller.networking.httpserver.port";
 
+    public static final String SYNC_URL = "srcds.controller.sync.url";
+    
+    public static final String SYNC_USERNAME = "srcds.controller.sync.username";
+    
+    public static final String SYNC_PASSWORD = "srcds.controller.sync.password";
+
     public static final String AUTOSTART = "srcds.controller.srcds.autostart";
 
     public static final String SRCDS_PATH = "srcds.controller.srcds.path";
