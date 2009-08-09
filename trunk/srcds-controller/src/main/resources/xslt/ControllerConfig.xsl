@@ -21,7 +21,7 @@
 				<h2>Controller Configuration @ ${hostname}</h2>
 				<form method="get">
 					<table border="1">
-						<tr bgcolor="#9acd32">
+						<tr class="tableHeaders">
 							<th>Entry</th>
 							<th>Value</th>
 						</tr>

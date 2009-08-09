@@ -21,7 +21,7 @@
 				<h2>ControllerResponse</h2>
 				Status: <xsl:value-of select="/ControllerResponse/ResponseCode" /><br/>
 				<table border="1">
-					<tr bgcolor="#9acd32">
+					<tr class="tableHeaders">
 						<th>Message</th>
 					</tr>
 					<xsl:for-each select="Message/Item">
