@@ -27,3 +27,13 @@ img {
     border: 0px;
     vertical-align: middle;
 }
+
+a {
+	text-decoration: none;
+	color: #000;
+}
+
+a:hover {
+	text-decoration: none;
+	color: #50A64A;
+}
