@@ -9,8 +9,16 @@
 
 	<xsl:template match="/ControllerConfig">
 		<html>
+			<head>
+				<title>Source Dedicated Server Controller @ ${hostname}</title>
+				<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+				<style type="text/css">
+				  @import url("${css:textmode.css}") braille, embossed, handheld, speech, tty;
+				  @import url("${css:screen.css}") screen, print, projection, tv;
+				</style>
+			</head>		
 			<body>
-				<h2>Controller Configuration</h2>
+				<h2>Controller Configuration @ ${hostname}</h2>
 				<form method="get">
 					<table border="1">
 						<tr bgcolor="#9acd32">
