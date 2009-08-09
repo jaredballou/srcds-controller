@@ -6,7 +6,6 @@ body {
     background-repeat: repeat-x;
     background-position: top;
     margin: 0px;
-	padding: 10px;
 }
 
 #header {
@@ -20,7 +19,7 @@ body {
 }
 
 li {
-    margin: 0px;
+    margin: 10px;
     list-style-type: none;
 }
 
@@ -37,4 +36,14 @@ a {
 a:hover {
 	text-decoration: none;
 	color: #50A64A;
+}
+
+p.footer {
+	color: #d1eacf;
+	left: 48px;
+	font-size: x-small;
+}
+
+p.footer.a {
+	color: #d1eacf;
 }
