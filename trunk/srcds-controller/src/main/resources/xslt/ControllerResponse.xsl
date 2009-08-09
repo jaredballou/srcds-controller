@@ -23,7 +23,7 @@
                 <img src="${img:header_index.png}" />
                 <br/>
 				<h2 class="response">Response from Controller</h2>
-				Status: <xsl:value-of select="/ControllerResponse/ResponseCode" /><br/>
+				<p class="response">Status: <xsl:value-of select="/ControllerResponse/ResponseCode" /><br/></p>
 				<table border="0" class="response">
 					<tr class="tableHeaders">
 						<th>Message</th>

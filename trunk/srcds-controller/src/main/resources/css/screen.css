@@ -60,7 +60,7 @@ td.tableData {
 	background-color: #e6f3e5;	
 }
 
-h2.response a.response table.response {
+h2.response, a.response, table.response, p.response {
     margin-left: 98px;
 }
 
