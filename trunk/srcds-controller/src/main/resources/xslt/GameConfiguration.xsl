@@ -25,19 +25,21 @@
                 <br/>
    				<h2 class="response">Edit Game Configuration</h2>
 				<form method="post">
-						Configuration&#160;File:&#160;
-						<select name="id" onchange="window.location.href='?id=' + this.selectedIndex" class="response">
-							<xsl:for-each select="ConfigurationFiles/ConfigurationFile">
-								<xsl:choose>
-									<xsl:when test="@id = /GameConfiguration/FileContent/@id">
-										<option value="{@id}" selected="selected"><xsl:value-of select="@name" />*</option>
-									</xsl:when>
-									<xsl:otherwise>
-										<option value="{@id}"><xsl:value-of select="@name" /></option>
-									</xsl:otherwise>
-								</xsl:choose>
-							</xsl:for-each>
-						</select>
+						<span class="response">
+							Configuration&#160;File:&#160;
+							<select name="id" onchange="window.location.href='?id=' + this.selectedIndex">
+								<xsl:for-each select="ConfigurationFiles/ConfigurationFile">
+									<xsl:choose>
+										<xsl:when test="@id = /GameConfiguration/FileContent/@id">
+											<option value="{@id}" selected="selected"><xsl:value-of select="@name" />*</option>
+										</xsl:when>
+										<xsl:otherwise>
+											<option value="{@id}"><xsl:value-of select="@name" /></option>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:for-each>
+							</select>
+						</span>
 						<br/><br/>
 						<textarea name="content" class="response"><xsl:value-of select="/GameConfiguration/FileContent" /></textarea>
 						<br />
