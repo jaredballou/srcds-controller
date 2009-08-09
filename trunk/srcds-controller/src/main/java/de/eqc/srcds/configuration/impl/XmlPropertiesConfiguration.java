@@ -58,10 +58,14 @@ public class XmlPropertiesConfiguration implements Configuration {
 
 	@Override
 	public <T> void setValue(String key, T value) throws ConfigurationException {
-		
-	    properties.setProperty(key, value.toString());
-	    store();
-	    log.finest(String.format("%s = %s", key, value));
+
+	    if (isValidKey(key)) {
+		properties.setProperty(key, value.toString());
+		store();
+		log.finest(String.format("%s = %s", key, value));
+	    } else {
+		throw new ConfigurationException(String.format("Configuration key %s is not a valid key", key));
+	    }
 	}
 
 	@Override
@@ -93,8 +97,7 @@ public class XmlPropertiesConfiguration implements Configuration {
 	    
 	    List<Object> keysToRemove = new LinkedList<Object>();
 	    for (Entry<Object, Object> entry : properties.entrySet()) {
-		ConfigurationEntry<?> registryEntry = ConfigurationRegistry.getEntryByKey(entry.getKey().toString());
-		if (registryEntry == null) {
+		if (!isValidKey(entry.getKey().toString())) {
 		    keysToRemove.add(entry.getKey());
 		}
 	    }
@@ -108,6 +111,11 @@ public class XmlPropertiesConfiguration implements Configuration {
 		    log.info(String.format("Configuration entry %s is missing in configuration - thus added with default value", registryEntry.getKey()));
 		}
 	    }
+	}
+	
+	private boolean isValidKey(String key) {
+	    
+	    return ConfigurationRegistry.getEntryByKey(key) != null;
 	}
 	
 	private boolean containsKey(String key) {
