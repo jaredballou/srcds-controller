@@ -1,5 +1,8 @@
 package de.eqc.srcds.configuration;
 
+import java.util.Collection;
+import java.util.LinkedList;
+
 
 
 public class ConfigurationEntry<T> {
@@ -23,6 +26,24 @@ public class ConfigurationEntry<T> {
     public final Class<?> getDataType() {
 
 	return defaultValue.getClass();
+    }
+    
+    public boolean isEnumerationType() {
+	
+	return defaultValue.getClass().isEnum();
+    }
+    
+    public Collection<String> getEnumValues() {
+	
+	if (!isEnumerationType()) {
+	    throw new IllegalStateException("Data type is not an enumeration");
+	}
+	
+	Collection<String> enumValues = new LinkedList<String>();
+	for (Object constants : defaultValue.getClass().getEnumConstants()) {
+	    enumValues.add(constants.toString());
+	}
+	return enumValues;
     }
     
     public T getDefaultValue() {

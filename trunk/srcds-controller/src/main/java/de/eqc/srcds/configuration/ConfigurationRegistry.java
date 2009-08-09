@@ -33,7 +33,7 @@ public final class ConfigurationRegistry {
 	entries.add(new ConfigurationEntry<String>(SRCDS_PATH, "./", "SRCDS Path"));
 	entries.add(new ConfigurationEntry<String>(SRCDS_EXECUTABLE, "srcds_run", "SRCDS Executable"));
 	entries.add(new ConfigurationEntry<String>(SRCDS_PARAMETERS, "", "SRCDS Parameters"));
-	entries.add(new ConfigurationEntry<GameType>(SRCDS_GAMETYPE, GameType.LEFT4DEAD, "SRCDS Path"));
+	entries.add(new ConfigurationEntry<GameType>(SRCDS_GAMETYPE, GameType.LEFT4DEAD, "SRCDS Game Type"));
     }    
     
     public static ConfigurationEntry<?> getEntryByKey(String key) {

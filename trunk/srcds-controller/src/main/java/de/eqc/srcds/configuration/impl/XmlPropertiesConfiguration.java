@@ -12,6 +12,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.InvalidPropertiesFormatException;
 import java.util.Map;
@@ -130,4 +131,16 @@ public class XmlPropertiesConfiguration implements Configuration {
 	    
 	    return data;
 	}
+
+//	@Override
+//	public Map<String, Collection<String>> getEnumValues() {
+//
+//	    Map<String, Collection<String>> enumValues = new HashMap<String, Collection<String>>();
+//	    
+//	    for (Entry<Object, Object> entry : properties.entrySet()) {
+//		
+//	    }
+//
+//	    return enumValues;
+//	}
 }

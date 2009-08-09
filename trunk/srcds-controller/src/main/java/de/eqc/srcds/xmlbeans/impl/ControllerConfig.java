@@ -26,18 +26,33 @@ public class ControllerConfig extends XmlBean {
     @Override
     protected String toXml(int indent) {
 
-	StringBuilder sb = new StringBuilder(header(indent));
+	StringBuilder sbEntries = new StringBuilder(header(indent));
+	StringBuilder sbEnums = new StringBuilder(indent("<Metadata>\n", indent + 1));
 
+	boolean enums = false;
 	for (Entry<String, String> entry : config.getData().entrySet()) {
 	    ConfigurationEntry<?> registryEntry = ConfigurationRegistry.getEntryByKey(entry.getKey());
+	    if (registryEntry.isEnumerationType()) {
+		enums = true;
+		sbEnums.append(indent(String.format("<Enumeration name=\"%s\">\n", registryEntry.getDataType().getSimpleName()), indent + 2));
+		for (String enumValue : registryEntry.getEnumValues()) {
+		    sbEnums.append(indent(String.format("<Value>%s</Value>\n", enumValue), indent + 3));
+		}
+		sbEnums.append(indent("</Enumeration>\n", indent + 2));
+	    }
 	    
-	    sb.append(indent(String.format("<Entry type=\"%s\" description=\"%s\">\n", registryEntry.getDataType().getSimpleName(), registryEntry.getDescription()), indent + 1));
-	    sb.append(indent(String.format("<Key>%s</Key>\n", entry.getKey()), indent + 2));
-	    sb.append(indent(String.format("<Value>%s</Value>\n", entry.getValue()), indent + 2));
-	    sb.append(indent("</Entry>\n", indent + 1));
+	    sbEntries.append(indent(String.format("<Entry type=\"%s\" description=\"%s\">\n", registryEntry.getDataType().getSimpleName(), registryEntry.getDescription()), indent + 1));
+	    sbEntries.append(indent(String.format("<Key>%s</Key>\n", entry.getKey()), indent + 2));
+	    sbEntries.append(indent(String.format("<Value>%s</Value>\n", entry.getValue()), indent + 2));
+	    sbEntries.append(indent("</Entry>\n", indent + 1));
+	}
+
+	if (enums) {
+	    sbEnums.append(indent("</Metadata>\n", indent + 1));
+	    sbEntries.append(sbEnums);
 	}
 	
-	return sb.append(footer(indent)).toString();
+	return sbEntries.append(footer(indent)).toString();
     }
 
 }
