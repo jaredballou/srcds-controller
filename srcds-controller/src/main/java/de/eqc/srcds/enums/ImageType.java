@@ -5,7 +5,8 @@ public enum ImageType {
 
     JPG("image/jpeg"),
     PNG("image/png"),
-    GIF("image/gif");
+    GIF("image/gif"),
+    ICO("image/x-icon");
     
     private String mimeType;
     
