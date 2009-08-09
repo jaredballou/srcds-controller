@@ -36,6 +36,7 @@ public class ServerOutputReader extends Thread {
 //		if (line.startsWith("players :")) {
 		    log.info(line.trim());
 //		}
+		    safeSleep();
 	    }
 	} catch (IOException e) {
 	    log.info(String.format("Error while reading server output: %s", e.getLocalizedMessage()));
@@ -54,4 +55,12 @@ public class ServerOutputReader extends Thread {
 	return running;
     }
 
+    private void safeSleep() {
+
+	try {
+	    Thread.sleep(SERVER_POLL_INTERVAL_MILLIS);
+	} catch (InterruptedException e) {
+	    stopGraceful();
+	}
+    }    
 }
