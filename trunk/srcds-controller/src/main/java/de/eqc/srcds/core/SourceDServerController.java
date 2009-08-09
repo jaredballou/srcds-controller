@@ -8,6 +8,8 @@ import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_PATH;
 import static de.eqc.srcds.core.Constants.STARTUP_WAIT_TIME_MILLIS;
 
 import java.io.File;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -130,6 +132,9 @@ public class SourceDServerController extends AbstractServerController<Process> {
 		pb.directory(srcdsPath);
 		server = pb.start();
 
+		ServerOutputReader isr = new ServerOutputReader(server.getInputStream());
+		isr.start();
+		
 		Thread.sleep(STARTUP_WAIT_TIME_MILLIS);
 
 		if (getServerState() != ServerState.RUNNING) {
