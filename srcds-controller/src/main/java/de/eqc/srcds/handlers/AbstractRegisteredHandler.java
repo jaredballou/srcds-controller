@@ -162,6 +162,18 @@ public abstract class AbstractRegisteredHandler implements HttpHandler,
 
 	outputContent(content, "text/xml");
     }   
+
+    /**
+     * Set the content-type to "text/plain" and writes the content to the stream.
+     * The stream is closed at the end, so don't call this method twice!
+     * 
+     * @param content
+     * @throws IOException
+     */
+    protected void outputTextContent(String content) throws IOException {
+
+	outputContent(content, "text/plain");
+    }      
     
     /**
      * Writes the content to the stream. The stream is closed at the end, so
