@@ -24,7 +24,7 @@ public abstract class AbstractServerController<T> extends Thread {
     
     public AbstractServerController(String subject, Configuration config) {
 
-	this.autostart = true;
+	this.autostart = false;
 	this.running = false;
 	this.subject = subject;
 	this.config = config;

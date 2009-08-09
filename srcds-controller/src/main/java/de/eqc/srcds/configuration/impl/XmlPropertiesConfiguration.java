@@ -61,7 +61,7 @@ public class XmlPropertiesConfiguration implements Configuration {
 		
 	    properties.setProperty(key, value.toString());
 	    store();
-	    log.info(String.format("%s = %s", key, value));
+	    log.finest(String.format("%s = %s", key, value));
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class XmlPropertiesConfiguration implements Configuration {
 	    
 	    properties.remove(key);
 	    store();
-	    log.info(String.format("Removed key %s", key));
+	    log.finest(String.format("Removed key %s", key));
 	}
 	
 	private void loadConfiguration() throws ConfigurationException {
@@ -140,7 +140,7 @@ public class XmlPropertiesConfiguration implements Configuration {
 			throw new ConfigurationException("Unable to store configuration to file");
 		}
 		
-		log.info("Configuration stored to file.");
+		log.finest("Configuration stored to file.");
 	}
 	
 	@Override

@@ -26,6 +26,7 @@ public class HttpServerController extends AbstractServerController<HttpServer> {
     public HttpServerController(Configuration config, SourceDServerController srcdsController) throws InitializationException {
 
 	super("HTTP server", config);
+	setAutostart(true);
 	this.contextList = new LinkedList<HttpContext>();
 	this.srcdsController = srcdsController;
 
