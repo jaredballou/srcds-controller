@@ -6,73 +6,9 @@
 	<head>
 		<title>Source Dedicated Server Controller @ ${hostname}</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
-		<style>
-		  @media braille, embossed, handheld, speech, tty 
-		  {
-			body {
-				background-color: #FFFFFF;
-				margin: 0px;
-			}
-			
-			#header {
-				font-weight: bold;
-				color: #fff;
-				background-color: #000;
-				text-align: center;
-			}
-			
-			li {
-				list-style-type: none;
-			}
-			
-			img {
-				display: none;
-				border: 0px;
-				vertical-align: middle;
-			}
-		  }
-
-		  @media screen, print, projection, tv 
-		  {
-			body {
-				font-family: Verdana, Arial;
-				font-size: 12px;
-				background-color: #FFFFFF;
-				background-image: url(${img:background.png});
-				background-repeat: repeat-x;
-				background-position: top;
-				margin: 0px;
-			}
-			
-			#header {
-				font-size: 16px;
-				font-weight: bold;
-				color: #fff;
-				background-color: #50a64a;
-				text-align: center;
-				width: 100%;
-				padding: 3px;
-			}
-			
-			li {
-				margin: 10px;
-				list-style-type: none;
-			}
-            
-            li a {
-                text-decoration: none;
-                color: #000;
-            }
-            li a:hover {
-                text-decoration: none;
-                color: #50A64A;
-            }
-			
-			img {
-				border: 0px;
-				vertical-align: middle;
-			}
-		  }
+		<style type="text/css">
+		  @import url("${css:textmode.css}") braille, embossed, handheld, speech, tty;
+		  @import url("${css:screen.css}") screen, print, projection, tv;
 		</style>
 	</head>
 	<body>

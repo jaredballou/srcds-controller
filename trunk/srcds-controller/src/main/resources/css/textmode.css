@@ -1,0 +1,21 @@
+body {
+    background-color: #FFFFFF;
+    margin: 0px;
+}
+
+#header {
+    font-weight: bold;
+    color: #fff;
+    background-color: #000;
+    text-align: center;
+}
+
+li {
+    list-style-type: none;
+}
+
+img {
+    display: none;
+    border: 0px;
+    vertical-align: middle;
+}
