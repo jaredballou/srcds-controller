@@ -21,6 +21,7 @@ public class SimpleTemplate {
     private URL  template;
     
     private final static Pattern imgTagPattern = Pattern.compile("\\$\\{img:([\\w\\.\\-]*)\\}"); 
+    private final static Pattern cssTagPattern = Pattern.compile("\\$\\{css:([\\w\\.\\-]*)\\}"); 
     
     /**
      * @param templatePath
@@ -49,6 +50,14 @@ public class SimpleTemplate {
 	    String imageUrl = ImageHandler.HANDLER_PATH + "?name=" + result.group(1);
 	    templateContent = templateContent.replace(result.group(0), imageUrl);
 	}
+
+	// add the stylesheets
+	matcher = cssTagPattern.matcher(templateContent);
+	while (matcher.find()) {
+	    MatchResult result = matcher.toMatchResult();
+	    String imageUrl = CssHandler.HANDLER_PATH + "?name=" + result.group(1);
+	    templateContent = templateContent.replace(result.group(0), imageUrl);
+	}	
 	
 	// add the attribute into the template
 	for (Entry<String, String> entry : this.attribute.entrySet()) {
