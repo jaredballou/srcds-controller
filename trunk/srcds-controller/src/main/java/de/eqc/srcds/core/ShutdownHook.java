@@ -2,6 +2,8 @@ package de.eqc.srcds.core;
 
 import java.util.logging.Logger;
 
+import de.eqc.srcds.core.logging.LogFactory;
+
 public class ShutdownHook extends Thread {
 
     private static Logger log = LogFactory.getLogger(ShutdownHook.class);
