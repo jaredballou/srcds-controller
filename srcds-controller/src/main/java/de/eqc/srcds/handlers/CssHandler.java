@@ -34,7 +34,7 @@ public class CssHandler extends AbstractRegisteredHandler implements
 	String resource = String.format("/css/%s", name);
 	
 	SimpleTemplate template = new SimpleTemplate(resource);
-	outputTextContent(template.renderTemplate());
+	outputCssContent(template.renderTemplate());
     }
 
     /*

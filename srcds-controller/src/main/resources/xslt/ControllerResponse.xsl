@@ -9,6 +9,14 @@
 
 	<xsl:template match="/ControllerResponse">
 		<html>
+ 			<head>
+				<title>Source Dedicated Server Controller @ ${hostname}</title>
+				<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+				<style type="text/css">
+				  @import url("${css:textmode.css}") braille, embossed, handheld, speech, tty;
+				  @import url("${css:screen.css}") screen, print, projection, tv;
+				</style>
+			</head>
 			<body>
 				<h2>ControllerResponse</h2>
 				Status: <xsl:value-of select="/ControllerResponse/ResponseCode" /><br/>
@@ -25,7 +33,7 @@
 					</xsl:for-each>
 				</table>
                 <br />
-                <a href="/" style="color:#000">Back to main page</a>
+                <a href="/" style="color: #000">Back to main page</a>
 			</body>
 		</html>
 	</xsl:template>

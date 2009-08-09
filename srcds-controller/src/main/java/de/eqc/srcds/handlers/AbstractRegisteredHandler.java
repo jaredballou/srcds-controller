@@ -173,7 +173,19 @@ public abstract class AbstractRegisteredHandler implements HttpHandler,
     protected void outputTextContent(String content) throws IOException {
 
 	outputContent(content, "text/plain");
-    }      
+    }
+
+    /**
+     * Set the content-type to "text/css" and writes the content to the stream.
+     * The stream is closed at the end, so don't call this method twice!
+     * 
+     * @param content
+     * @throws IOException
+     */
+    protected void outputCssContent(String content) throws IOException {
+
+	outputContent(content, "text/css");
+    }
     
     /**
      * Writes the content to the stream. The stream is closed at the end, so
