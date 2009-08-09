@@ -1,7 +1,11 @@
 package de.eqc.srcds.configuration.impl;
 
-import static de.eqc.srcds.configuration.Constants.HTTP_SERVER_PORT;
-import static de.eqc.srcds.configuration.Constants.SRCDS_EXECUTABLE;
+import static de.eqc.srcds.configuration.ConfigurationRegistry.AUTOSTART;
+import static de.eqc.srcds.configuration.ConfigurationRegistry.HTTP_SERVER_PORT;
+import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_EXECUTABLE;
+import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_GAMETYPE;
+import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_PARAMETERS;
+import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_PATH;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,6 +20,8 @@ import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import de.eqc.srcds.configuration.Configuration;
+import de.eqc.srcds.configuration.ConfigurationEntry;
+import de.eqc.srcds.configuration.ConfigurationRegistry;
 import de.eqc.srcds.core.SourceDServerController;
 import de.eqc.srcds.exceptions.ConfigurationException;
 import de.eqc.srcds.xmlbeans.impl.ControllerConfig;
@@ -58,14 +64,9 @@ public class XmlPropertiesConfiguration implements Configuration {
 	@Override
 	public <T> void setValue(String key, T value) throws ConfigurationException {
 		
-		if (!SRCDS_EXECUTABLE.equals(key)) {
-			properties.setProperty(key, value.toString());
-			store();
-
-			log.info(String.format("%s = %s", key, value));
-		} else {
-			throw new ConfigurationException(String.format("Runtime modification of parameter %s is prohibited", key));
-		}
+	    properties.setProperty(key, value.toString());
+	    store();
+	    log.info(String.format("%s = %s", key, value));
 	}
 
 	private void loadConfiguration() throws ConfigurationException {
@@ -91,8 +92,9 @@ public class XmlPropertiesConfiguration implements Configuration {
 		}
 
 		properties = new Properties();
-		properties.setProperty(HTTP_SERVER_PORT, "8888");
-		properties.setProperty(SRCDS_EXECUTABLE, "srcds_run");
+		for (ConfigurationEntry<?> entry : ConfigurationRegistry.getEntries()) {
+			setValue(entry.getKey(), entry.getDefaultValue());
+		}
 		
 		store();	
 	}
