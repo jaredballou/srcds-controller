@@ -39,7 +39,6 @@
 														<option value="false" selected="selected">Disabled*</option>
 													</xsl:otherwise>
 												</xsl:choose>
-												<option name="{Key}" value="false" />
 											</select>
 										</xsl:when>
 										<xsl:when test="@enumeration = 'true'">
