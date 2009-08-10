@@ -241,7 +241,7 @@ public abstract class AbstractRegisteredHandler implements HttpHandler, Register
 	    log.log(Level.FINE, "Stacktrace: ", e);
 	    
 	    Message message = new Message();
-	    message.addMessage(e.getMessage());
+	    message.addMessage(e.getLocalizedMessage());
 	    outputXmlContent(new ControllerResponse(ResponseCode.FAILED, message).toXml());
 	}
     }
