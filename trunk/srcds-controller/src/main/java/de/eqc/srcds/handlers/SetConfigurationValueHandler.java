@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.sun.net.httpserver.HttpExchange;
 
-import de.eqc.srcds.exceptions.ConfigurationException;
+import de.eqc.srcds.configuration.exceptions.ConfigurationException;
 import de.eqc.srcds.xmlbeans.enums.ResponseCode;
 import de.eqc.srcds.xmlbeans.impl.ControllerResponse;
 import de.eqc.srcds.xmlbeans.impl.Message;
