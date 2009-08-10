@@ -33,7 +33,7 @@ public class ServerOutputReader extends Thread {
 	    String line;
 	    while ((line = br.readLine()) != null && running) {
 		if (line.matches("^.*STEAM.*connected.*$")) {
-		    log.info(line.trim());
+		    log.info(line.replaceAll("[^\\p{ASCII}]", "").trim());
 		}
 	    }
 	} catch (IOException e) {
