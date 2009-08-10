@@ -150,8 +150,8 @@ public class SourceDServerController extends AbstractServerController<Process> {
     public void startServer() throws AlreadyRunningException,
 	    StartupFailedException, ConfigurationException {
 
-	if (getServerState() != ServerState.RUNNING) {
-	    synchronized (getMutex()) {
+	synchronized (getMutex()) {
+	    if (getServerState() != ServerState.RUNNING) {
 		try {
 		    File srcdsPath = getSrcdsPath();
 
@@ -175,9 +175,9 @@ public class SourceDServerController extends AbstractServerController<Process> {
 			    "Unable to start server: %s", e
 				    .getLocalizedMessage()));
 		}
+	    } else {
+		throw new AlreadyRunningException("Server is already running");
 	    }
-	} else {
-	    throw new AlreadyRunningException("Server is already running");
 	}
     }
 
@@ -197,10 +197,10 @@ public class SourceDServerController extends AbstractServerController<Process> {
     @Override
     public void stopServer() throws NotRunningException {
 
-	if (getServerState() != ServerState.RUNNING) {
-	    throw new NotRunningException("Server is not running");
-	} else {
-	    synchronized (getMutex()) {
+	synchronized (getMutex()) {
+	    if (getServerState() != ServerState.RUNNING) {
+		throw new NotRunningException("Server is not running");
+	    } else {
 		serverOutputReader.stopGraceful();
 		try {
 		    server.getOutputStream().write(3);
