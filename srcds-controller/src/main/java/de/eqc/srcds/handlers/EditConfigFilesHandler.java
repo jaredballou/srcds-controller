@@ -7,8 +7,8 @@ import java.util.List;
 
 import com.sun.net.httpserver.HttpExchange;
 
+import de.eqc.srcds.configuration.exceptions.ConfigurationException;
 import de.eqc.srcds.core.Utils;
-import de.eqc.srcds.exceptions.ConfigurationException;
 import de.eqc.srcds.handlers.utils.SimpleTemplate;
 import de.eqc.srcds.xmlbeans.impl.GameConfiguration;
 

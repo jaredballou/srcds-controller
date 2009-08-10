@@ -2,8 +2,8 @@ package de.eqc.srcds.configuration;
 
 import java.util.Map;
 
+import de.eqc.srcds.configuration.exceptions.ConfigurationException;
 import de.eqc.srcds.configuration.impl.ConfigurationKey;
-import de.eqc.srcds.exceptions.ConfigurationException;
 
 public interface Configuration {
 

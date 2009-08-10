@@ -1,4 +1,4 @@
-package de.eqc.srcds.exceptions;
+package de.eqc.srcds.configuration.exceptions;
 
 public class ConfigurationException extends Exception {
 

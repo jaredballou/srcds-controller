@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 
 import com.sun.net.httpserver.HttpExchange;
 
-import de.eqc.srcds.exceptions.ConfigurationException;
+import de.eqc.srcds.configuration.exceptions.ConfigurationException;
 
 public class EditConfigurationHandler extends AbstractRegisteredHandler
 	implements RegisteredHandler {
