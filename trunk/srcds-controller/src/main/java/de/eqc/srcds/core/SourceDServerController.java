@@ -16,6 +16,7 @@ import java.util.List;
 import de.eqc.srcds.configuration.Configuration;
 import de.eqc.srcds.configuration.exceptions.ConfigurationException;
 import de.eqc.srcds.enums.GameType;
+import de.eqc.srcds.enums.OperatingSystem;
 import de.eqc.srcds.enums.ServerState;
 import de.eqc.srcds.exceptions.AlreadyRunningException;
 import de.eqc.srcds.exceptions.NotRunningException;
@@ -68,8 +69,8 @@ public class SourceDServerController extends AbstractServerController<Process> {
 
     private List<String> parseCommandLine() throws ConfigurationException {
 
-	String executable = "." + File.separator
-		+ config.getValue(SRCDS_EXECUTABLE, String.class);
+	String prefix = OperatingSystem.getCurrent() == OperatingSystem.LINUX ? "." + File.separator : "";
+	String executable = prefix + config.getValue(SRCDS_EXECUTABLE, String.class);
 
 	GameType gameType = getGameType();
 	log.info(String.format("Game type is %s", gameType));
@@ -133,8 +134,8 @@ public class SourceDServerController extends AbstractServerController<Process> {
 		pb.directory(srcdsPath);
 		server = pb.start();
 
-//		ServerOutputReader isr = new ServerOutputReader(server.getInputStream());
-//		isr.start();
+		ServerOutputReader sor = new ServerOutputReader(server.getInputStream());
+		sor.start();
 		
 		Thread.sleep(STARTUP_WAIT_TIME_MILLIS);
 
