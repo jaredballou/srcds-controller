@@ -27,7 +27,6 @@ public final class VersionUtil {
 	    props.load(is);
 	    projectVersion = props.getProperty("version");
 	} catch (Exception e) {
-	    e.printStackTrace();
 	    projectVersion = "(unknown)";
 	}
 	return projectVersion;

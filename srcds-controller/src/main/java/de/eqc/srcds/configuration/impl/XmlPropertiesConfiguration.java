@@ -5,18 +5,16 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.InvalidPropertiesFormatException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TreeMap;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import de.eqc.srcds.configuration.Configuration;
-import de.eqc.srcds.configuration.ConfigurationEntry;
-import de.eqc.srcds.configuration.ConfigurationRegistry;
 import de.eqc.srcds.core.SourceDServerController;
 import de.eqc.srcds.exceptions.ConfigurationException;
 import de.eqc.srcds.xmlbeans.impl.ControllerConfiguration;
@@ -105,7 +103,7 @@ public class XmlPropertiesConfiguration implements Configuration {
 		removeValue(keyToRemove.toString());
 		log.info(String.format("Configuration entry %s is not an allowed entry - thus removed", keyToRemove.toString()));
 	    }
-	    for (ConfigurationEntry<?> registryEntry : ConfigurationRegistry.getEntries()) {
+	    for (ConfigurationKey<?> registryEntry : ConfigurationRegistry.getEntries()) {
 		if (!containsKey(registryEntry.getKey())) {
 		    setValue(registryEntry.getKey(), registryEntry.getDefaultValue());
 		    log.info(String.format("Configuration entry %s is missing in configuration - thus added with default value", registryEntry.getKey()));
@@ -130,7 +128,7 @@ public class XmlPropertiesConfiguration implements Configuration {
 		}
 
 		properties = new Properties();
-		for (ConfigurationEntry<?> registryEntry : ConfigurationRegistry.getEntries()) {
+		for (ConfigurationKey<?> registryEntry : ConfigurationRegistry.getEntries()) {
 			setValue(registryEntry.getKey(), registryEntry.getDefaultValue());
 		}
 		
@@ -158,12 +156,13 @@ public class XmlPropertiesConfiguration implements Configuration {
 	}
 
 	@Override
-	public Map<String, String> getData() {
+	public Map<ConfigurationKey<?>, String> getData() {
 
-	    Map<String, String> data = new HashMap<String, String>();
+	    Map<ConfigurationKey<?>, String> data = new TreeMap<ConfigurationKey<?>, String>();
 	    
 	    for (Entry<Object, Object> entry : properties.entrySet()) {
-		data.put(entry.getKey().toString(), entry.getValue().toString());
+		ConfigurationKey<?> configKey = ConfigurationRegistry.getEntryByKey(entry.getKey().toString());
+		data.put(configKey, entry.getValue().toString());
 	    }
 	    
 	    return data;
