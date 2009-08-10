@@ -8,8 +8,6 @@ import static de.eqc.srcds.configuration.impl.ConfigurationRegistry.SRCDS_PATH;
 import static de.eqc.srcds.core.Constants.STARTUP_WAIT_TIME_MILLIS;
 
 import java.io.File;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -31,6 +29,8 @@ import de.eqc.srcds.exceptions.StartupFailedException;
  */
 public class SourceDServerController extends AbstractServerController<Process> {
 
+    private ServerOutputReader serverOutputReader;
+    
     public SourceDServerController(Configuration config)
 	    throws ConfigurationException {
 
@@ -69,8 +69,21 @@ public class SourceDServerController extends AbstractServerController<Process> {
 
     private List<String> parseCommandLine() throws ConfigurationException {
 
+	String executable = config.getValue(SRCDS_EXECUTABLE, String.class);
 	String prefix = OperatingSystem.getCurrent() == OperatingSystem.LINUX ? "." + File.separator : "";
-	String executable = prefix + config.getValue(SRCDS_EXECUTABLE, String.class);
+	String command = prefix + executable;
+	
+	File srcdsPath = new File(config.getValue(SRCDS_PATH, String.class));
+	File srcdsExecutable = new File(srcdsPath.getPath() + File.separator + executable);
+	if (!srcdsPath.exists()) {
+	    throw new ConfigurationException(String.format("Unable to find SRCDS path: %s", srcdsPath.getPath()));
+	} else if (!srcdsPath.isDirectory()) {
+	    throw new ConfigurationException(String.format("Configured SRCDS path %s is not a directory", srcdsPath.getPath()));
+	} else if (!srcdsExecutable.exists()) {
+	    throw new ConfigurationException(String.format("Configured SRCDS executable %s does not exist", srcdsExecutable.getPath()));
+	} else if (srcdsExecutable.isDirectory()) {
+	    throw new ConfigurationException(String.format("Configured SRCDS executable %s refers to a directory", srcdsExecutable.getPath()));
+	}
 
 	GameType gameType = getGameType();
 	log.info(String.format("Game type is %s", gameType));
@@ -78,7 +91,7 @@ public class SourceDServerController extends AbstractServerController<Process> {
 		.getParametersAsList();
 
 	parameters.addAll(parseUserParameters());
-	parameters.addFirst(executable);
+	parameters.addFirst(command);
 
 	log.info(String.format("Process: %s", parameters.toString()));
 
@@ -134,8 +147,8 @@ public class SourceDServerController extends AbstractServerController<Process> {
 		pb.directory(srcdsPath);
 		server = pb.start();
 
-		ServerOutputReader sor = new ServerOutputReader(server.getInputStream());
-		sor.start();
+		serverOutputReader = new ServerOutputReader(server.getInputStream());
+		serverOutputReader.start();
 		
 		Thread.sleep(STARTUP_WAIT_TIME_MILLIS);
 
@@ -182,6 +195,7 @@ public class SourceDServerController extends AbstractServerController<Process> {
 	if (getServerState() != ServerState.RUNNING) {
 	    throw new NotRunningException("Server is not running");
 	} else {
+	    serverOutputReader.stopGraceful();
 	    try {
 		server.getOutputStream().write(3);
 		server.getOutputStream().flush();
