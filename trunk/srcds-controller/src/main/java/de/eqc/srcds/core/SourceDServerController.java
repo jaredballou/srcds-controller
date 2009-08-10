@@ -49,8 +49,7 @@ public class SourceDServerController extends AbstractServerController<Process> {
     public ServerState getServerState() {
 
 	ServerState state = ServerState.RUNNING;
-
-	synchronized (server) {
+	synchronized (getMutex()) {
 	    if (server != null) {
 		int exitValue = -1;
 		try {
@@ -66,7 +65,6 @@ public class SourceDServerController extends AbstractServerController<Process> {
 		state = ServerState.STOPPED;
 	    }
 	}
-
 	return state;
     }
 
@@ -153,7 +151,7 @@ public class SourceDServerController extends AbstractServerController<Process> {
 	    StartupFailedException, ConfigurationException {
 
 	if (getServerState() != ServerState.RUNNING) {
-	    synchronized (server) {
+	    synchronized (getMutex()) {
 		try {
 		    File srcdsPath = getSrcdsPath();
 
@@ -202,7 +200,7 @@ public class SourceDServerController extends AbstractServerController<Process> {
 	if (getServerState() != ServerState.RUNNING) {
 	    throw new NotRunningException("Server is not running");
 	} else {
-	    synchronized (server) {
+	    synchronized (getMutex()) {
 		serverOutputReader.stopGraceful();
 		try {
 		    server.getOutputStream().write(3);

@@ -71,7 +71,7 @@ public class HttpServerController extends AbstractServerController<HttpServer> {
     @Override
     public void startServer() {
 
-	synchronized (server) {
+	synchronized (getMutex()) {
 	    contextList.clear();
 	    try {
 		contextList.addAll(bindHandlers());
@@ -87,7 +87,7 @@ public class HttpServerController extends AbstractServerController<HttpServer> {
     @Override
     public void stopServer() {
 
-	synchronized (server) {
+	synchronized (getMutex()) {
 	    for (HttpContext context : contextList) {
 		server.removeContext(context);
 		log.info(String.format("Unregistered handler at context %s",

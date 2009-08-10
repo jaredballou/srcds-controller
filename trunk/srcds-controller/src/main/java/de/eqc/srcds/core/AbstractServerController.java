@@ -15,21 +15,30 @@ import de.eqc.srcds.exceptions.StartupFailedException;
 
 public abstract class AbstractServerController<T> extends Thread {
 
+    private static class Mutex {}
+
     protected final Configuration config;
     protected final Logger log;
     protected T server;
     protected boolean running;
+    private final Mutex mutex;
     private final String subject;
     private boolean autostart;
     
     public AbstractServerController(String subject, Configuration config) {
 
 	setName(getClass().getSimpleName());
+	this.mutex = new Mutex();
 	this.autostart = false;
 	this.running = false;
 	this.subject = subject;
 	this.config = config;
 	this.log = LogFactory.getLogger(getClass());
+    }
+    
+    public Mutex getMutex() {
+
+	return mutex;
     }
     
     public void setAutostart(boolean autostart) {
