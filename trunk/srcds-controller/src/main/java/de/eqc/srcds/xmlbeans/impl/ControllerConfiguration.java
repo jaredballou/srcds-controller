@@ -31,7 +31,6 @@ public class ControllerConfiguration extends XmlBean {
 
 	boolean enums = false;
 	for (Entry<ConfigurationKey<?>, String> entry : config.getData().entrySet()) {
-//	    ConfigurationEntry<?> registryEntry = entry.getKey();
 	    if (entry.getKey().isEnumerationType()) {
 		enums = true;
 		sbEnums.append(indent(String.format("<Enumeration name=\"%s\">\n", entry.getKey().getDataType().getSimpleName()), indent + 2));

@@ -21,7 +21,9 @@ public final class Constants {
 
     public static final int SERVER_POLL_INTERVAL_MILLIS = 1000;
 
-    public static final String LOGGING_FILENAME = "srcds-controller-logging.properties";
+    public static final String FS_LOGGING_FILENAME = "srcds-controller-logging.properties";
+
+    public static final String BUILTIN_LOGGING_FILENAME = "/configuration/srcds-controller-logging.properties";
 
     public static final String DEFAULT_CONFIG_FILENAME = "srcds-controller-config.xml";
     
