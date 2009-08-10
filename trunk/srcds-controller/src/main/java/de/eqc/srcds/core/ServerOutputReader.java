@@ -32,8 +32,7 @@ public class ServerOutputReader extends Thread {
 	try {
 	    String line;
 	    while ((line = br.readLine()) != null && running) {
-		if (line.contains("connected, address")
-			|| line.contains("disconnect")) {
+		if (line.matches("^.*STEAM.*connected.*$")) {
 		    log.info(line.trim());
 		}
 	    }
