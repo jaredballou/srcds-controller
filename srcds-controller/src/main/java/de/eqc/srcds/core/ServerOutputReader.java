@@ -1,7 +1,5 @@
 package de.eqc.srcds.core;
 
-import static de.eqc.srcds.core.Constants.OUTPUT_READING_DELAY_MILLIS;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
