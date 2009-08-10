@@ -133,8 +133,8 @@ public class SourceDServerController extends AbstractServerController<Process> {
 		pb.directory(srcdsPath);
 		server = pb.start();
 
-		ServerOutputReader isr = new ServerOutputReader(server.getInputStream());
-		isr.start();
+//		ServerOutputReader isr = new ServerOutputReader(server.getInputStream());
+//		isr.start();
 		
 		Thread.sleep(STARTUP_WAIT_TIME_MILLIS);
 
