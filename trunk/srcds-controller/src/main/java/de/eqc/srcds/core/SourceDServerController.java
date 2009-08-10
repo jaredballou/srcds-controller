@@ -30,18 +30,19 @@ import de.eqc.srcds.exceptions.StartupFailedException;
 public class SourceDServerController extends AbstractServerController<Process> {
 
     private ServerOutputReader serverOutputReader;
-    
+
     public SourceDServerController(Configuration config)
 	    throws ConfigurationException {
 
 	super("SRCDS server", config);
-	
+
 	try {
 	    if (config.getValue(AUTOSTART, Boolean.class)) {
 		setAutostart(config.getValue(AUTOSTART, Boolean.class));
 	    }
 	} catch (ConfigurationException e) {
-	    log.warning(String.format("Autostart configuration is missing: %s", e.getLocalizedMessage()));
+	    log.warning(String.format("Autostart configuration is missing: %s",
+		    e.getLocalizedMessage()));
 	}
     }
 
@@ -49,19 +50,21 @@ public class SourceDServerController extends AbstractServerController<Process> {
 
 	ServerState state = ServerState.RUNNING;
 
-	if (server != null) {
-	    int exitValue = -1;
-	    try {
-		exitValue = server.exitValue();
-		log.info("Server was terminated");
-	    } catch (Exception e) {
-	    }
+	synchronized (server) {
+	    if (server != null) {
+		int exitValue = -1;
+		try {
+		    exitValue = server.exitValue();
+		    log.info("Server was terminated");
+		} catch (Exception e) {
+		}
 
-	    if (exitValue > -1) {
-		state = ServerState.TERMINATED;
+		if (exitValue > -1) {
+		    state = ServerState.TERMINATED;
+		}
+	    } else {
+		state = ServerState.STOPPED;
 	    }
-	} else {
-	    state = ServerState.STOPPED;
 	}
 
 	return state;
@@ -70,19 +73,29 @@ public class SourceDServerController extends AbstractServerController<Process> {
     private List<String> parseCommandLine() throws ConfigurationException {
 
 	String executable = config.getValue(SRCDS_EXECUTABLE, String.class);
-	String prefix = OperatingSystem.getCurrent() == OperatingSystem.LINUX ? "." + File.separator : "";
+	String prefix = OperatingSystem.getCurrent() == OperatingSystem.LINUX ? "."
+		+ File.separator
+		: "";
 	String command = prefix + executable;
-	
+
 	File srcdsPath = new File(config.getValue(SRCDS_PATH, String.class));
-	File srcdsExecutable = new File(srcdsPath.getPath() + File.separator + executable);
+	File srcdsExecutable = new File(srcdsPath.getPath() + File.separator
+		+ executable);
 	if (!srcdsPath.exists()) {
-	    throw new ConfigurationException(String.format("Unable to find SRCDS path: %s", srcdsPath.getPath()));
+	    throw new ConfigurationException(String.format(
+		    "Unable to find SRCDS path: %s", srcdsPath.getPath()));
 	} else if (!srcdsPath.isDirectory()) {
-	    throw new ConfigurationException(String.format("Configured SRCDS path %s is not a directory", srcdsPath.getPath()));
+	    throw new ConfigurationException(String.format(
+		    "Configured SRCDS path %s is not a directory", srcdsPath
+			    .getPath()));
 	} else if (!srcdsExecutable.exists()) {
-	    throw new ConfigurationException(String.format("Configured SRCDS executable %s does not exist", srcdsExecutable.getPath()));
+	    throw new ConfigurationException(String.format(
+		    "Configured SRCDS executable %s does not exist",
+		    srcdsExecutable.getPath()));
 	} else if (srcdsExecutable.isDirectory()) {
-	    throw new ConfigurationException(String.format("Configured SRCDS executable %s refers to a directory", srcdsExecutable.getPath()));
+	    throw new ConfigurationException(String.format(
+		    "Configured SRCDS executable %s refers to a directory",
+		    srcdsExecutable.getPath()));
 	}
 
 	GameType gameType = getGameType();
@@ -135,43 +148,36 @@ public class SourceDServerController extends AbstractServerController<Process> {
 	return userParameters;
     }
 
+    @Override
     public void startServer() throws AlreadyRunningException,
 	    StartupFailedException, ConfigurationException {
 
 	if (getServerState() != ServerState.RUNNING) {
-	    try {
-		File srcdsPath = getSrcdsPath();
+	    synchronized (server) {
+		try {
+		    File srcdsPath = getSrcdsPath();
 
-		ProcessBuilder pb = new ProcessBuilder(parseCommandLine());
-		pb.redirectErrorStream(true);
-		pb.directory(srcdsPath);
-		server = pb.start();
+		    ProcessBuilder pb = new ProcessBuilder(parseCommandLine());
+		    pb.redirectErrorStream(true);
+		    pb.directory(srcdsPath);
+		    server = pb.start();
 
-		serverOutputReader = new ServerOutputReader(server.getInputStream());
-		serverOutputReader.start();
-		
-		Thread.sleep(STARTUP_WAIT_TIME_MILLIS);
+		    serverOutputReader = new ServerOutputReader(server
+			    .getInputStream());
+		    serverOutputReader.start();
 
-		if (getServerState() != ServerState.RUNNING) {
-		    throw new StartupFailedException(
-			    "Process was terminated during startup phase");
+		    Thread.sleep(STARTUP_WAIT_TIME_MILLIS);
+
+		    if (getServerState() != ServerState.RUNNING) {
+			throw new StartupFailedException(
+				"Process was terminated during startup phase");
+		    }
+		} catch (Exception e) {
+		    throw new StartupFailedException(String.format(
+			    "Unable to start server: %s", e
+				    .getLocalizedMessage()));
 		}
-
-		/*
-		 * DEBUG
-		 */
-		// InputStreamReader isr = new
-		// InputStreamReader(server.getInputStream());
-		// int i;
-		// while ((i = isr.read()) != -1) {
-		// System.out.print((char) i);
-		// }
-
-	    } catch (Exception e) {
-		throw new StartupFailedException(String.format(
-			"Unable to start server: %s", e.getLocalizedMessage()));
 	    }
-
 	} else {
 	    throw new AlreadyRunningException("Server is already running");
 	}
@@ -190,22 +196,25 @@ public class SourceDServerController extends AbstractServerController<Process> {
 	return srcdsPath;
     }
 
+    @Override
     public void stopServer() throws NotRunningException {
 
 	if (getServerState() != ServerState.RUNNING) {
 	    throw new NotRunningException("Server is not running");
 	} else {
-	    serverOutputReader.stopGraceful();
-	    try {
-		server.getOutputStream().write(3);
-		server.getOutputStream().flush();
-		log.info("SIGTERM sent to process");
-	    } catch (Exception e) {
-		e.printStackTrace();
+	    synchronized (server) {
+		serverOutputReader.stopGraceful();
+		try {
+		    server.getOutputStream().write(3);
+		    server.getOutputStream().flush();
+		    log.info("SIGTERM sent to process");
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+		log.info("Destroying reference to process");
+		server.destroy();
+		server = null;
 	    }
-	    log.info("Destroying reference to process");
-	    server.destroy();
-	    server = null;
 	}
     }
 }
