@@ -1,6 +1,6 @@
 package de.eqc.srcds.core;
 
-import static de.eqc.srcds.configuration.ConfigurationRegistry.*;
+import static de.eqc.srcds.configuration.impl.ConfigurationRegistry.*;
 import static de.eqc.srcds.core.Constants.DEFAULT_CONFIG_FILENAME;
 
 import java.io.File;

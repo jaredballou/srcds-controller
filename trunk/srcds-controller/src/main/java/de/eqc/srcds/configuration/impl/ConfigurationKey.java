@@ -1,21 +1,23 @@
-package de.eqc.srcds.configuration;
+package de.eqc.srcds.configuration.impl;
 
 import java.util.Collection;
 import java.util.LinkedList;
 
 
 
-public class ConfigurationEntry<T> {
+public class ConfigurationKey<T> implements Comparable<ConfigurationKey<T>> {
 
     private final String key;
     private final String description;
     private final T defaultValue;
+    private final Integer order;
 
-    public ConfigurationEntry(String key, T defaultValue, String description) {
+    public ConfigurationKey(String key, T defaultValue, String description, int order) {
 
 	this.key = key;
 	this.defaultValue = defaultValue;
 	this.description = description;
+	this.order = order;
     }
     
     public final String getKey() {
@@ -28,12 +30,12 @@ public class ConfigurationEntry<T> {
 	return defaultValue.getClass();
     }
     
-    public boolean isEnumerationType() {
+    public final boolean isEnumerationType() {
 	
 	return defaultValue.getClass().isEnum();
     }
     
-    public Collection<String> getEnumValues() {
+    public final Collection<String> getEnumValues() {
 	
 	if (!isEnumerationType()) {
 	    throw new IllegalStateException("Data type is not an enumeration");
@@ -56,4 +58,15 @@ public class ConfigurationEntry<T> {
 	return description;
     }    
 
+    
+    public final int getOrder() {
+
+	return order;
+    }
+
+    @Override
+    public int compareTo(ConfigurationKey<T> entry) {
+
+	return order.compareTo(entry.order);
+    }
 }

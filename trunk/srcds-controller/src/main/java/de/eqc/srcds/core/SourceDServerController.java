@@ -1,10 +1,10 @@
 package de.eqc.srcds.core;
 
-import static de.eqc.srcds.configuration.ConfigurationRegistry.AUTOSTART;
-import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_EXECUTABLE;
-import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_GAMETYPE;
-import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_PARAMETERS;
-import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_PATH;
+import static de.eqc.srcds.configuration.impl.ConfigurationRegistry.AUTOSTART;
+import static de.eqc.srcds.configuration.impl.ConfigurationRegistry.SRCDS_EXECUTABLE;
+import static de.eqc.srcds.configuration.impl.ConfigurationRegistry.SRCDS_GAMETYPE;
+import static de.eqc.srcds.configuration.impl.ConfigurationRegistry.SRCDS_PARAMETERS;
+import static de.eqc.srcds.configuration.impl.ConfigurationRegistry.SRCDS_PATH;
 import static de.eqc.srcds.core.Constants.STARTUP_WAIT_TIME_MILLIS;
 
 import java.io.File;

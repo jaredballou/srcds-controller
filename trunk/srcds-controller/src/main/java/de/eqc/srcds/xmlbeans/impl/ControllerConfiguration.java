@@ -3,8 +3,8 @@ package de.eqc.srcds.xmlbeans.impl;
 import java.util.Map.Entry;
 
 import de.eqc.srcds.configuration.Configuration;
-import de.eqc.srcds.configuration.ConfigurationEntry;
-import de.eqc.srcds.configuration.ConfigurationRegistry;
+import de.eqc.srcds.configuration.impl.ConfigurationKey;
+import de.eqc.srcds.configuration.impl.ConfigurationRegistry;
 import de.eqc.srcds.xmlbeans.XmlBean;
 
 
@@ -30,19 +30,19 @@ public class ControllerConfiguration extends XmlBean {
 	StringBuilder sbEnums = new StringBuilder(indent("<Metadata>\n", indent + 1));
 
 	boolean enums = false;
-	for (Entry<String, String> entry : config.getData().entrySet()) {
-	    ConfigurationEntry<?> registryEntry = ConfigurationRegistry.getEntryByKey(entry.getKey());
-	    if (registryEntry.isEnumerationType()) {
+	for (Entry<ConfigurationKey<?>, String> entry : config.getData().entrySet()) {
+//	    ConfigurationEntry<?> registryEntry = entry.getKey();
+	    if (entry.getKey().isEnumerationType()) {
 		enums = true;
-		sbEnums.append(indent(String.format("<Enumeration name=\"%s\">\n", registryEntry.getDataType().getSimpleName()), indent + 2));
-		for (String enumValue : registryEntry.getEnumValues()) {
+		sbEnums.append(indent(String.format("<Enumeration name=\"%s\">\n", entry.getKey().getDataType().getSimpleName()), indent + 2));
+		for (String enumValue : entry.getKey().getEnumValues()) {
 		    sbEnums.append(indent(String.format("<Value>%s</Value>\n", enumValue), indent + 3));
 		}
 		sbEnums.append(indent("</Enumeration>\n", indent + 2));
 	    }
 
-	    sbEntries.append(indent(String.format("<Entry type=\"%s\" description=\"%s\" enumeration=\"%s\">\n", registryEntry.getDataType().getSimpleName(), registryEntry.getDescription(), registryEntry.isEnumerationType()), indent + 1));
-	    sbEntries.append(indent(String.format("<Key>%s</Key>\n", entry.getKey()), indent + 2));
+	    sbEntries.append(indent(String.format("<Entry type=\"%s\" description=\"%s\" enumeration=\"%s\">\n", entry.getKey().getDataType().getSimpleName(), entry.getKey().getDescription(), entry.getKey().isEnumerationType()), indent + 1));
+	    sbEntries.append(indent(String.format("<Key>%s</Key>\n", entry.getKey().getKey()), indent + 2));
 	    sbEntries.append(indent(String.format("<Value>%s</Value>\n", entry.getValue()), indent + 2));
 	    sbEntries.append(indent("</Entry>\n", indent + 1));
 	}
