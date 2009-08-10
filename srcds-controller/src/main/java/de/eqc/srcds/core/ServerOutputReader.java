@@ -35,11 +35,9 @@ public class ServerOutputReader extends Thread {
 	    String line;
 	    while ((line = br.readLine()) != null && running) {
 		if (line.contains("connected, address")
-			|| line.contains("disconnect")
-			|| line.contains("players :")) {
+			|| line.contains("disconnect")) {
 		    log.info(line.trim());
 		}
-		// safeSleep();
 	    }
 	} catch (IOException e) {
 	    log.info(String.format("Error while reading server output: %s", e
@@ -57,14 +55,5 @@ public class ServerOutputReader extends Thread {
     public boolean isRunning() {
 
 	return running;
-    }
-
-    private void safeSleep() {
-
-	try {
-	    Thread.sleep(OUTPUT_READING_DELAY_MILLIS);
-	} catch (InterruptedException e) {
-	    stopGraceful();
-	}
     }
 }
