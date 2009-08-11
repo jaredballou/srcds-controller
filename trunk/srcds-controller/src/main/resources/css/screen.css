@@ -64,6 +64,11 @@ h2.response, a.response, table.response, p.response, form input.response, form s
     margin-left: 98px;
 }
 
+input.rcon {
+    margin-left: 98px;
+}
+
+
 textarea {
 	width: 600px;
 	height: 400px;
