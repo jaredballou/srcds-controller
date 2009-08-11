@@ -1,6 +1,6 @@
 package de.eqc.srcds.xmlbeans.impl;
 
-import static de.eqc.srcds.configuration.impl.ConfigurationRegistry.SRCDS_GAMETYPE;
+import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_GAMETYPE;
 import static de.eqc.srcds.core.Constants.DEFAULT_CONFIG_FILENAME;
 
 import java.io.File;

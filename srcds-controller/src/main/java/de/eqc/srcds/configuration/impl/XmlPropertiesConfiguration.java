@@ -15,6 +15,8 @@ import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import de.eqc.srcds.configuration.Configuration;
+import de.eqc.srcds.configuration.ConfigurationKey;
+import de.eqc.srcds.configuration.ConfigurationRegistry;
 import de.eqc.srcds.configuration.exceptions.ConfigurationException;
 import de.eqc.srcds.core.SourceDServerController;
 import de.eqc.srcds.xmlbeans.impl.ControllerConfiguration;

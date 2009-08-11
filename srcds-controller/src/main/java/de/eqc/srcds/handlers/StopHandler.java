@@ -22,7 +22,7 @@ public class StopHandler extends AbstractRegisteredHandler implements
 	Message message = new Message();
 	try {
 	    getServerController().stopServer();
-	    message.addMessage("Server stopped successfully");
+	    message.addLine("Server stopped successfully");
 	} catch (Exception e) {
 	    throw new IllegalStateException(e);
 	}

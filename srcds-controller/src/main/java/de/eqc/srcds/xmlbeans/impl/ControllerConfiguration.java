@@ -3,8 +3,8 @@ package de.eqc.srcds.xmlbeans.impl;
 import java.util.Map.Entry;
 
 import de.eqc.srcds.configuration.Configuration;
-import de.eqc.srcds.configuration.impl.ConfigurationKey;
-import de.eqc.srcds.configuration.impl.ConfigurationRegistry;
+import de.eqc.srcds.configuration.ConfigurationKey;
+import de.eqc.srcds.configuration.ConfigurationRegistry;
 import de.eqc.srcds.xmlbeans.XmlBean;
 
 

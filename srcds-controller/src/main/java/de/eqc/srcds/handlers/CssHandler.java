@@ -1,10 +1,7 @@
 package de.eqc.srcds.handlers;
 
 
-import static de.eqc.srcds.configuration.impl.ConfigurationRegistry.SRCDS_EXECUTABLE;
-
 import java.io.IOException;
-import java.net.InetAddress;
 
 import com.sun.net.httpserver.HttpExchange;
 
