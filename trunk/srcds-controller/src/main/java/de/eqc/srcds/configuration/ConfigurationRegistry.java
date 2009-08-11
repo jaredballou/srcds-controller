@@ -1,4 +1,4 @@
-package de.eqc.srcds.configuration.impl;
+package de.eqc.srcds.configuration;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -36,6 +36,8 @@ public final class ConfigurationRegistry {
 
     public static final String SRCDS_GAMETYPE = "srcds.controller.srcds.gametype";
 
+    public static final String SRCDS_RCON_PASSWORD = "srcds.controller.srcds.rcon.password";
+
     private static List<ConfigurationKey<?>> entries;
     static {
 	entries = new LinkedList<ConfigurationKey<?>>();
@@ -50,6 +52,7 @@ public final class ConfigurationRegistry {
 	entries.add(new ConfigurationKey<String>(SRCDS_PATH, "./", "SRCDS Path", 8));
 	entries.add(new ConfigurationKey<String>(SRCDS_EXECUTABLE, "srcds_run", "SRCDS Executable", 9));
 	entries.add(new ConfigurationKey<String>(SRCDS_PARAMETERS, "", "SRCDS Parameters", 10));
+	entries.add(new ConfigurationKey<Password>(SRCDS_RCON_PASSWORD, new Password("joshua"), "RCON Password", 11));	
     }    
     
     public static ConfigurationKey<?> getEntryByKey(String key) {

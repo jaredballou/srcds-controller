@@ -1,4 +1,4 @@
-package de.eqc.srcds.configuration.impl;
+package de.eqc.srcds.configuration;
 
 import java.util.Collection;
 import java.util.LinkedList;

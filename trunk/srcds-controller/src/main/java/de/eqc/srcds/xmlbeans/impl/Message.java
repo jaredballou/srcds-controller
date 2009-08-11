@@ -30,7 +30,7 @@ public class Message extends XmlBean {
 	}
     }
 
-    public void addMessage(String message) {
+    public void addLine(String message) {
 
 	items.add(message);
     }
@@ -41,11 +41,11 @@ public class Message extends XmlBean {
 	StringBuilder sb = new StringBuilder(header(indent));
 
 	if (items.size() == 0) {
-	    addMessage("(no message specified)");
+	    addLine("(no message specified)");
 	}
 
 	for (String message : items) {
-	    sb.append(indent(String.format("<Item>%s</Item>\n", message),
+	    sb.append(indent(String.format("<Item><![CDATA[%s]]></Item>\n", message),
 		    indent + 1));
 	}
 

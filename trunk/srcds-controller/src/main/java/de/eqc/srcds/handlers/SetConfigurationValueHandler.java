@@ -26,14 +26,14 @@ public class SetConfigurationValueHandler extends AbstractRegisteredHandler
 	Message message = new Message();
 	if (key == null || value == null) {
 	    code = ResponseCode.FAILED;
-	    message.addMessage("Either key or value parameter is missing");
+	    message.addLine("Either key or value parameter is missing");
 	} else {
 	    try {
 		getConfig().setValue(key, value);
-		message.addMessage(String.format("Set key %s to value %s", key, value));
+		message.addLine(String.format("Set key %s to value %s", key, value));
 	    } catch (ConfigurationException e) {
 		code = ResponseCode.FAILED;
-		message.addMessage(e.getLocalizedMessage());
+		message.addLine(e.getLocalizedMessage());
 	    }
 	}
 

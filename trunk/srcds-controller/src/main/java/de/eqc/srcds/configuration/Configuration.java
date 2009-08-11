@@ -3,7 +3,6 @@ package de.eqc.srcds.configuration;
 import java.util.Map;
 
 import de.eqc.srcds.configuration.exceptions.ConfigurationException;
-import de.eqc.srcds.configuration.impl.ConfigurationKey;
 
 public interface Configuration {
 

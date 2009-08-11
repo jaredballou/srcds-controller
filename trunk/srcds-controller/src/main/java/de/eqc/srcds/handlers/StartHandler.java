@@ -23,7 +23,7 @@ public class StartHandler extends AbstractRegisteredHandler implements
 	Message message = new Message();
 	try {
 	    getServerController().startServer();
-	    message.addMessage("Server started successfully");
+	    message.addLine("Server started successfully");
 	} catch (Exception e) {
 	    throw new IllegalStateException(e);
 	}

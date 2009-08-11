@@ -26,7 +26,7 @@ public class RestartHandler extends AbstractRegisteredHandler implements
 	if (getServerController().getServerState() == ServerState.RUNNING) {
 		try {
 		    getServerController().stopServer();
-		    message.addMessage("Server stopped successfully");
+		    message.addLine("Server stopped successfully");
 		} catch (Exception e) {
 		    throw new IllegalStateException(e);
 		}	
@@ -34,7 +34,7 @@ public class RestartHandler extends AbstractRegisteredHandler implements
 
 	try {
 	    getServerController().startServer();
-	    message.addMessage("Server started successfully");
+	    message.addLine("Server started successfully");
 	} catch (Exception e) {
 	    throw new IllegalStateException(e);
 	}

@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.regex.Pattern;
 
 import com.sun.net.httpserver.HttpExchange;
 

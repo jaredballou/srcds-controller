@@ -1,6 +1,7 @@
 package de.eqc.srcds.core;
 
-import static de.eqc.srcds.configuration.impl.ConfigurationRegistry.*;
+import static de.eqc.srcds.configuration.ConfigurationRegistry.HTTP_SERVER_PORT;
+import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_EXECUTABLE;
 import static de.eqc.srcds.core.Constants.DEFAULT_CONFIG_FILENAME;
 
 import java.io.File;
@@ -11,7 +12,6 @@ import de.eqc.srcds.configuration.Configuration;
 import de.eqc.srcds.configuration.exceptions.ConfigurationException;
 import de.eqc.srcds.configuration.impl.XmlPropertiesConfiguration;
 import de.eqc.srcds.core.logging.LogFactory;
-import de.eqc.srcds.enums.GameType;
 import de.eqc.srcds.enums.OperatingSystem;
 import de.eqc.srcds.exceptions.UnsupportedOSException;
 
