@@ -69,19 +69,28 @@ input.rcon {
 	border: 1px solid #000;
   	color:#000; 
 	font: bold 84%; 
-	background-color: #e6f3e5;	
+	background-color: #A9BFA7;	
 	border:1px solid; 
 	border-color: #5cb553 #5cb553 #5cb553 #5cb553; 
 
 }
 
 input[type=submit], input[type=reset] {
-	font-size: small;	
+	border: 1px solid #000;
+  	color:#000; 
+	font: bold 84%; 
+	background-color: #e6f3e5;	
+	border:1px solid; 
+	border-color: #5cb553 #5cb553 #5cb553 #5cb553; 
 }
 
 textarea {
 	width: 600px;
 	height: 400px;
-	border: 1px solid #000;
 	padding: 5px;
+  	color:#000; 
+	font: bold 84%; 
+	background-color: #A9BFA7;	
+	border:1px solid; 
+	border-color: #5cb553 #5cb553 #5cb553 #5cb553; 
 }
