@@ -74,10 +74,10 @@ public class XmlPropertiesConfiguration implements Configuration {
     @Override
     public <T> void setValue(String key, T value) throws ConfigurationException {
 
-//	if (!ConfigurationRegistry.matchesDataType(key, value.getClass())) {
-//	    throw new ConfigurationException(String.format(
-//		    "Invalid data type for configuration key %s", key));
-//	}
+	// if (!ConfigurationRegistry.matchesDataType(key, value.getClass())) {
+	// throw new ConfigurationException(String.format(
+	// "Invalid data type for configuration key %s", key));
+	// }
 
 	if (isValidKey(key)) {
 	    properties.setProperty(key, value.toString());
@@ -105,7 +105,8 @@ public class XmlPropertiesConfiguration implements Configuration {
 	    FileInputStream fis = new FileInputStream(propertiesFile);
 	    Properties decryptedProperties = new Properties();
 	    decryptedProperties.loadFromXML(fis);
-	    process(CryptoUtil.Action.DECRYPT, decryptedProperties, this.properties);
+	    process(CryptoUtil.Action.DECRYPT, decryptedProperties,
+		    this.properties);
 	    fis.close();
 	    validateConfiguration();
 	} catch (InvalidPropertiesFormatException e) {
@@ -113,8 +114,9 @@ public class XmlPropertiesConfiguration implements Configuration {
 		    .warning("Configuration file seems to be corrupted - creating default");
 	    createDefaultConfiguration();
 	} catch (Exception e) {
-	    throw new ConfigurationException(
-		    "Unable to load configuration file");
+	    throw new ConfigurationException(String.format(
+		    "Unable to load configuration file: %s", e
+			    .getLocalizedMessage()));
 	}
     }
 
@@ -189,21 +191,22 @@ public class XmlPropertiesConfiguration implements Configuration {
 
 	log.finest("Configuration stored to file.");
     }
-    
-    private static void process(CryptoUtil.Action action, Properties src, Properties target) {
+
+    private static void process(CryptoUtil.Action action, Properties src,
+	    Properties target) {
 
 	for (Entry<Object, Object> entry : src.entrySet()) {
 	    ConfigurationKey<?> configKey = ConfigurationRegistry
 		    .getEntryByKey(entry.getKey().toString());
-	    
+
 	    String value = entry.getValue().toString();
 	    if (configKey.getDataType() == Password.class) {
 		value = CryptoUtil.process(action, value);
 	    }
 	    target.put(configKey.getKey(), value);
-	}	
-    }    
-    
+	}
+    }
+
     @Override
     public String toXml() {
 
