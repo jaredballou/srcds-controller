@@ -24,13 +24,13 @@ import de.eqc.srcds.rcon.exceptions.TimeoutException;
  */
 public class RconConnection {
 
-    final static int SERVERDATA_EXECCOMMAND = 2;
-    final static int SERVERDATA_AUTH = 3;
-    final static int SERVERDATA_RESPONSE_VALUE = 0;
-    final static int SERVERDATA_AUTH_RESPONSE = 2;
-    final static int RESPONSE_TIMEOUT = 2000;
-    final static int MULTIPLE_PACKETS_TIMEOUT = 300;
-    final static int DEFAULT_RCON_PORT = 27015;
+    private final static int SERVERDATA_EXECCOMMAND = 2;
+    private final static int SERVERDATA_AUTH = 3;
+    private final static int SERVERDATA_AUTH_RESPONSE = 2;
+    private final static int RESPONSE_TIMEOUT = 2000;
+    private final static int MULTIPLE_PACKETS_TIMEOUT = 300;
+    private final static int DEFAULT_RCON_PORT = 27015;
+    private final static int RESPONSE_ID = 1337;
 
     private final Socket rconSocket;
     private final InputStream in;
@@ -94,12 +94,10 @@ public class RconConnection {
 	int i = 0;
 	try {
 	    out.write(request);
-	    resp[i] = receivePacket(); // First and maybe the unique response
-	    // packet
+	    resp[i] = receivePacket();
 	    try {
 		// We don't know how many packets will return in response, so
-		// we'll
-		// read() the socket until TimeoutException occurs.
+		// we'll read() the socket until TimeoutException occurs.
 		rconSocket.setSoTimeout(MULTIPLE_PACKETS_TIMEOUT);
 		while (true) {
 		    resp[++i] = receivePacket();
@@ -177,15 +175,15 @@ public class RconConnection {
 
     private boolean authenticate(String password) throws SocketTimeoutException {
 
-	byte[] authRequest = contructPacket(1337, SERVERDATA_AUTH, password);
+	byte[] authRequest = contructPacket(RESPONSE_ID, SERVERDATA_AUTH, password);
 	ByteBuffer response = ByteBuffer.allocate(64);
 	try {
 	    out.write(authRequest);
-	    response = receivePacket(); // junk response packet
+	    // junk response packet
+	    response = receivePacket();
 	    response = receivePacket();
 
-	    // Lets see if the received request_id is leet enougth ;)
-	    if ((response.getInt(4) == 1337)
+	    if ((response.getInt(4) == RESPONSE_ID)
 		    && (response.getInt(8) == SERVERDATA_AUTH_RESPONSE)) {
 		return true;
 	    }
