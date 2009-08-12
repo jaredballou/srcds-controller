@@ -29,7 +29,7 @@ public class ListHandlersHandler extends AbstractRegisteredHandler
 		lines.add(handler.getPath());
 	    }
 	    String[] linesAsArray = lines.toArray(new String[0]); 
-	    ControllerResponse cr = new ControllerResponse(ResponseCode.OK, new Message(linesAsArray));
+	    ControllerResponse cr = new ControllerResponse(ResponseCode.INFORMATION, new Message(linesAsArray));
 	    outputXmlContent(cr.toXml());
 	} catch (Exception e) {
 	    throw new IOException(String.format("Unable to register handler %s", getClass()));

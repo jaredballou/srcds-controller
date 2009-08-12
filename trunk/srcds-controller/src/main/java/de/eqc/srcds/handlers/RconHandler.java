@@ -34,7 +34,7 @@ public class RconHandler extends AbstractRegisteredHandler implements
 
 		RconConnection rc = new RconConnection(rconAddress, rconPort, rconPassword);
 		String response = rc.send(command);
-		ResponseCode code = ResponseCode.OK;
+		ResponseCode code = ResponseCode.RCON_RESPONSE;
 		String lines[] = response.split("\n");
 		Message message = new Message();
 		for (String line : lines) {

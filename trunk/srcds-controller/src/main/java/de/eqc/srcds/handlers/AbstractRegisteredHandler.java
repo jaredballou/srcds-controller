@@ -242,7 +242,7 @@ public abstract class AbstractRegisteredHandler implements HttpHandler, Register
 	    
 	    Message message = new Message();
 	    message.addLine(e.getLocalizedMessage());
-	    outputXmlContent(new ControllerResponse(ResponseCode.FAILED, message).toXml());
+	    outputXmlContent(new ControllerResponse(ResponseCode.ERROR, message).toXml());
 	}
     }
 

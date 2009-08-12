@@ -18,7 +18,7 @@ public class StopHandler extends AbstractRegisteredHandler implements
 
     public void handleRequest(HttpExchange httpExchange) throws IOException {
 
-	ResponseCode code = ResponseCode.OK;
+	ResponseCode code = ResponseCode.INFORMATION;
 	Message message = new Message();
 	try {
 	    getServerController().stopServer();

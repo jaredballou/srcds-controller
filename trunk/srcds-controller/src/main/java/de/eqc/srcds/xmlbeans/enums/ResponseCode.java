@@ -5,5 +5,5 @@ import java.io.Serializable;
 
 public enum ResponseCode implements Serializable {
 
-    OK, FAILED;
+    INFORMATION, ERROR, RCON_RESPONSE;
 }
