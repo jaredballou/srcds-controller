@@ -9,6 +9,10 @@ public final class Constants {
 	throw new UnsupportedOperationException();
     }
 
+    public static final String PROJECT_NAME = "srcds-controller";
+    
+    public static final String TRAY_ICON_PATH = "/images/icon_tray.gif";
+    
     public static final int MILLIS_PER_SEC = 1000;
 
     public static final int STARTUP_WAIT_TIME_MILLIS = 2000;
