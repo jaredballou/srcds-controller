@@ -35,21 +35,6 @@ public final class CryptoUtil {
 	return ret;
     }
 
-    public static String decrypt(String encoded) {
-
-	try {
-	    SecretKey secret = new SecretKeySpec(CRYPTO_KEY.getBytes("UTF-8"),
-		    "Blowfish");
-	    Cipher cipher = Cipher.getInstance("Blowfish/ECB/PKCS5Padding");
-	    cipher.init(Cipher.DECRYPT_MODE, secret);
-	    byte[] bytes = new BASE64Decoder().decodeBuffer(encoded);
-	    return new String(cipher.doFinal(bytes), "UTF-8");
-	} catch (Exception e) {
-	    e.printStackTrace();
-	    throw new RuntimeException("Unable to decrypt password");
-	}
-    }
-
     public static String encrypt(String plain) {
 
 	try {
@@ -60,8 +45,23 @@ public final class CryptoUtil {
 	    byte[] bytes = plain.getBytes("UTF-8");
 	    return new BASE64Encoder().encode(cipher.doFinal(bytes));
 	} catch (Exception e) {
-	    e.printStackTrace();
-	    throw new RuntimeException("Unable to encrypt password");
+	    throw new RuntimeException(String.format("Encryption failed: %s", e
+		    .getLocalizedMessage()));
+	}
+    }
+
+    public static String decrypt(String encoded) {
+
+	try {
+	    SecretKey secret = new SecretKeySpec(CRYPTO_KEY.getBytes("UTF-8"),
+		    "Blowfish");
+	    Cipher cipher = Cipher.getInstance("Blowfish/ECB/PKCS5Padding");
+	    cipher.init(Cipher.DECRYPT_MODE, secret);
+	    byte[] bytes = new BASE64Decoder().decodeBuffer(encoded);
+	    return new String(cipher.doFinal(bytes), "UTF-8");
+	} catch (Exception e) {
+	    throw new RuntimeException(String.format("Decryption failed: %s", e
+		    .getLocalizedMessage()));
 	}
     }
 }
