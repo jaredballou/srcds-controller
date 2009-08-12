@@ -75,7 +75,7 @@
     <br />
     <div name="rconsubmit" id="rconsubmit" style="display: none">
     <form action="rcon" method="get"><input name="command" type="text" size="40" class="rcon" /><input value="Send" type="submit" /></form>    
-    </div>
+    </div><br /><br />
     <a href="/" class="response">Back to main page</a>
     </body>
     </html>
