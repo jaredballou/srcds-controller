@@ -49,7 +49,7 @@ public class CLI {
 	checkOS();
 
 	if (OperatingSystem.getCurrent() == OperatingSystem.WINDOWS) {
-	    createTrayIcon();
+	    new TrayMenu();
 	}
 
 	File configFile = new File(DEFAULT_CONFIG_FILENAME);
@@ -90,10 +90,6 @@ public class CLI {
 	}
 
 	System.out.println("Exiting...");
-    }
-
-    private void createTrayIcon() throws UnsupportedOSException {
-	new TrayMenu();
     }
 
     private void processCommandlineArguments(String ... arguments) throws ConfigurationException {
