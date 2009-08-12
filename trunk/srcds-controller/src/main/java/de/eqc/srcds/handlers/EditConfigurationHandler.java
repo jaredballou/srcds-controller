@@ -18,7 +18,6 @@ public class EditConfigurationHandler extends AbstractRegisteredHandler
     public void handleRequest(HttpExchange httpExchange) throws IOException, ConfigurationException {
 	
 	for (Entry<String, String> entry : getParameters().entrySet()) {
-	    System.out.println(entry.getKey() + " = " + entry.getValue());
 	    getConfig().setValue(entry.getKey(), entry.getValue());
 	}
 	
