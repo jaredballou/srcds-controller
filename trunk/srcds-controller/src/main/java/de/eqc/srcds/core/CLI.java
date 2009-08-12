@@ -58,19 +58,9 @@ public class CLI {
 
 	processCommandlineArguments(arguments);
 	
-	/*
-	 * This block is for testing purposes only.
-	 */
-//	config.setValue(AUTOSTART, true);
-//	config.setValue(SRCDS_PATH, "l4d");
-//	config.setValue(SRCDS_PARAMETERS, "+hostport 27015 +maxplayers 14 -tickrate 100 +exec server_unrest.cfg +map l4d_vs_airport01_greenhouse.bsp");
-//	config.setValue(SRCDS_GAMETYPE, GameType.LEFT4DEAD);	
-	
 	this.srcdsController = new SourceDServerController(this.config);
 	this.httpServerController = new HttpServerController(config, srcdsController);
 	
-	// start
-
 	Runtime.getRuntime().addShutdownHook(
 		new ShutdownHook(Thread.currentThread(), srcdsController, httpServerController));
 	
