@@ -14,14 +14,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 
+import de.eqc.srcds.configuration.Configuration;
 import de.eqc.srcds.exceptions.UnsupportedOSException;
-
 
 public class TrayMenu {
 
-    private final TrayIcon trayIcon;    
-    
-    public TrayMenu() throws UnsupportedOSException {
+    private final TrayIcon trayIcon;
+
+    public TrayMenu(final Configuration config) throws UnsupportedOSException {
 
 	if (SystemTray.isSupported()) {
 	    SystemTray tray = SystemTray.getSystemTray();
@@ -29,44 +29,61 @@ public class TrayMenu {
 	    Image image = Toolkit.getDefaultToolkit().getImage(iconUrl);
 
 	    ActionListener exitListener = new ActionListener() {
-	        public void actionPerformed(ActionEvent e) {
-	            System.exit(0);
-	        }
+		public void actionPerformed(ActionEvent e) {
+		    System.exit(0);
+		}
 	    };
 
 	    final PopupMenu popup = new PopupMenu();
 
+	    final MenuItem webConsoleItem = new MenuItem("Web Console");
+	    popup.add(webConsoleItem);
+
 	    final MenuItem aboutItem = new MenuItem("About");
-	    popup.add(aboutItem);	    
+	    popup.add(aboutItem);
 
 	    final MenuItem exitItem = new MenuItem("Exit");
 	    exitItem.addActionListener(exitListener);
 	    popup.add(exitItem);
 
 	    ActionListener actionListener = new ActionListener() {
-	        public void actionPerformed(ActionEvent e) {
-	            if (e.getSource().equals(aboutItem)) {
-			trayIcon.displayMessage(
-				"About",
-				String.format("%s v%s", PROJECT_NAME, VersionUtil.getProjectVersion()),
+
+		public void actionPerformed(ActionEvent e) {
+
+		    if (e.getSource().equals(aboutItem)) {
+			trayIcon.displayMessage("About", String.format(
+				"%s v%s", PROJECT_NAME, VersionUtil
+					.getProjectVersion()),
 				TrayIcon.MessageType.INFO);
-	            }
-	        }
+		    } else if (e.getSource().equals(webConsoleItem)) {
+			try {
+			    String command = String.format(
+				    "rundll32 url.dll,FileProtocolHandler %s",
+				    NetworkUtil.getHomeUrl(config));
+			    Runtime.getRuntime().exec(command);
+			} catch (Exception ex) {
+			    // Ignore
+			}
+		    }
+		}
 	    };
-	    
+
 	    trayIcon = new TrayIcon(image, PROJECT_NAME, popup);
 	    trayIcon.setImageAutoSize(true);
 	    trayIcon.addActionListener(actionListener);
+
+	    webConsoleItem.addActionListener(actionListener);
 	    aboutItem.addActionListener(actionListener);
 
 	    try {
-	        tray.add(trayIcon);
+		tray.add(trayIcon);
 	    } catch (AWTException e) {
-	        throw new IllegalStateException("Unable to add icon to tray");
+		throw new IllegalStateException("Unable to add icon to tray");
 	    }
 	} else {
 
-	    throw new UnsupportedOSException("System does not support tray icons");
+	    throw new UnsupportedOSException(
+		    "System does not support tray icons");
 	}
     }
 }
