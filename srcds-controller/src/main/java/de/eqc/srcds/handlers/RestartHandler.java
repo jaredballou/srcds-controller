@@ -20,7 +20,7 @@ public class RestartHandler extends AbstractRegisteredHandler implements
     @Override
     public void handleRequest(HttpExchange httpExchange) throws IOException {
 
-	ResponseCode code = ResponseCode.OK;
+	ResponseCode code = ResponseCode.INFORMATION;
 	Message message = new Message();
 	
 	if (getServerController().getServerState() == ServerState.RUNNING) {

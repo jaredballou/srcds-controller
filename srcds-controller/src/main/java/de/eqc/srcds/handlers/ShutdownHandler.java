@@ -22,7 +22,7 @@ public class ShutdownHandler extends AbstractRegisteredHandler implements
 
     public void handleRequest(HttpExchange httpExchange) throws IOException {
 
-	ResponseCode code = ResponseCode.OK;
+	ResponseCode code = ResponseCode.INFORMATION;
 	Message message = new Message(String.format("Controller is going down in %d seconds...", Utils.millisToSecs(SHUTDOWN_DELAY_MILLIS)));
 	outputXmlContent(new ControllerResponse(code, message).toXml());
 
