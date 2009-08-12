@@ -1,6 +1,5 @@
 package de.eqc.srcds.xmlbeans.impl;
 
-import de.eqc.srcds.core.Utils;
 import de.eqc.srcds.xmlbeans.XmlBean;
 import de.eqc.srcds.xmlbeans.enums.ResponseCode;
 

@@ -4,7 +4,6 @@ import java.util.Map.Entry;
 
 import de.eqc.srcds.configuration.Configuration;
 import de.eqc.srcds.configuration.ConfigurationKey;
-import de.eqc.srcds.configuration.ConfigurationRegistry;
 import de.eqc.srcds.xmlbeans.XmlBean;
 
 

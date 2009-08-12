@@ -1,13 +1,10 @@
 package de.eqc.srcds.xmlbeans.impl;
 
 import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_GAMETYPE;
-import static de.eqc.srcds.core.Constants.DEFAULT_CONFIG_FILENAME;
 
 import java.io.File;
 
 import de.eqc.srcds.configuration.Configuration;
-import de.eqc.srcds.configuration.exceptions.ConfigurationException;
-import de.eqc.srcds.configuration.impl.XmlPropertiesConfiguration;
 import de.eqc.srcds.core.Utils;
 import de.eqc.srcds.enums.GameType;
 import de.eqc.srcds.games.Game;
