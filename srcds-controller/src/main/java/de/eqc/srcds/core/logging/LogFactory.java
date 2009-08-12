@@ -42,7 +42,7 @@ public class LogFactory {
 	if (level == null) {
 	    level = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).getParent().getLevel();
 	}
-	System.out.println("Loggin with global level: " + level);
+	System.out.println("Logging with global level: " + level);
     }
 
     public static Logger getLogger(Class<?> clazz) {
