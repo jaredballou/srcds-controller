@@ -48,13 +48,13 @@ public class CLI {
 	
 	checkOS();
 
-	if (OperatingSystem.getCurrent() == OperatingSystem.WINDOWS) {
-	    new TrayMenu();
-	}
-
 	File configFile = new File(DEFAULT_CONFIG_FILENAME);
 
 	this.config = new XmlPropertiesConfiguration(configFile);
+
+	if (OperatingSystem.getCurrent() == OperatingSystem.WINDOWS) {
+	    new TrayMenu(config);
+	}
 
 	processCommandlineArguments(arguments);
 	
