@@ -7,12 +7,13 @@ import java.net.URL;
 
 import com.sun.net.httpserver.HttpExchange;
 
+import de.eqc.srcds.core.Utils;
 import de.eqc.srcds.enums.ImageType;
 
 /**
  * @author Hannes
  */
-public class ImageHandler extends AbstractRegisteredHandler implements
+public class ImageHandler extends AbstractCacheControlRegisteredHandler implements
 	RegisteredHandler {
 
     public static final String HANDLER_PATH = "/image";
@@ -29,6 +30,7 @@ public class ImageHandler extends AbstractRegisteredHandler implements
 	if (imageName.indexOf('/') > -1 || imageName.indexOf('\\') > -1) {
 	    throw new IllegalArgumentException("Only plain file names are allowed as parameter value");
 	}
+	
 
 	String resource = String.format("/images/%s", imageName);
 
@@ -51,13 +53,11 @@ public class ImageHandler extends AbstractRegisteredHandler implements
 		for (int len = 0; (len = input.read(buffer)) != -1;) {
 		    baos.write(buffer, 0, len);
 		}
-	    } finally {
-		if (input != null) {
-		    input.close();
-		}
 		baos.flush();
-		baos.close();
 		outputContent(baos.toByteArray(), mimeType);
+	    } finally {
+		Utils.closeQuietly(input);
+		Utils.closeQuietly(baos);
 	    }
 	}
     }

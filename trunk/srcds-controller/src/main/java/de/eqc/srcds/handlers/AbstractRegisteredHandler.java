@@ -220,14 +220,14 @@ public abstract class AbstractRegisteredHandler implements HttpHandler, Register
 	os.flush();
 	os.close();
     }
-
+    
     /*
      * @see
      * com.sun.net.httpserver.HttpHandler#handle(com.sun.net.httpserver.HttpExchange
      * )
      */
     @Override
-    public final void handle(HttpExchange httpExchange) throws IOException {
+    public void handle(HttpExchange httpExchange) throws IOException {
 
 	this.httpExchange = httpExchange;
 	this.parsedRequestParameter = null;

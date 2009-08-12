@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
@@ -19,16 +20,16 @@ import java.net.URL;
  */
 public class Utils {
 
+    private static long lastModfiedCache = -1;
+
     public static String getUrlContent(URL url) throws IOException {
 
 	return getInputStreamContent(url.openStream());
     }
 
-    public static String getFileContent(File file)
-	    throws FileNotFoundException, IOException {
+    public static String getFileContent(File file) throws FileNotFoundException, IOException {
 
-	return getInputStreamContent(new BufferedInputStream(
-		new FileInputStream(file)));
+	return getInputStreamContent(new BufferedInputStream(new FileInputStream(file)));
     }
 
     /**
@@ -38,8 +39,7 @@ public class Utils {
      * @return
      * @throws IOException
      */
-    public static String getInputStreamContent(InputStream input)
-	    throws IOException {
+    public static String getInputStreamContent(InputStream input) throws IOException {
 
 	StringBuilder builder = new StringBuilder();
 	try {
@@ -58,11 +58,9 @@ public class Utils {
      * @param newContent
      * @throws IOException
      */
-    public static void saveToFile(File file, String fileContent)
-	    throws IOException {
+    public static void saveToFile(File file, String fileContent) throws IOException {
 
-	BufferedOutputStream output = new BufferedOutputStream(
-		new FileOutputStream(file));
+	BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(file));
 	try {
 	    output.write(fileContent.getBytes());
 	} finally {
@@ -77,18 +75,21 @@ public class Utils {
      * @return
      */
     public static String escapeForXml(String source) {
+
 	source = source.replace("&", "&amp;");
 	source = source.replace("<", "&lt;");
 	source = source.replace(">", "&gt;");
 	return source;
     }
-    
+
     /**
      * The reverse function for {@link #escapeForXml(String)}.
+     * 
      * @param source
      * @return
      */
     public static String unEscapeForXml(String source) {
+
 	source = source.replace("&gt;", ">");
 	source = source.replace("&lt;", "<");
 	source = source.replace("&amp;", "&");
@@ -110,5 +111,31 @@ public class Utils {
     public static long millisToSecs(long millis) {
 
 	return millis / MILLIS_PER_SEC;
+    }
+
+    /**
+     * Tries to get the last modified date from the current jar. If it fails
+     * 'System.currentTimeMillis()' is used. This value is cached.
+     */
+    public static long getLastModifiedDate() {
+
+	if (lastModfiedCache != -1) {
+	    return lastModfiedCache;
+	}
+
+	URL location = Utils.class.getProtectionDomain().getCodeSource().getLocation();
+	if (location.toString().endsWith(".jar")) {
+	    try {
+		File file = new File(location.toURI());
+		lastModfiedCache = file.lastModified();
+	    } catch (URISyntaxException excp) {
+		// ignore
+	    }
+	}
+	if (lastModfiedCache == -1) {
+	    lastModfiedCache = System.currentTimeMillis();
+	}
+
+	return lastModfiedCache;
     }
 }
