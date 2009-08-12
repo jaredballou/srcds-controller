@@ -14,9 +14,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-
 import de.eqc.srcds.exceptions.UnsupportedOSException;
 
 
@@ -51,7 +48,7 @@ public class TrayMenu {
 	            if (e.getSource().equals(aboutItem)) {
 			trayIcon.displayMessage(
 				"About",
-				PROJECT_NAME + " " + VersionUtil.getProjectVersion(),
+				String.format("%s v%s", PROJECT_NAME, VersionUtil.getProjectVersion()),
 				TrayIcon.MessageType.INFO);
 	            }
 	        }
