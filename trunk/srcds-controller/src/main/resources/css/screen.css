@@ -65,7 +65,7 @@ h2.response, a.response, table.response, p.response, form input.response, form s
 }
 
 
-input, select, td.tableData {
+input, select {
 	border: 1px solid #000;
   	color:#000; 
 	font: bold 84%; 
