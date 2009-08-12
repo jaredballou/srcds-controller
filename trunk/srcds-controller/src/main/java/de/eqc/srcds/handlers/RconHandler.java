@@ -42,7 +42,7 @@ public class RconHandler extends AbstractRegisteredHandler implements
 		throw new IllegalStateException(e);
 	    }
 	} else {
-	    throw new IllegalArgumentException("Please specifiy command parameter");
+	    throw new IllegalArgumentException("Please specify parameter 'command'");
 	}
     }
 }
