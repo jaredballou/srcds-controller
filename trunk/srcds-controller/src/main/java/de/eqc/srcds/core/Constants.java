@@ -8,7 +8,7 @@ public final class Constants {
 
 	throw new UnsupportedOperationException();
     }
-
+    
     public static final String PROJECT_NAME = "srcds-controller";
     
     public static final String TRAY_ICON_PATH = "/images/icon_tray.gif";

@@ -19,7 +19,7 @@ public final class ConfigurationRegistry {
     static {
 	FORBIDDEN_USER_PARAMETERS = Arrays.asList("-game", "+hostport");
     }
-
+    
     public static final String HTTP_SERVER_PORT = "srcds.controller.networking.httpserver.port";
 
     public static final String HTTP_SERVER_USERNAME = "srcds.controller.networking.httpserver.username";
