@@ -44,7 +44,12 @@ public class CLI {
 	    new TrayMenu(config);
 	}
 
-	processCommandlineArguments(arguments);
+	try {
+	    processCommandlineArguments(arguments);
+	} catch (ConfigurationException e) {
+	    log.warning(e.getLocalizedMessage());
+	    System.exit(0);
+	}
 	
 	this.srcdsController = new SourceDServerController(this.config);
 	this.httpServerController = new HttpServerController(config, srcdsController);
@@ -79,7 +84,7 @@ public class CLI {
 		System.exit(0);
 	    } else if (argument.equals("--httpServerPort") && i < argument.length() - 1) {
 		String value = arguments[i + 1];
-		config.setValue(HTTP_SERVER_PORT, value);
+		config.setValue(HTTP_SERVER_PORT, Integer.valueOf(value));
 	    } else if (argument.equals("--srcdsExecutable") && i < argument.length() - 1) {
 		String value = arguments[i + 1];
 		config.setValue(SRCDS_EXECUTABLE, value);

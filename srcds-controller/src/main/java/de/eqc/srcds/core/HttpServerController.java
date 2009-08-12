@@ -1,6 +1,8 @@
 package de.eqc.srcds.core;
 
-import static de.eqc.srcds.configuration.ConfigurationRegistry.*;
+import static de.eqc.srcds.configuration.ConfigurationRegistry.HTTP_SERVER_PASSWORD;
+import static de.eqc.srcds.configuration.ConfigurationRegistry.HTTP_SERVER_PORT;
+import static de.eqc.srcds.configuration.ConfigurationRegistry.HTTP_SERVER_USERNAME;
 import static de.eqc.srcds.core.Constants.HTTP_SERVER_SHUTDOWN_DELAY_SECS;
 
 import java.io.UnsupportedEncodingException;
@@ -13,6 +15,7 @@ import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
 
 import de.eqc.srcds.configuration.Configuration;
+import de.eqc.srcds.configuration.datatypes.Password;
 import de.eqc.srcds.configuration.exceptions.ConfigurationException;
 import de.eqc.srcds.enums.ServerState;
 import de.eqc.srcds.exceptions.InitializationException;
@@ -49,7 +52,7 @@ public class HttpServerController extends AbstractServerController<HttpServer> {
 	    ConfigurationException {
 
 	String username = config.getValue(HTTP_SERVER_USERNAME, String.class);
-	String password = config.getValue(HTTP_SERVER_PASSWORD, String.class);
+	String password = config.getValue(HTTP_SERVER_PASSWORD, Password.class).toString();
 	HttpAuthenticator defaultAuthenticator = new HttpAuthenticator(
 		username, password);
 
@@ -76,6 +79,7 @@ public class HttpServerController extends AbstractServerController<HttpServer> {
 	    try {
 		contextList.addAll(bindHandlers());
 	    } catch (Exception e) {
+		e.printStackTrace();
 		log.warning(String.format(
 			"Error occured while registering handlers: %s", e
 				.getLocalizedMessage()));

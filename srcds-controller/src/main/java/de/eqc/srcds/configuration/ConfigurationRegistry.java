@@ -94,4 +94,9 @@ public final class ConfigurationRegistry {
 	return entries;
     }
 
+    public static boolean matchesDataType(String key, Class<?> dataType) {
+	
+	return getEntryByKey(key).getDataType() == dataType;
+    }
+
 }
