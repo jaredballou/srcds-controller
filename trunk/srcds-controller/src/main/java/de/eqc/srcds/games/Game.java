@@ -11,8 +11,6 @@ public abstract class Game {
     private final Map<String, String> parameters;
     private String directory;
 
-    private List<String> significantConfigFiles = new ArrayList<String>();
-
     public Game(String directory) {
 
 	this.directory = directory;

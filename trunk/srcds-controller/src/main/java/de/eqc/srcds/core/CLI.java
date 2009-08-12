@@ -3,20 +3,8 @@ package de.eqc.srcds.core;
 import static de.eqc.srcds.configuration.ConfigurationRegistry.HTTP_SERVER_PORT;
 import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_EXECUTABLE;
 import static de.eqc.srcds.core.Constants.DEFAULT_CONFIG_FILENAME;
-import static de.eqc.srcds.core.Constants.PROJECT_NAME;
 
-import java.awt.AWTException;
-import java.awt.Image;
-import java.awt.MenuItem;
-import java.awt.PopupMenu;
-import java.awt.SystemTray;
-import java.awt.Toolkit;
-import java.awt.TrayIcon;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,7 +18,7 @@ import de.eqc.srcds.exceptions.UnsupportedOSException;
 /**
  * This class starts the srcds controller.
  * 
- * @author Holger Cremer
+ * @author EarthQuake Clan &lt;www.earthquake-clan.de&gt;
  */
 public class CLI {
 
