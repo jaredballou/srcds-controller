@@ -10,7 +10,7 @@ import de.eqc.srcds.handlers.utils.SimpleTemplate;
 /**
  * @author Hannes
  */
-public class CssHandler extends AbstractRegisteredHandler implements
+public class CssHandler extends AbstractCacheControlRegisteredHandler implements
 	RegisteredHandler {
 
     public static final String HANDLER_PATH = "/css";

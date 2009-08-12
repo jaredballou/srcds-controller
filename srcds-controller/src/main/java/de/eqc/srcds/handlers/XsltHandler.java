@@ -14,7 +14,7 @@ import de.eqc.srcds.handlers.utils.SimpleTemplate;
 /**
  * @author Hannes
  */
-public class XsltHandler extends AbstractRegisteredHandler implements
+public class XsltHandler extends AbstractCacheControlRegisteredHandler implements
 	RegisteredHandler {
 
     /*
