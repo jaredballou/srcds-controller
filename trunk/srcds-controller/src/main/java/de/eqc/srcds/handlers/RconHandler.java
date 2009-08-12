@@ -2,6 +2,7 @@ package de.eqc.srcds.handlers;
 
 
 import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_RCON_PASSWORD;
+import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_SERVER_PORT;
 
 import java.io.IOException;
 
@@ -28,8 +29,10 @@ public class RconHandler extends AbstractRegisteredHandler implements
 	if (command != null && !"".equals(command)) {
 	    try {
 		String rconAddress = NetworkUtil.getLocalHostname();
+		int rconPort = getConfig().getValue(SRCDS_SERVER_PORT, Integer.class);
 		String rconPassword = getConfig().getValue(SRCDS_RCON_PASSWORD, Password.class).toString();
-		RconConnection rc = new RconConnection(rconAddress, rconPassword);
+
+		RconConnection rc = new RconConnection(rconAddress, rconPort, rconPassword);
 		String response = rc.send(command);
 		ResponseCode code = ResponseCode.OK;
 		String lines[] = response.split("\n");

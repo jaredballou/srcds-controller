@@ -1,10 +1,12 @@
 package de.eqc.srcds.core;
 
 import static de.eqc.srcds.configuration.ConfigurationRegistry.AUTOSTART;
+import static de.eqc.srcds.configuration.ConfigurationRegistry.FORBIDDEN_USER_PARAMETERS;
 import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_EXECUTABLE;
 import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_GAMETYPE;
 import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_PARAMETERS;
 import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_PATH;
+import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_SERVER_PORT;
 import static de.eqc.srcds.core.Constants.STARTUP_WAIT_TIME_MILLIS;
 
 import java.io.File;
@@ -100,8 +102,20 @@ public class SourceDServerController extends AbstractServerController<Process> {
 	log.info(String.format("Game type is %s", gameType));
 	LinkedList<String> parameters = gameType.getImplementation()
 		.getParametersAsList();
+	
+	int srcdsPort = config.getValue(SRCDS_SERVER_PORT, Integer.class);
+	parameters.add(String.format("+hostport %d", srcdsPort));
 
-	parameters.addAll(parseUserParameters());
+	List<String> userParameters = parseUserParameters();
+	for (int i = userParameters.size() - 1; i >= 0; i--) {
+	    String userParameter = userParameters.get(i).split(" ")[0];
+	    if (FORBIDDEN_USER_PARAMETERS.contains(userParameter)) {
+		userParameters.remove(i);
+		log.warning(String.format("Forbidden user parameter %s ignored", userParameter));
+	    }
+	}
+	
+	parameters.addAll(userParameters);
 	parameters.addFirst(command);
 
 	log.info(String.format("Process: %s", parameters.toString()));
