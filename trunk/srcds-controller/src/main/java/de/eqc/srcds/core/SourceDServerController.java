@@ -73,10 +73,6 @@ public class SourceDServerController extends AbstractServerController<Process> {
     private List<String> parseCommandLine() throws ConfigurationException {
 
 	String executable = config.getValue(SRCDS_EXECUTABLE, String.class);
-	String prefix = OperatingSystem.getCurrent() == OperatingSystem.LINUX ? "."
-		+ File.separator
-		: "";
-	String command = prefix + executable;
 
 	File srcdsPath = new File(config.getValue(SRCDS_PATH, String.class));
 	File srcdsExecutable = new File(srcdsPath.getPath() + File.separator
@@ -116,7 +112,7 @@ public class SourceDServerController extends AbstractServerController<Process> {
 	}
 	
 	parameters.addAll(userParameters);
-	parameters.addFirst(command);
+	parameters.addFirst(srcdsExecutable.getAbsolutePath());
 
 	log.info(String.format("Process: %s", parameters.toString()));
 
