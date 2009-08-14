@@ -20,7 +20,7 @@ public class ServerOutputReader extends Thread implements ServerOutput {
     private static Logger log = LogFactory.getLogger(ServerOutputReader.class);
 
     private final InputStream inputStream;
-    private AtomicBoolean running;
+    private final AtomicBoolean running = new AtomicBoolean(false);
 
     // we use a concurrent version of the deque because many threads may access
     // this object
