@@ -225,4 +225,12 @@ public class SourceDServerController extends AbstractServerController<Process> {
 	    }
 	}
     }
+
+    /**
+     * Gets a server output to read the last output log and register on output events.
+     * @return
+     */
+    public ServerOutput getServerOutput() {
+	return this.serverOutputReader;
+    }
 }
