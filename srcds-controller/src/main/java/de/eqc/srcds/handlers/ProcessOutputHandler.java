@@ -3,6 +3,7 @@ package de.eqc.srcds.handlers;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.nio.channels.Channels;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -65,17 +66,19 @@ public class ProcessOutputHandler implements HttpHandler, RegisteredHandler {
 	httpExchange.getResponseHeaders().add("Content-type", "text/html");
 	httpExchange.sendResponseHeaders(200, 0);
 	PrintStream printStream = null;
+	
+	ServerOutput serverOutput = this.serverController.getServerOutput();
 	try {
 	    OutputStream os = httpExchange.getResponseBody();
-
+	    
 	    // set autoflush on in constructor
 	    printStream = new PrintStream(os, true);
 
 	    // output the log history
 	    printStream.println("### Output history:<br/>");
-	    ServerOutput serverOutput = this.serverController.getServerOutput();
 	    if (serverOutput == null) {
 		printStream.println("### Process never run!<br/>");
+		Utils.closeQuietly(printStream);
 		return;
 	    }
 	    for (String logLine : serverOutput.getLastLog()) {
@@ -84,22 +87,21 @@ public class ProcessOutputHandler implements HttpHandler, RegisteredHandler {
 
 	    if (this.serverController.getServerState() != ServerState.RUNNING) {
 		printStream.println("### Server isn't running.<br/>");
+		Utils.closeQuietly(printStream);
 		return;
 	    }
-
-	    printStream.println("### Live output:<br/>");
-	    WriteLogToStreamThread streamLogger = new WriteLogToStreamThread(printStream);
-	    streamLogger.start();
-	    serverOutput.registerOnLogObserver(streamLogger);
-	    streamLogger.join();
-	    serverOutput.unRegisterOnLogObserver(streamLogger);
+	    
+		printStream.println("### Live output:<br/>");
+		Channels.newChannel(printStream);
+		WriteLogToStreamThread streamLogger = new WriteLogToStreamThread(printStream, serverOutput);
+		streamLogger.start();
 	} catch (Exception e) {
 	    // every Exception is interesting here because the PrintStream should omit any IOExceptions
 	    log.log(Level.WARNING, "Exception during output sending: " + e.getMessage());
 	    log.log(Level.FINE, "Detailled exception: ", e);
-	} finally {
 	    Utils.closeQuietly(printStream);
-	}
+	} 
+	
     }
 
     /**
@@ -112,13 +114,17 @@ public class ProcessOutputHandler implements HttpHandler, RegisteredHandler {
 	// 'volatile' because we want to ensure that this object is visible for
 	// every thread (TODO: is this necessary?)
 	private volatile PrintStream printStream;
+	private ServerOutput serverOutput;
 
 	/**
 	 * @param printStream
+	 * @param serverOutput 
 	 */
-	public WriteLogToStreamThread(PrintStream printStream) {
+	public WriteLogToStreamThread(PrintStream printStream, ServerOutput serverOutput) {
 
+	    this.setName("WriteLogToStreamThread");
 	    this.printStream = printStream;
+	    this.serverOutput = serverOutput;
 	}
 
 	/*
@@ -127,6 +133,8 @@ public class ProcessOutputHandler implements HttpHandler, RegisteredHandler {
 	@Override
 	public void run() {
 
+	    serverOutput.registerOnLogObserver(this);
+	    try {
 	    /*
 	     * If the browser disconnects 'checkError()' returns true and we
 	     * stop this thread. (PrintStream omit any IOExceptions !)
@@ -139,6 +147,10 @@ public class ProcessOutputHandler implements HttpHandler, RegisteredHandler {
 		} catch (InterruptedException excp) {
 		    // ignore
 		}
+	    }
+	    } finally {
+		serverOutput.unRegisterOnLogObserver(this);
+		Utils.closeQuietly(this.printStream);
 	    }
 	}
 
