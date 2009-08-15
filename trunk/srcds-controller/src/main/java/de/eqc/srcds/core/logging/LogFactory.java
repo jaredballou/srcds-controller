@@ -13,12 +13,18 @@ import java.util.logging.Logger;
 /**
  * @author Holger Cremer
  */
-public class LogFactory {
+public final class LogFactory {
 
+    /** Hides the constructor of the utility class. */
+    private LogFactory() {
+
+	throw new UnsupportedOperationException();
+    }
+    
     static {
 
-	File fsLoggingConfig = new File(FS_LOGGING_FILENAME);
-	InputStream builtinLoggingConfig = LogFactory.class.getResourceAsStream(BUILTIN_LOGGING_FILENAME);
+	final File fsLoggingConfig = new File(FS_LOGGING_FILENAME);
+	final InputStream builtinLoggingConfig = LogFactory.class.getResourceAsStream(BUILTIN_LOGGING_FILENAME);
 
 	if (fsLoggingConfig.exists()) {
 	    try {
@@ -45,7 +51,7 @@ public class LogFactory {
 	System.out.println("Logging with global level: " + level);
     }
 
-    public static Logger getLogger(Class<?> clazz) {
+    public static Logger getLogger(final Class<?> clazz) {
 
 	return Logger.getLogger(clazz.getName());
     }

@@ -4,9 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Vector;
+import java.util.List;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
@@ -19,16 +20,16 @@ public class ServerOutputReader extends Thread implements ServerOutput {
 
     private static Logger log = LogFactory.getLogger(ServerOutputReader.class);
 
-    private final InputStream inputStream;
-    private final AtomicBoolean running = new AtomicBoolean(false);
+    private final transient InputStream inputStream;
+    private final transient AtomicBoolean running = new AtomicBoolean(false);
 
     // we use a concurrent version of the deque because many threads may access
     // this object
-    private LinkedBlockingDeque<String> savedLogLines = new LinkedBlockingDeque<String>(SAVE_LAST_LINES);
+    private final transient LinkedBlockingDeque<String> savedLogLines = new LinkedBlockingDeque<String>(SAVE_LAST_LINES);
     // same here
-    private Vector<ProcessOutputObserver> outputObservers = new Vector<ProcessOutputObserver>(3);
+    private final transient List<ProcessOutputObserver> outputObservers = new ArrayList<ProcessOutputObserver>(3);
 
-    public ServerOutputReader(InputStream inputStream) {
+    public ServerOutputReader(final InputStream inputStream) {
 
 	setName(getClass().getSimpleName());
 	this.running.set(false);
@@ -38,12 +39,12 @@ public class ServerOutputReader extends Thread implements ServerOutput {
     @Override
     public void run() {
 
-	BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+	final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 	running.set(true);
 	log.info("Reading server output started");
 	try {
 	    String line;
-	    while ((line = br.readLine()) != null && running.get()) {
+	    while ((line = reader.readLine()) != null && running.get()) {
 		// TODO: apply a filter here?
 		this.saveLogLine(line);
 		if (line.matches("^.*STEAM.*connected.*$")) {
@@ -63,7 +64,7 @@ public class ServerOutputReader extends Thread implements ServerOutput {
      * 
      * @param line
      */
-    private void saveLogLine(String line) {
+    private void saveLogLine(final String line) {
 
 	if (this.savedLogLines.size() == SAVE_LAST_LINES) {
 	    this.savedLogLines.removeFirst();
@@ -87,7 +88,7 @@ public class ServerOutputReader extends Thread implements ServerOutput {
      * 
      * @param newLine
      */
-    private void notifyObservers(String newLine) {
+    private void notifyObservers(final String newLine) {
 
 	synchronized (this.outputObservers) {
 	    for (ProcessOutputObserver observer : this.outputObservers) {
@@ -107,15 +108,15 @@ public class ServerOutputReader extends Thread implements ServerOutput {
     }
 
     @Override
-    public void registerOnLogObserver(ProcessOutputObserver o) {
+    public void registerOnLogObserver(final ProcessOutputObserver observer) {
 
-	this.outputObservers.add(o);
+	this.outputObservers.add(observer);
     }
 
     @Override
-    public void unRegisterOnLogObserver(ProcessOutputObserver o) {
+    public void unRegisterOnLogObserver(final ProcessOutputObserver observer) {
 
-	this.outputObservers.remove(o);
+	this.outputObservers.remove(observer);
     }
 
     /*

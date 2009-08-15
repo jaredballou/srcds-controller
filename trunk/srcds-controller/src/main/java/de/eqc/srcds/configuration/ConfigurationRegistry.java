@@ -77,7 +77,7 @@ public final class ConfigurationRegistry {
 		new Password("joshua"), "RCON Password", 12));
     }
 
-    public static ConfigurationKey<?> getEntryByKey(String key) {
+    public static ConfigurationKey<?> getEntryByKey(final String key) {
 
 	ConfigurationKey<?> match = null;
 	for (ConfigurationKey<?> entry : entries) {
@@ -94,7 +94,7 @@ public final class ConfigurationRegistry {
 	return entries;
     }
 
-    public static boolean matchesDataType(String key, Class<?> dataType) {
+    public static boolean matchesDataType(final String key, final Class<?> dataType) {
 	
 	return getEntryByKey(key).getDataType() == dataType;
     }

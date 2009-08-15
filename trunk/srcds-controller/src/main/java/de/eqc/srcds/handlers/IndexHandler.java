@@ -25,9 +25,9 @@ public class IndexHandler extends AbstractRegisteredHandler implements
      * .net.httpserver.HttpExchange)
      */
     @Override
-    public void handleRequest(HttpExchange httpExchange) throws IOException {
+    public void handleRequest(final HttpExchange httpExchange) throws IOException {
 
-	SimpleTemplate template = new SimpleTemplate(INDEX_HTML);
+	final SimpleTemplate template = new SimpleTemplate(INDEX_HTML);
 	template.setAttribute("hostname", InetAddress.getLocalHost().getHostName());
 	template.setAttribute("version", VersionUtil.getProjectVersion());
 	

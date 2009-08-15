@@ -24,18 +24,18 @@ public class ImageHandler extends AbstractCacheControlRegisteredHandler implemen
      * .net.httpserver.HttpExchange)
      */
     @Override
-    public void handleRequest(HttpExchange httpExchange) throws IOException {
+    public void handleRequest(final HttpExchange httpExchange) throws IOException {
 
-	String imageName = getParameter("name");
+	final String imageName = getParameter("name");
 	if (imageName.indexOf('/') > -1 || imageName.indexOf('\\') > -1) {
 	    throw new IllegalArgumentException("Only plain file names are allowed as parameter value");
 	}
 	
 
-	String resource = String.format("/images/%s", imageName);
+	final String resource = String.format("/images/%s", imageName);
 
-	URL resourceUrl = getClass().getResource(resource);
-	String mimeType = ImageType.getMimeTypeForImageFile(imageName);
+	final URL resourceUrl = getClass().getResource(resource);
+	final String mimeType = ImageType.getMimeTypeForImageFile(imageName);
 
 	if (resourceUrl == null) {
 	    if (imageName == null) {
@@ -44,12 +44,12 @@ public class ImageHandler extends AbstractCacheControlRegisteredHandler implemen
 		throw new IllegalArgumentException(String.format("Cannot find image for name %s", imageName));
 	    }
 	} else {
-	    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 	    InputStream input = null;
 	    try {
 		input = resourceUrl.openStream();
 
-		byte[] buffer = new byte[1024];
+		final byte[] buffer = new byte[1024];
 		for (int len = 0; (len = input.read(buffer)) != -1;) {
 		    baos.write(buffer, 0, len);
 		}

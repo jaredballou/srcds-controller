@@ -7,13 +7,13 @@ public class HttpAuthenticator extends BasicAuthenticator {
     private final String username;
     private final String password;
 
-    public HttpAuthenticator(String username, String password) {
+    public HttpAuthenticator(final String username, final String password) {
 
 	this("Secured Page", username, password);
     }
 
-    public HttpAuthenticator(String realmName, String username,
-	    String password) {
+    public HttpAuthenticator(final String realmName, final String username,
+	    final String password) {
 
 	super(realmName);
 	this.username = username;
@@ -21,7 +21,7 @@ public class HttpAuthenticator extends BasicAuthenticator {
     }
 
     @Override
-    public boolean checkCredentials(String username, String password) {
+    public boolean checkCredentials(final String username, final String password) {
 
 	return this.username.equals(username) && this.password.equals(password);
     }

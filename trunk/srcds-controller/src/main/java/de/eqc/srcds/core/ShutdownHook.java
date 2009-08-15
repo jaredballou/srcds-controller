@@ -7,12 +7,14 @@ import de.eqc.srcds.core.logging.LogFactory;
 public class ShutdownHook extends Thread {
 
     private static Logger log = LogFactory.getLogger(ShutdownHook.class);
-    
-    private Thread mainThread;
-    private HttpServerController httpServerController;
-    private SourceDServerController srcdsController;
 
-    public ShutdownHook(Thread mainThread, SourceDServerController srcdsController, HttpServerController httpServerController) {
+    private final Thread mainThread;
+    private final HttpServerController httpServerController;
+    private final SourceDServerController srcdsController;
+
+    public ShutdownHook(final Thread mainThread,
+	    final SourceDServerController srcdsController,
+	    final HttpServerController httpServerController) {
 
 	setName(getClass().getSimpleName());
 	this.mainThread = mainThread;
@@ -32,7 +34,7 @@ public class ShutdownHook extends Thread {
 
 	    log.info("Shutdown interrupted");
 	}
-	
+
 	// TODO: flush log
     }
 }

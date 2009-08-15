@@ -18,18 +18,26 @@ import java.net.URL;
  * 
  * @author Holger Cremer
  */
-public class Utils {
+public final class Utils {
 
     private static long lastModfiedCache = -1;
 
-    public static String getUrlContent(URL url) throws IOException {
+    /** Hides the constructor of the utility class. */
+    private Utils() {
+
+	throw new UnsupportedOperationException();
+    }
+
+    public static String getUrlContent(final URL url) throws IOException {
 
 	return getInputStreamContent(url.openStream());
     }
 
-    public static String getFileContent(File file) throws FileNotFoundException, IOException {
+    public static String getFileContent(final File file)
+	    throws FileNotFoundException, IOException {
 
-	return getInputStreamContent(new BufferedInputStream(new FileInputStream(file)));
+	return getInputStreamContent(new BufferedInputStream(
+		new FileInputStream(file)));
     }
 
     /**
@@ -39,11 +47,12 @@ public class Utils {
      * @return
      * @throws IOException
      */
-    public static String getInputStreamContent(InputStream input) throws IOException {
+    public static String getInputStreamContent(final InputStream input)
+	    throws IOException {
 
-	StringBuilder builder = new StringBuilder();
+	final StringBuilder builder = new StringBuilder();
 	try {
-	    byte[] buffer = new byte[1024];
+	    final byte[] buffer = new byte[1024];
 	    for (int len = 0; (len = input.read(buffer)) != -1;) {
 		builder.append(new String(buffer, 0, len));
 	    }
@@ -58,9 +67,11 @@ public class Utils {
      * @param newContent
      * @throws IOException
      */
-    public static void saveToFile(File file, String fileContent) throws IOException {
+    public static void saveToFile(final File file, final String fileContent)
+	    throws IOException {
 
-	BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(file));
+	final BufferedOutputStream output = new BufferedOutputStream(
+		new FileOutputStream(file));
 	try {
 	    output.write(fileContent.getBytes());
 	} finally {
@@ -96,7 +107,7 @@ public class Utils {
 	return source;
     }
 
-    public static void closeQuietly(Closeable closeable) {
+    public static void closeQuietly(final Closeable closeable) {
 
 	if (closeable == null) {
 	    return;
@@ -108,7 +119,7 @@ public class Utils {
 	}
     }
 
-    public static long millisToSecs(long millis) {
+    public static long millisToSecs(final long millis) {
 
 	return millis / MILLIS_PER_SEC;
     }
@@ -119,21 +130,20 @@ public class Utils {
      */
     public static long getLastModifiedDate() {
 
-	if (lastModfiedCache != -1) {
-	    return lastModfiedCache;
-	}
-
-	URL location = Utils.class.getProtectionDomain().getCodeSource().getLocation();
-	if (location.toString().endsWith(".jar")) {
-	    try {
-		File file = new File(location.toURI());
-		lastModfiedCache = file.lastModified();
-	    } catch (URISyntaxException excp) {
-		// ignore
-	    }
-	}
 	if (lastModfiedCache == -1) {
-	    lastModfiedCache = System.currentTimeMillis();
+	    final URL location = Utils.class.getProtectionDomain()
+		    .getCodeSource().getLocation();
+	    if (location.toString().endsWith(".jar")) {
+		try {
+		    final File file = new File(location.toURI());
+		    lastModfiedCache = file.lastModified();
+		} catch (URISyntaxException excp) {
+		    // ignore
+		}
+	    }
+	    if (lastModfiedCache == -1) {
+		lastModfiedCache = System.currentTimeMillis();
+	    }
 	}
 
 	return lastModfiedCache;

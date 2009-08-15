@@ -17,10 +17,10 @@ public class StartHandler extends AbstractRegisteredHandler implements
     }
 
     @Override
-    public void handleRequest(HttpExchange httpExchange) throws IOException {
+    public void handleRequest(final HttpExchange httpExchange) throws IOException {
 
-	ResponseCode code = ResponseCode.INFORMATION;
-	Message message = new Message();
+	final ResponseCode code = ResponseCode.INFORMATION;
+	final Message message = new Message();
 	try {
 	    getServerController().startServer();
 	    message.addLine("Server started successfully");

@@ -1,5 +1,7 @@
 package de.eqc.srcds.enums;
 
+import java.util.Locale;
+
 
 public enum ImageType {
 
@@ -10,7 +12,7 @@ public enum ImageType {
     
     private String mimeType;
     
-    private ImageType(String mimeType) {
+    private ImageType(final String mimeType) {
 
 	this.mimeType = mimeType;
     }    
@@ -20,12 +22,12 @@ public enum ImageType {
 	return mimeType;
     }
     
-    public static String getMimeTypeForImageFile(String filename) {
+    public static String getMimeTypeForImageFile(final String filename) {
 	
 	String mimeType = "image/jpeg";
 	for (ImageType instance : values()) {
 	    
-	    if (filename.toUpperCase().endsWith(instance.name())) {
+	    if (filename.toUpperCase(Locale.getDefault()).endsWith(instance.name())) {
 		mimeType = instance.getMimeType();
 	    }
 	}

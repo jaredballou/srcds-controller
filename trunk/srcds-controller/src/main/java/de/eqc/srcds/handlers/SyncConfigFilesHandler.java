@@ -12,8 +12,8 @@ public class SyncConfigFilesHandler extends AbstractRegisteredHandler {
      * @see de.eqc.srcds.handlers.AbstractRegisteredHandler#handleRequest(com.sun.net.httpserver.HttpExchange)
      */
     @Override
-    public void handleRequest(HttpExchange httpExchange) throws Exception {
-	String run = getParameter("runSync");
+    public void handleRequest(final HttpExchange httpExchange) throws Exception {
+	final String run = getParameter("runSync");
     }
 
     /*

@@ -20,19 +20,19 @@ public class ListHandlersHandler extends AbstractRegisteredHandler
 	return "/usage";
     }
 
-    public void handleRequest(HttpExchange httpExchange) throws IOException {
+    public void handleRequest(final HttpExchange httpExchange) throws IOException {
 	
 	try {
-	    Collection<RegisteredHandler> handlers = HandlerUtil.getRegisteredHandlerImplementations();
-	    List<String> lines = new LinkedList<String>();
+	    final Collection<RegisteredHandler> handlers = HandlerUtil.getRegisteredHandlerImplementations();
+	    final List<String> lines = new LinkedList<String>();
 	    for (RegisteredHandler handler : handlers) {
 		lines.add(handler.getPath());
 	    }
-	    String[] linesAsArray = lines.toArray(new String[0]); 
-	    ControllerResponse cr = new ControllerResponse(ResponseCode.INFORMATION, new Message(linesAsArray));
+	    final String[] linesAsArray = lines.toArray(new String[0]); 
+	    final ControllerResponse cr = new ControllerResponse(ResponseCode.INFORMATION, new Message(linesAsArray));
 	    outputXmlContent(cr.toXml());
 	} catch (Exception e) {
-	    throw new IOException(String.format("Unable to register handler %s", getClass()));
+	    throw new IOException(String.format("Unable to register handler %s", getClass()), e);
 	}
 	
     }

@@ -4,14 +4,14 @@ import java.util.Map.Entry;
 
 import de.eqc.srcds.configuration.Configuration;
 import de.eqc.srcds.configuration.ConfigurationKey;
-import de.eqc.srcds.xmlbeans.XmlBean;
+import de.eqc.srcds.xmlbeans.AbstractXmlBean;
 
 
-public class ControllerConfiguration extends XmlBean {
+public class ControllerConfiguration extends AbstractXmlBean {
 
     private final Configuration config;
     
-    public ControllerConfiguration(Configuration config) {
+    public ControllerConfiguration(final Configuration config) {
 
 	super(true);
 	this.config = config;
@@ -23,10 +23,10 @@ public class ControllerConfiguration extends XmlBean {
     private static final long serialVersionUID = -1655029232522729190L;
 
     @Override
-    protected String toXml(int indent) {
+    protected String toXml(final int indent) {
 
-	StringBuilder sbEntries = new StringBuilder(header(indent));
-	StringBuilder sbEnums = new StringBuilder(indent("<Metadata>\n", indent + 1));
+	final StringBuilder sbEntries = new StringBuilder(header(indent));
+	final StringBuilder sbEnums = new StringBuilder(indent("<Metadata>\n", indent + 1));
 
 	boolean enums = false;
 	for (Entry<ConfigurationKey<?>, String> entry : config.getData().entrySet()) {

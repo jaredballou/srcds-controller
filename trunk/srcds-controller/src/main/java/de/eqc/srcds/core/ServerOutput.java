@@ -30,12 +30,12 @@ public interface ServerOutput {
      * 
      * @param o
      */
-    void registerOnLogObserver(ProcessOutputObserver o);
+    void registerOnLogObserver(ProcessOutputObserver observer);
 
     /**
      * Unregisters an observer.
      * 
      * @param o
      */
-    void unRegisterOnLogObserver(ProcessOutputObserver o);
+    void unRegisterOnLogObserver(ProcessOutputObserver observer);
 }

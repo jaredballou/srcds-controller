@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import de.eqc.srcds.xmlbeans.XmlBean;
+import de.eqc.srcds.xmlbeans.AbstractXmlBean;
 
-public class Message extends XmlBean {
+public class Message extends AbstractXmlBean {
 
     /**
      * 
@@ -20,7 +20,7 @@ public class Message extends XmlBean {
 	this.items = new LinkedList<String>();
     }
 
-    public Message(String... messages) {
+    public Message(final String... messages) {
 
 	super(false);
 	if (messages == null) {
@@ -30,17 +30,17 @@ public class Message extends XmlBean {
 	}
     }
 
-    public void addLine(String message) {
+    public void addLine(final String message) {
 
 	items.add(message);
     }
 
     @Override
-    protected String toXml(int indent) {
+    protected String toXml(final int indent) {
 
-	StringBuilder sb = new StringBuilder(header(indent));
+	final StringBuilder sb = new StringBuilder(header(indent));
 
-	if (items.size() == 0) {
+	if (items.isEmpty()) {
 	    addLine("(no message specified)");
 	}
 
@@ -55,7 +55,7 @@ public class Message extends XmlBean {
     @Override
     public String toString() {
 
-	StringBuilder sb = new StringBuilder();
+	final StringBuilder sb = new StringBuilder();
 	for (String message : items) {
 	    sb.append(message + "\n");
 	}
