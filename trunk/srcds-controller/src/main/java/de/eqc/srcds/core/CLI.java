@@ -45,7 +45,8 @@ import de.eqc.srcds.exceptions.UnsupportedOSException;
  */
 public class CLI {
 
-    private static Logger log = LogFactory.getLogger(CLI.class);
+    private static Logger log =
+	    LogFactory.getLogger(CLI.class);
 
     private Configuration config;
 
@@ -58,9 +59,11 @@ public class CLI {
 
 	checkOS();
 
-	final File configFile = new File(DEFAULT_CONFIG_FILENAME);
+	final File configFile =
+		new File(DEFAULT_CONFIG_FILENAME);
 
-	this.config = new XmlPropertiesConfiguration(configFile);
+	this.config =
+		new XmlPropertiesConfiguration(configFile);
 
 	if (OperatingSystem.getCurrent() == OperatingSystem.WINDOWS) {
 	    new TrayMenu(config);
@@ -73,9 +76,11 @@ public class CLI {
 	    System.exit(0);
 	}
 
-	final SourceDServerController srcdsController = new SourceDServerController(this.config);
-	final HttpServerController httpServerController = new HttpServerController(config,
-										   srcdsController);
+	final SourceDServerController srcdsController =
+		new SourceDServerController(this.config);
+	final HttpServerController httpServerController =
+		new HttpServerController(config,
+					 srcdsController);
 
 	Runtime.getRuntime()
 	       .addShutdownHook(new ShutdownHook(Thread.currentThread(),
@@ -102,19 +107,21 @@ public class CLI {
 
     private void processCommandlineArguments(final String... arguments) throws ConfigurationException {
 
-	for (int i = 0; i < arguments.length; i++) {
-	    final String argument = arguments[i].trim();
+	for (int i =
+		0; i < arguments.length; i++) {
+	    final String argument =
+		    arguments[i].trim();
 	    if ("--help".equals(argument)) {
 		System.out.println("Usage: java -jar <jarfile> [--httpServerPort <port>] [--srcdsExecutable <file>]");
 		System.exit(0);
-	    } else if ("--httpServerPort".equals(argument)
-		    && i < argument.length() - 1) {
-		final String value = arguments[i + 1];
+	    } else if ("--httpServerPort".equals(argument) && i < argument.length() - 1) {
+		final String value =
+			arguments[i + 1];
 		config.setValue(HTTP_SERVER_PORT,
 				Integer.valueOf(value));
-	    } else if ("--srcdsExecutable".equals(argument)
-		    && i < argument.length() - 1) {
-		final String value = arguments[i + 1];
+	    } else if ("--srcdsExecutable".equals(argument) && i < argument.length() - 1) {
+		final String value =
+			arguments[i + 1];
 		config.setValue(SRCDS_EXECUTABLE,
 				value);
 	    }
@@ -123,7 +130,8 @@ public class CLI {
 
     private void checkOS() throws UnsupportedOSException {
 
-	final OperatingSystem operatingSystem = OperatingSystem.getCurrent();
+	final OperatingSystem operatingSystem =
+		OperatingSystem.getCurrent();
 	log.info(String.format("Detected %s operating system",
 			       operatingSystem));
 	if (operatingSystem == OperatingSystem.UNSUPPORTED) {

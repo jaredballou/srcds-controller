@@ -25,13 +25,15 @@ import de.eqc.srcds.xmlbeans.impl.ControllerConfiguration;
 
 public final class XmlPropertiesConfiguration implements Configuration {
 
-    private static Logger log = Logger.getLogger(SourceDServerController.class.getSimpleName());
+    private static Logger log =
+	    Logger.getLogger(SourceDServerController.class.getSimpleName());
     private final File propertiesFile;
     private Properties properties;
 
     public XmlPropertiesConfiguration(final File propertiesFile) throws ConfigurationException {
 
-	this.propertiesFile = propertiesFile;
+	this.propertiesFile =
+		propertiesFile;
 
 	if (propertiesFile.exists()) {
 	    loadConfiguration();
@@ -51,15 +53,19 @@ public final class XmlPropertiesConfiguration implements Configuration {
 							   key));
 	}
 
-	T value = null;
+	T value =
+		null;
 
 	if (String.class.isAssignableFrom(dataType)) {
-	    value = (T) properties.getProperty(key);
+	    value =
+		    (T) properties.getProperty(key);
 	} else {
 	    try {
-		final Method conversionMethod = dataType.getDeclaredMethod("valueOf",
-									   String.class);
-		value = (T) conversionMethod.invoke(dataType,
+		final Method conversionMethod =
+			dataType.getDeclaredMethod("valueOf",
+						   String.class);
+		value =
+			(T) conversionMethod.invoke(dataType,
 						    properties.getProperty(key));
 	    } catch (Exception e) {
 		throw new ConfigurationException(String.format("Conversion to datatype %s failed for %s",
@@ -104,11 +110,14 @@ public final class XmlPropertiesConfiguration implements Configuration {
 
     private void loadConfiguration() throws ConfigurationException {
 
-	properties = new Properties();
+	properties =
+		new Properties();
 
 	try {
-	    final FileInputStream fis = new FileInputStream(propertiesFile);
-	    final Properties decryptedProperties = new Properties();
+	    final FileInputStream fis =
+		    new FileInputStream(propertiesFile);
+	    final Properties decryptedProperties =
+		    new Properties();
 	    decryptedProperties.loadFromXML(fis);
 	    process(CryptoUtil.Action.DECRYPT,
 		    decryptedProperties,
@@ -127,7 +136,8 @@ public final class XmlPropertiesConfiguration implements Configuration {
 
     private void validateConfiguration() throws ConfigurationException {
 
-	final List<Object> keysToRemove = new LinkedList<Object>();
+	final List<Object> keysToRemove =
+		new LinkedList<Object>();
 	for (Entry<Object, Object> entry : properties.entrySet()) {
 	    if (!isValidKey(entry.getKey()
 				 .toString())) {
@@ -165,7 +175,8 @@ public final class XmlPropertiesConfiguration implements Configuration {
 	    propertiesFile.delete();
 	}
 
-	properties = new Properties();
+	properties =
+		new Properties();
 	for (ConfigurationKey<?> registryEntry : ConfigurationRegistry.getEntries()) {
 	    setValue(registryEntry.getKey(),
 		     registryEntry.getDefaultValue());
@@ -177,8 +188,10 @@ public final class XmlPropertiesConfiguration implements Configuration {
     private void store() throws ConfigurationException {
 
 	try {
-	    final FileOutputStream fos = new FileOutputStream(propertiesFile);
-	    final Properties encryptedProperties = new Properties();
+	    final FileOutputStream fos =
+		    new FileOutputStream(propertiesFile);
+	    final Properties encryptedProperties =
+		    new Properties();
 	    process(CryptoUtil.Action.ENCRYPT,
 		    properties,
 		    encryptedProperties);
@@ -203,10 +216,12 @@ public final class XmlPropertiesConfiguration implements Configuration {
 		    ConfigurationRegistry.getEntryByKey(entry.getKey()
 							     .toString());
 
-	    String value = entry.getValue()
-				.toString();
+	    String value =
+		    entry.getValue()
+			 .toString();
 	    if (configKey.getDataType() == Password.class) {
-		value = CryptoUtil.process(action,
+		value =
+			CryptoUtil.process(action,
 					   value);
 	    }
 	    target.put(configKey.getKey(),
@@ -223,7 +238,8 @@ public final class XmlPropertiesConfiguration implements Configuration {
     @Override
     public Map<ConfigurationKey<?>, String> getData() {
 
-	final Map<ConfigurationKey<?>, String> data = new TreeMap<ConfigurationKey<?>, String>();
+	final Map<ConfigurationKey<?>, String> data =
+		new TreeMap<ConfigurationKey<?>, String>();
 
 	for (Entry<Object, Object> entry : properties.entrySet()) {
 	    final ConfigurationKey<?> configKey =
