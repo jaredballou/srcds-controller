@@ -12,7 +12,7 @@ public class ConfigurationKey<T> implements Comparable<ConfigurationKey<T>> {
     private final T defaultValue;
     private final Integer order;
 
-    public ConfigurationKey(String key, T defaultValue, String description, int order) {
+    public ConfigurationKey(final String key, final T defaultValue, final String description, final int order) {
 
 	this.key = key;
 	this.defaultValue = defaultValue;
@@ -41,7 +41,7 @@ public class ConfigurationKey<T> implements Comparable<ConfigurationKey<T>> {
 	    throw new IllegalStateException("Data type is not an enumeration");
 	}
 	
-	Collection<String> enumValues = new LinkedList<String>();
+	final Collection<String> enumValues = new LinkedList<String>();
 	for (Object constants : defaultValue.getClass().getEnumConstants()) {
 	    enumValues.add(constants.toString());
 	}
@@ -65,7 +65,7 @@ public class ConfigurationKey<T> implements Comparable<ConfigurationKey<T>> {
     }
 
     @Override
-    public int compareTo(ConfigurationKey<T> entry) {
+    public int compareTo(final ConfigurationKey<T> entry) {
 
 	return order.compareTo(entry.order);
     }

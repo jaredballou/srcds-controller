@@ -6,7 +6,7 @@ public class Password {
     private final String value;
     
     
-    public Password(String value) {
+    public Password(final String value) {
 
 	this.value = value;
     }
@@ -14,11 +14,11 @@ public class Password {
     @Override
     public String toString() {
     
-        return value.toString();
+        return value;
     }
     
     
-    public static Password valueOf(String value) {
+    public static Password valueOf(final String value) {
 
 	return new Password(value);
     }

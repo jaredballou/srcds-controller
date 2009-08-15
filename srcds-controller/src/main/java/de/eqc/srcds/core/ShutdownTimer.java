@@ -9,8 +9,9 @@ public class ShutdownTimer extends TimerTask {
 
     private static Logger log = LogFactory.getLogger(ShutdownTimer.class);
 
-    public ShutdownTimer(long delayInSecs) {
+    public ShutdownTimer(final long delayInSecs) {
 
+	super();
 	Thread.currentThread().setName(getClass().getSimpleName());
 	log.warning(String.format("Controller is going down in %d seconds",
 		delayInSecs));

@@ -20,13 +20,13 @@ public class ShutdownHandler extends AbstractRegisteredHandler implements
 	return "/shutdown";
     }
 
-    public void handleRequest(HttpExchange httpExchange) throws IOException {
+    public void handleRequest(final HttpExchange httpExchange) throws IOException {
 
-	ResponseCode code = ResponseCode.INFORMATION;
-	Message message = new Message(String.format("Controller is going down in %d seconds...", Utils.millisToSecs(SHUTDOWN_DELAY_MILLIS)));
+	final ResponseCode code = ResponseCode.INFORMATION;
+	final Message message = new Message(String.format("Controller is going down in %d seconds...", Utils.millisToSecs(SHUTDOWN_DELAY_MILLIS)));
 	outputXmlContent(new ControllerResponse(code, message).toXml());
 
-	Timer timer = new Timer();
+	final Timer timer = new Timer();
 	timer.schedule(new ShutdownTimer(Utils.millisToSecs(SHUTDOWN_DELAY_MILLIS)), SHUTDOWN_DELAY_MILLIS);
     }
     

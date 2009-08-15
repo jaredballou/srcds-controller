@@ -16,23 +16,24 @@ import java.util.logging.SimpleFormatter;
  */
 public class CompactSimpleFormatter extends Formatter {
 
-    Date dat = new Date();
-    private final static String format = "{0,date} {0,time}";
+    private final Date dat = new Date();
+    private final static String FORMAT_PATTERN = "{0,date} {0,time}";
     private MessageFormat formatter;
-
-    private Object args[] = new Object[1];
 
     // Line separator string.  This is the value of the line.separator
     // property at the moment that the SimpleFormatter was created.
-    private String lineSeparator = (String) java.security.AccessController.doPrivileged(
+    private final String lineSeparator = (String) java.security.AccessController.doPrivileged(
                new sun.security.action.GetPropertyAction("line.separator"));
 
-    private String getClassNameWithoutPackage(String sourceClassName) {
-	int lastIndexOf = sourceClassName.lastIndexOf(".");
+    private String getClassNameWithoutPackage(final String sourceClassName) {
+	final int lastIndexOf = sourceClassName.lastIndexOf('.');
+	String ret;
 	if (lastIndexOf == -1) {
-	    return sourceClassName;
+	    ret = sourceClassName;
+	} else {
+	    ret = sourceClassName.substring(lastIndexOf + 1);
 	}
-	return sourceClassName.substring(lastIndexOf + 1); 
+	return ret; 
     }
     
     /**
@@ -40,14 +41,16 @@ public class CompactSimpleFormatter extends Formatter {
      * @param record the log record to be formatted.
      * @return a formatted log record
      */
-    public synchronized String format(LogRecord record) {
-	StringBuilder sb = new StringBuilder();
+    @Override
+    public synchronized String format(final LogRecord record) {
+	final StringBuilder sb = new StringBuilder();
 	// Minimize memory allocations here.
 	dat.setTime(record.getMillis());
+	Object args[] = new Object[1];
 	args[0] = dat;
-	StringBuffer text = new StringBuffer();
+	final StringBuffer text = new StringBuffer();
 	if (formatter == null) {
-	    formatter = new MessageFormat(format);
+	    formatter = new MessageFormat(FORMAT_PATTERN);
 	}
 	formatter.format(args, text, null);
 	sb.append(text);
@@ -59,15 +62,15 @@ public class CompactSimpleFormatter extends Formatter {
 	}
 	sb.append("] ");
 
-	String message = formatMessage(record);
+	final String message = formatMessage(record);
 	sb.append(record.getLevel().getName());
 	sb.append(": ");
 	sb.append(message);
 	sb.append(lineSeparator);
 	if (record.getThrown() != null) {
 	    try {
-	        StringWriter sw = new StringWriter();
-	        PrintWriter pw = new PrintWriter(sw);
+		final StringWriter sw = new StringWriter();
+		final PrintWriter pw = new PrintWriter(sw);
 	        record.getThrown().printStackTrace(pw);
 	        pw.close();
 		sb.append(sw.toString());

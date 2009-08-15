@@ -50,7 +50,7 @@ public class ProcessOutputHandler implements HttpHandler, RegisteredHandler {
      * SourceDServerController, de.eqc.srcds.configuration.Configuration)
      */
     @Override
-    public void init(SourceDServerController controller, Configuration config) {
+    public void init(final SourceDServerController controller, final Configuration config) {
 
 	this.serverController = controller;
     }
@@ -61,15 +61,15 @@ public class ProcessOutputHandler implements HttpHandler, RegisteredHandler {
      * )
      */
     @Override
-    public void handle(HttpExchange httpExchange) throws IOException {
+    public void handle(final HttpExchange httpExchange) throws IOException {
 
 	httpExchange.getResponseHeaders().add("Content-type", "text/html");
 	httpExchange.sendResponseHeaders(200, 0);
 	PrintStream printStream = null;
 	
-	ServerOutput serverOutput = this.serverController.getServerOutput();
+	final ServerOutput serverOutput = this.serverController.getServerOutput();
 	try {
-	    OutputStream os = httpExchange.getResponseBody();
+	    final OutputStream os = httpExchange.getResponseBody();
 	    
 	    // set autoflush on in constructor
 	    printStream = new PrintStream(os, true);
@@ -80,21 +80,21 @@ public class ProcessOutputHandler implements HttpHandler, RegisteredHandler {
 		printStream.println("### Process never run!<br/>");
 		Utils.closeQuietly(printStream);
 		return;
-	    }
-	    for (String logLine : serverOutput.getLastLog()) {
-		printStream.println(logLine + "<br/>");
-	    }
+	    } else {
+		for (String logLine : serverOutput.getLastLog()) {
+		    printStream.println(logLine + "<br/>");
+		}
 
-	    if (this.serverController.getServerState() != ServerState.RUNNING) {
-		printStream.println("### Server isn't running.<br/>");
-		Utils.closeQuietly(printStream);
-		return;
+		if (this.serverController.getServerState() != ServerState.RUNNING) {
+		    printStream.println("### Server isn't running.<br/>");
+		    Utils.closeQuietly(printStream);
+		} else {
+		    printStream.println("### Live output:<br/>");
+		    Channels.newChannel(printStream);
+		    final WriteLogToStreamThread streamLogger = new WriteLogToStreamThread(printStream, serverOutput);
+		    streamLogger.start();
+		}
 	    }
-	    
-		printStream.println("### Live output:<br/>");
-		Channels.newChannel(printStream);
-		WriteLogToStreamThread streamLogger = new WriteLogToStreamThread(printStream, serverOutput);
-		streamLogger.start();
 	} catch (Exception e) {
 	    // every Exception is interesting here because the PrintStream should omit any IOExceptions
 	    log.log(Level.WARNING, "Exception during output sending: " + e.getMessage());
@@ -111,16 +111,14 @@ public class ProcessOutputHandler implements HttpHandler, RegisteredHandler {
      */
     class WriteLogToStreamThread extends Thread implements ProcessOutputObserver {
 
-	// 'volatile' because we want to ensure that this object is visible for
-	// every thread (TODO: is this necessary?)
-	private volatile PrintStream printStream;
-	private ServerOutput serverOutput;
+	private final PrintStream printStream;
+	private final ServerOutput serverOutput;
 
 	/**
 	 * @param printStream
 	 * @param serverOutput 
 	 */
-	public WriteLogToStreamThread(PrintStream printStream, ServerOutput serverOutput) {
+	public WriteLogToStreamThread(final PrintStream printStream, final ServerOutput serverOutput) {
 
 	    this.setName("WriteLogToStreamThread");
 	    this.printStream = printStream;
@@ -160,7 +158,7 @@ public class ProcessOutputHandler implements HttpHandler, RegisteredHandler {
 	 * .String)
 	 */
 	@Override
-	public void outputHasChanged(String newLine) {
+	public void outputHasChanged(final String newLine) {
 
 	    this.printStream.println(newLine + "<br />");
 	}

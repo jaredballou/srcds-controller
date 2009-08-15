@@ -27,7 +27,7 @@ public abstract class AbstractCacheControlRegisteredHandler extends AbstractRegi
      * 86400 seconds = one day
      */
     private static final long EXPIRES_IN = 86400000;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss 'GMT'", Locale.ENGLISH);
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss 'GMT'", Locale.ENGLISH);
 
     /*
      * @see
@@ -35,9 +35,9 @@ public abstract class AbstractCacheControlRegisteredHandler extends AbstractRegi
      * .HttpExchange)
      */
     @Override
-    public void handle(HttpExchange httpExchange) throws IOException {
+    public void handle(final HttpExchange httpExchange) throws IOException {
 
-	long lastModified = (Utils.getLastModifiedDate() / 1000) * 1000;
+	final long lastModified = (Utils.getLastModifiedDate() / 1000) * 1000;
 
 	// send cache control headers
 	httpExchange.getResponseHeaders().add("Cache-Control", "public, max-age=" + EXPIRES_IN + ", must-revalidate");
@@ -48,11 +48,11 @@ public abstract class AbstractCacheControlRegisteredHandler extends AbstractRegi
 	// looking for "If-modified-since" to send a 304 status
 	for (Entry<String, List<String>> entry : httpExchange.getRequestHeaders().entrySet()) {
 	    if (entry.getKey().equalsIgnoreCase("If-modified-since")) {
-		Date parsedDate = parseHeaderDate(entry.getValue());
+		final Date parsedDate = parseHeaderDate(entry.getValue());
 		if (parsedDate != null && lastModified <= parsedDate.getTime()) {
 		    // skip the request and send a http 304
 		    httpExchange.sendResponseHeaders(304, 0);
-		    OutputStream os = httpExchange.getResponseBody();
+		    final OutputStream os = httpExchange.getResponseBody();
 		    os.flush();
 		    os.close();
 		    return;
@@ -64,19 +64,19 @@ public abstract class AbstractCacheControlRegisteredHandler extends AbstractRegi
 	super.handle(httpExchange);
     }
 
-    private Date parseHeaderDate(List<String> valueList) {
+    private Date parseHeaderDate(final List<String> valueList) {
 
+	Date ret = null;
 	if (valueList.size() != 1) {
 	    log.warning("Expected size of values is 1 but was: " + valueList.size());
-	    return null;
 	} else {
 	    try {
-		return dateFormat.parse(valueList.get(0));
+		ret = dateFormat.parse(valueList.get(0));
 	    } catch (ParseException excp) {
 		log.log(Level.WARNING, "Can't parse the if-modified-since date '" + valueList.get(0) + "': "
 			+ excp.getMessage(), excp);
-		return null;
 	    }
 	}
+	return ret;
     }
 }

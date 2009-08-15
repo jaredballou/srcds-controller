@@ -1,39 +1,166 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>de.eqc.srcds</groupId>
-    <artifactId>srcds-controller</artifactId>
-    <name>srcds-controller</name>
-    <version>0.0.1-SNAPSHOT</version>
-    <description>HTTP server which provides remote controlling abilities for Source Dedicated Servers</description>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>de.eqc.srcds</groupId>
+	<artifactId>srcds-controller</artifactId>
+	<name>srcds-controller</name>
+	<version>0.0.1-SNAPSHOT</version>
+	<description>HTTP server which provides remote controlling abilities for Source Dedicated Servers</description>
+	<url>http://code.google.com/p/srcds-controller/</url>
+	<inceptionYear>2009</inceptionYear>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>de.eqc.srcds.core.CLI</mainClass>
-                            <packageName>de.eqc.srcds.core</packageName>
-                        </manifest>
-                        <manifestEntries>
-                            <mode>development</mode>
-                            <url>${pom.url}</url>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-            </plugin>
+	<properties>
+		<jdk.version>1.6</jdk.version>
+	</properties>
 
-        </plugins>
-    </build>
+	<scm>
+		<connection>scm:svn:http://srcds-controller.googlecode.com/svn/trunk</connection>
+		<developerConnection>scm:svn:https://srcds-controller.googlecode.com/svn/trunk</developerConnection>
+		<url>http://srcds-controller.googlecode.com/svn/trunk</url>
+	</scm>
+
+	<organization>
+		<name>SRCDS Controller Development Team</name>
+		<url>http://www.earthquake-clan.de/srcds/</url>
+	</organization>
+
+	<licenses>
+		<license>
+			<name>The GNU General Public License, Version 3</name>
+			<url>http://www.gnu.org/licenses/gpl-3.0.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>hannes.scharmann</id>
+			<name>Hannes Scharmann</name>
+			<email>hannes.scharmann@googlemail.com</email>
+			<organization>SRCDS Controller Development Team</organization>
+			<organizationUrl>http://www.earthquake-clan.de/srcds/</organizationUrl>
+			<timezone>-1</timezone>
+			<roles>
+				<role>project owner</role>
+				<role>developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<issueManagement>
+		<system>Google Code</system>
+		<url>http://code.google.com/p/srcds-controller/issues/list</url>
+	</issueManagement>
+
+	<mailingLists>
+		<mailingList>
+			<name>User mailing list</name>
+			<subscribe>http://groups.google.com/group/srcds-controller-users/subscribe</subscribe>
+			<unsubscribe>http://groups.google.com/group/srcds-controller-users/unsubscribe</unsubscribe>
+			<archive>http://groups.google.com/group/srcds-controller-users/</archive>
+		</mailingList>
+		<mailingList>
+			<name>Developer mailing list</name>
+			<subscribe>http://groups.google.com/group/srcds-controller-developers/subscribe</subscribe>
+			<unsubscribe>http://groups.google.com/group/srcds-controller-developers/unsubscribe</unsubscribe>
+			<archive>http://groups.google.com/group/srcds-controller-developers/</archive>
+		</mailingList>
+	</mailingLists>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>de.eqc.srcds.core.CLI</mainClass>
+							<packageName>de.eqc.srcds.core</packageName>
+						</manifest>
+						<manifestEntries>
+							<mode>development</mode>
+							<url>${pom.url}</url>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>false</downloadJavadocs>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<parallel>false</parallel>
+					<threadCount>5</threadCount>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<updateReleaseInfo>true</updateReleaseInfo>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-release-plugin</artifactId>
+				<configuration>
+					<tagBase>https://srcds-controller.googlecode.com/svn/tags</tagBase>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<quiet>true</quiet>
+				</configuration>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>javadoc</report>
+						</reports>
+						<configuration>
+							<links>
+								<link>http://java.sun.com/javase/6/docs/api/</link>
+							</links>
+						</configuration>
+					</reportSet>
+				</reportSets>
+			</plugin>
+			<!--
+			<plugin>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<configuration>
+					<linkXref>true</linkXref>
+					<targetJdk>${jdk.version}</targetJdk>
+					<minimumTokens>100</minimumTokens>
+					<rulesets>
+						<ruleset>/rulesets/basic.xml</ruleset>
+						<ruleset>/rulesets/braces.xml</ruleset>
+						<ruleset>/rulesets/finalizers.xml</ruleset>
+						<ruleset>/rulesets/imports.xml</ruleset>
+						<ruleset>/rulesets/migrating.xml</ruleset>
+						<ruleset>/rulesets/strings.xml</ruleset>
+						<ruleset>/rulesets/unusedcode.xml</ruleset>
+					</rulesets>
+				</configuration>
+			</plugin>
+			-->
+		</plugins>
+	</reporting>
 </project>

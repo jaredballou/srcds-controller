@@ -21,9 +21,9 @@ public final class NetworkUtil {
 	return InetAddress.getLocalHost().getHostName();
     }
     
-    public static String getHomeUrl(Configuration config) throws UnknownHostException, ConfigurationException {
+    public static String getHomeUrl(final Configuration config) throws UnknownHostException, ConfigurationException {
 	
-	int port = config.getValue(HTTP_SERVER_PORT, Integer.class);
+	final int port = config.getValue(HTTP_SERVER_PORT, Integer.class);
 	return String.format("http://%s:%d", getLocalHostname(), port);
     }
 }

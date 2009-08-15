@@ -25,6 +25,8 @@ import de.eqc.srcds.xmlbeans.impl.Message;
  */
 public abstract class AbstractRegisteredHandler implements HttpHandler, RegisteredHandler {
 
+    private static final String UTF_8 = "utf-8";
+
     private static Logger log = LogFactory.getLogger(AbstractRegisteredHandler.class);
 
     private Configuration config;
@@ -52,7 +54,7 @@ public abstract class AbstractRegisteredHandler implements HttpHandler, Register
      * ServerController, de.eqc.srcds.configuration.Configuration)
      */
     @Override
-    public void init(SourceDServerController controller, Configuration config) {
+    public void init(final SourceDServerController controller, final Configuration config) {
 
 	this.serverController = controller;
 	this.config = config;
@@ -79,18 +81,18 @@ public abstract class AbstractRegisteredHandler implements HttpHandler, Register
 	if (this.parsedRequestParameter == null) {
 	    this.parsedRequestParameter = new HashMap<String, String>();
 
-	    String requestQuery = this.httpExchange.getRequestURI().getRawQuery();
+	    final String requestQuery = this.httpExchange.getRequestURI().getRawQuery();
 	    if (requestQuery == null || requestQuery.isEmpty()) {
 		return;
 	    }
-	    String[] params = requestQuery.split("&");
+	    final String[] params = requestQuery.split("&");
 	    for (String param : params) {
-		String[] parts = param.split("=");
+		final String[] parts = param.split("=");
 		if (parts.length != 2) {
 		    continue;
 		}
-		this.parsedRequestParameter.put(URLDecoder.decode(parts[0], "utf-8"), URLDecoder.decode(parts[1],
-			"utf-8"));
+		this.parsedRequestParameter.put(URLDecoder.decode(parts[0], UTF_8), URLDecoder.decode(parts[1],
+			UTF_8));
 	    }
 	}
     }
@@ -104,16 +106,16 @@ public abstract class AbstractRegisteredHandler implements HttpHandler, Register
 	if (this.parsedPostParameter == null) {
 	    this.parsedPostParameter = new HashMap<String, String>();
 
-	    String requestBody = Utils.getInputStreamContent(this.httpExchange.getRequestBody());
+	    final String requestBody = Utils.getInputStreamContent(this.httpExchange.getRequestBody());
 
-	    String[] params = requestBody.split("&");
+	    final String[] params = requestBody.split("&");
 	    for (String param : params) {
-		String[] parts = param.split("=");
+		final String[] parts = param.split("=");
 		if (parts.length != 2) {
 		    continue;
 		}
 		this.parsedPostParameter
-			.put(URLDecoder.decode(parts[0], "utf-8"), URLDecoder.decode(parts[1], "utf-8"));
+			.put(URLDecoder.decode(parts[0], UTF_8), URLDecoder.decode(parts[1], UTF_8));
 	    }
 	}
     }
@@ -124,13 +126,13 @@ public abstract class AbstractRegisteredHandler implements HttpHandler, Register
 	return this.parsedRequestParameter;
     }
 
-    protected String getParameter(String getKey) throws UnsupportedEncodingException {
+    protected String getParameter(final String getKey) throws UnsupportedEncodingException {
 
 	parseRequestQuery();
 	return this.parsedRequestParameter.get(getKey);
     }
 
-    protected String getPostParameter(String postKey) throws IOException {
+    protected String getPostParameter(final String postKey) throws IOException {
 
 	parsePostRequest();
 	return this.parsedPostParameter.get(postKey);
@@ -148,7 +150,7 @@ public abstract class AbstractRegisteredHandler implements HttpHandler, Register
      * @param content
      * @throws IOException
      */
-    protected void outputHtmlContent(String content) throws IOException {
+    protected void outputHtmlContent(final String content) throws IOException {
 
 	outputContent(content, "text/html");
     }
@@ -160,7 +162,7 @@ public abstract class AbstractRegisteredHandler implements HttpHandler, Register
      * @param content
      * @throws IOException
      */
-    protected void outputXmlContent(String content) throws IOException {
+    protected void outputXmlContent(final String content) throws IOException {
 
 	outputContent(content, "text/xml");
     }
@@ -172,7 +174,7 @@ public abstract class AbstractRegisteredHandler implements HttpHandler, Register
      * @param content
      * @throws IOException
      */
-    protected void outputTextContent(String content) throws IOException {
+    protected void outputTextContent(final String content) throws IOException {
 
 	outputContent(content, "text/plain");
     }
@@ -184,7 +186,7 @@ public abstract class AbstractRegisteredHandler implements HttpHandler, Register
      * @param content
      * @throws IOException
      */
-    protected void outputCssContent(String content) throws IOException {
+    protected void outputCssContent(final String content) throws IOException {
 
 	outputContent(content, "text/css");
     }
@@ -197,7 +199,7 @@ public abstract class AbstractRegisteredHandler implements HttpHandler, Register
      * @param contentType
      * @throws IOException
      */
-    protected void outputContent(String content, String contentType) throws IOException {
+    protected void outputContent(final String content, final String contentType) throws IOException {
 
 	outputContent(content.getBytes(), contentType);
     }
@@ -210,12 +212,12 @@ public abstract class AbstractRegisteredHandler implements HttpHandler, Register
      * @param contentType
      * @throws IOException
      */
-    protected void outputContent(byte[] bytes, String contentType) throws IOException {
+    protected void outputContent(final byte[] bytes, final String contentType) throws IOException {
 
 	this.httpExchange.getResponseHeaders().add("Content-type", contentType);
 
 	httpExchange.sendResponseHeaders(200, bytes.length);
-	OutputStream os = httpExchange.getResponseBody();
+	final OutputStream os = httpExchange.getResponseBody();
 	os.write(bytes);
 	os.flush();
 	os.close();
@@ -227,7 +229,7 @@ public abstract class AbstractRegisteredHandler implements HttpHandler, Register
      * )
      */
     @Override
-    public void handle(HttpExchange httpExchange) throws IOException {
+    public void handle(final HttpExchange httpExchange) throws IOException {
 
 	this.httpExchange = httpExchange;
 	this.parsedRequestParameter = null;
@@ -240,11 +242,11 @@ public abstract class AbstractRegisteredHandler implements HttpHandler, Register
 		    .getMessage()));
 	    log.log(Level.FINE, "Stacktrace: ", e);
 	    
-	    Message message = new Message();
+	    final Message message = new Message();
 	    message.addLine(e.getLocalizedMessage());
 	    outputXmlContent(new ControllerResponse(ResponseCode.ERROR, message).toXml());
 	}
     }
 
-    public abstract void handleRequest(HttpExchange httpExchange) throws Exception;
+    public abstract void handleRequest(final HttpExchange httpExchange) throws Exception;
 }

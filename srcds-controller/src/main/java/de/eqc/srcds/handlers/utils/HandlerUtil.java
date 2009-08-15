@@ -38,12 +38,12 @@ public final class HandlerUtil {
 	    throws ClassNotFoundException, InstantiationException,
 	    IllegalAccessException, UnsupportedEncodingException {
 
-	String pckgname = RegisteredHandler.class.getPackage().getName();
-	Collection<RegisteredHandler> handlers = new ArrayList<RegisteredHandler>();
+	final String pckgname = RegisteredHandler.class.getPackage().getName();
+	final Collection<RegisteredHandler> handlers = new ArrayList<RegisteredHandler>();
 	Collection<String> classNames = null;
 	try {
-	    String path = '/' + pckgname.replace('.', '/');
-	    URL resource = HandlerUtil.class.getResource(path);
+	    final String path = '/' + pckgname.replace('.', '/');
+	    final URL resource = HandlerUtil.class.getResource(path);
 	    if (resource == null) {
 		throw new ClassNotFoundException("No resource for " + path);
 	    }
@@ -51,13 +51,12 @@ public final class HandlerUtil {
 	    classNames = findHandlerClassNames(resource.getPath().toString(),
 		    pckgname);
 	} catch (Exception e) {
-	    e.printStackTrace();
 	    throw new ClassNotFoundException(pckgname + " (" + pckgname
-		    + ") does not appear to be a valid package");
+		    + ") does not appear to be a valid package", e);
 	}
 
 	for (String className : classNames) {
-	    Class<?> clazz = Class.forName(className);
+	    final Class<?> clazz = Class.forName(className);
 	    if (!clazz.isInterface()
 		    && !Modifier.isAbstract(clazz.getModifiers())
 		    && RegisteredHandler.class.isAssignableFrom(clazz)) {
@@ -72,33 +71,33 @@ public final class HandlerUtil {
     public static Collection<String> findHandlerClassNames(String path,
 	    String packageName) throws URISyntaxException, IOException {
 
-	Collection<String> classNames = new ArrayList<String>();
+	final Collection<String> classNames = new ArrayList<String>();
 
 	if (path.contains(".jar!/")) {
 	    packageName = packageName.replaceAll("\\.", "/");
 	    path = path.split("!")[0];
-	    FileInputStream fis = new FileInputStream(new File(new URI(path)));
-	    JarInputStream jarFile = new JarInputStream(fis);
+	    final FileInputStream fis = new FileInputStream(new File(new URI(path)));
+	    final JarInputStream jarFile = new JarInputStream(fis);
 	    JarEntry jarEntry;
 	    while ((jarEntry = jarFile.getNextJarEntry()) != null) {
 		if ((jarEntry.getName().startsWith(packageName))
 			&& (jarEntry.getName().endsWith(".class"))) {
 
-		    String className = jarEntry.getName()
+		    final String className = jarEntry.getName()
 			    .replaceAll("/", "\\.").substring(0,
 				    jarEntry.getName().length() - 6);
 		    classNames.add(className);
 		}
 	    }
 	} else {
-	    File directory = new File(path);
+	    final File directory = new File(path);
 	    if (directory.exists()) {
 		// Get the list of the files contained in the package
-		String[] files = directory.list();
+		final String[] files = directory.list();
 		for (int i = 0; i < files.length; i++) {
 		    // we are only interested in .class files
 		    if (files[i].endsWith(".class")) {
-			String className = packageName + '.'
+			final String className = packageName + '.'
 				+ files[i].substring(0, files[i].length() - 6);
 			classNames.add(className);
 		    }

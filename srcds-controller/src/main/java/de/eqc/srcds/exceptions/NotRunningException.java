@@ -7,9 +7,14 @@ public class NotRunningException extends Exception {
 	 */
 	private static final long serialVersionUID = -267990713508278887L;
 
-	public NotRunningException(String msg) {
+	public NotRunningException(final String msg) {
 		
 		super(msg);
+	}
+
+	public NotRunningException(final String msg, final Exception exception) {
+		
+		super(msg, exception);
 	}
 
 }

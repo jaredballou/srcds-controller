@@ -1,3 +1,24 @@
+/*
+ * This file is part of the Source Dedicated Server Controller project.
+ * It is distributed under GPL 3 license.
+ *
+ * The srcds-controller is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * The srcds-controller is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with the srcds-controller. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * For more information, please consult:
+ *    <http://www.earthquake-clan.de/srcds/>
+ *    <http://code.google.com/p/srcds-controller/>
+ */
 package de.eqc.srcds.core;
 
 import static de.eqc.srcds.configuration.ConfigurationRegistry.HTTP_SERVER_PORT;
@@ -13,12 +34,14 @@ import de.eqc.srcds.configuration.exceptions.ConfigurationException;
 import de.eqc.srcds.configuration.impl.XmlPropertiesConfiguration;
 import de.eqc.srcds.core.logging.LogFactory;
 import de.eqc.srcds.enums.OperatingSystem;
+import de.eqc.srcds.exceptions.InitializationException;
 import de.eqc.srcds.exceptions.UnsupportedOSException;
 
 /**
- * This class starts the srcds controller.
+ * This class starts the srcds-controller.
  * 
- * @author EarthQuake Clan &lt;www.earthquake-clan.de&gt;
+ * @author Holger Cremer
+ * @author Hannes Scharmann
  */
 public class CLI {
 
@@ -26,17 +49,15 @@ public class CLI {
 
     private Configuration config;
 
-    private HttpServerController httpServerController;
-
-    private SourceDServerController srcdsController;
-
-    public void startup(String ... arguments) throws Exception {
+    public void startup(final String... arguments)
+	    throws UnsupportedOSException, ConfigurationException,
+	    InitializationException {
 
 	Thread.currentThread().setName(getClass().getSimpleName());
-	
+
 	checkOS();
 
-	File configFile = new File(DEFAULT_CONFIG_FILENAME);
+	final File configFile = new File(DEFAULT_CONFIG_FILENAME);
 
 	this.config = new XmlPropertiesConfiguration(configFile);
 
@@ -50,16 +71,19 @@ public class CLI {
 	    log.warning(e.getLocalizedMessage());
 	    System.exit(0);
 	}
-	
-	this.srcdsController = new SourceDServerController(this.config);
-	this.httpServerController = new HttpServerController(config, srcdsController);
-	
+
+	final SourceDServerController srcdsController = new SourceDServerController(
+		this.config);
+	final HttpServerController httpServerController = new HttpServerController(
+		config, srcdsController);
+
 	Runtime.getRuntime().addShutdownHook(
-		new ShutdownHook(Thread.currentThread(), srcdsController, httpServerController));
-	
+		new ShutdownHook(Thread.currentThread(), srcdsController,
+			httpServerController));
+
 	httpServerController.start();
 	srcdsController.start();
-	
+
 	try {
 	    httpServerController.join();
 	} catch (InterruptedException e) {
@@ -75,28 +99,34 @@ public class CLI {
 	System.out.println("Exiting...");
     }
 
-    private void processCommandlineArguments(String ... arguments) throws ConfigurationException {
+    private void processCommandlineArguments(final String... arguments)
+	    throws ConfigurationException {
 
 	for (int i = 0; i < arguments.length; i++) {
-	    String argument = arguments[i].trim();
-	    if (argument.equals("--help")) {
-		System.out.println("Usage: java -jar <jarfile> [--httpServerPort <port>] [--srcdsExecutable <file>]");
+	    final String argument = arguments[i].trim();
+	    if ("--help".equals(argument)) {
+		System.out
+			.println("Usage: java -jar <jarfile> [--httpServerPort <port>] [--srcdsExecutable <file>]");
 		System.exit(0);
-	    } else if (argument.equals("--httpServerPort") && i < argument.length() - 1) {
-		String value = arguments[i + 1];
+	    } else if ("--httpServerPort".equals(argument)
+		    && i < argument.length() - 1) {
+		final String value = arguments[i + 1];
 		config.setValue(HTTP_SERVER_PORT, Integer.valueOf(value));
-	    } else if (argument.equals("--srcdsExecutable") && i < argument.length() - 1) {
-		String value = arguments[i + 1];
+	    } else if ("--srcdsExecutable".equals(argument)
+		    && i < argument.length() - 1) {
+		final String value = arguments[i + 1];
 		config.setValue(SRCDS_EXECUTABLE, value);
-	    }	    
-	}	
+	    }
+	}
     }
-    
+
     private void checkOS() throws UnsupportedOSException {
 
-	OperatingSystem os = OperatingSystem.getCurrent();
-	log.info(String.format("Detected %s operating system", os));
-	if (os == OperatingSystem.UNSUPPORTED) {
+	final OperatingSystem operatingSystem = OperatingSystem.getCurrent();
+	log
+		.info(String.format("Detected %s operating system",
+			operatingSystem));
+	if (operatingSystem == OperatingSystem.UNSUPPORTED) {
 	    throw new UnsupportedOSException(
 		    "Detected operating system is not supported");
 	}
@@ -105,7 +135,7 @@ public class CLI {
     /**
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
 
 	try {
 	    new CLI().startup(args);

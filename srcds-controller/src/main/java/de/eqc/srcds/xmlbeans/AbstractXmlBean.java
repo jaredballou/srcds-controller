@@ -3,7 +3,7 @@ package de.eqc.srcds.xmlbeans;
 import java.io.Serializable;
 
 
-public abstract class XmlBean implements Serializable {
+public abstract class AbstractXmlBean implements Serializable {
 
     /**
      * 
@@ -15,37 +15,37 @@ public abstract class XmlBean implements Serializable {
     protected final boolean stylesheet;
     
     
-    public XmlBean(boolean stylesheet) {
+    public AbstractXmlBean(final boolean stylesheet) {
 
 	this.stylesheet = stylesheet;
     }
     
-    public String indent(String line, int level) {
+    public String indent(final String line, final int level) {
 
-	StringBuilder sb = new StringBuilder();
+	final StringBuilder sb = new StringBuilder();
 	for (int i = 0; i < INDENT_WIDTH * level; i++) {
 	    sb.append(" ");
 	}
 	return sb.append(line).toString();
     }
     
-    public String header(int indent) {
+    public String header(final int indent) {
 
-	StringBuilder sb = new StringBuilder();
+	final StringBuilder sb = new StringBuilder();
 	sb.append(indent(String.format("<" + getClass().getSimpleName() + ">\n"), indent));
 	return sb.toString();
     }
 
-    public String footer(int indent) {
+    public String footer(final int indent) {
 
-	StringBuilder sb = new StringBuilder();
+	final StringBuilder sb = new StringBuilder();
 	sb.append(indent(String.format("</" + getClass().getSimpleName() + ">\n"), indent));
 	return sb.toString();
     }
     
     public String toXml() {
 	
-	StringBuilder sb = new StringBuilder(XML_HEADER);
+	final StringBuilder sb = new StringBuilder(XML_HEADER);
 	if (stylesheet) {
 	    sb.append(XSLT_HEADER.replaceAll("%CLASSNAME%", getClass().getSimpleName()));
 	}

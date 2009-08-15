@@ -16,10 +16,10 @@ public class StatusHandler extends AbstractRegisteredHandler implements
 	return "/status";
     }
 
-    public void handleRequest(HttpExchange httpExchange) throws IOException {
+    public void handleRequest(final HttpExchange httpExchange) throws IOException {
 	
-	ResponseCode code = ResponseCode.INFORMATION;
-	Message message = new Message(getServerController().getServerState().name());
+	final ResponseCode code = ResponseCode.INFORMATION;
+	final Message message = new Message(getServerController().getServerState().name());
 	outputXmlContent(new ControllerResponse(code, message).toXml());
     }
 }

@@ -23,20 +23,20 @@ public class RconHandler extends AbstractRegisteredHandler implements
 	return "/rcon";
     }
 
-    public void handleRequest(HttpExchange httpExchange) throws IOException {
+    public void handleRequest(final HttpExchange httpExchange) throws IOException {
 	
-	String command = getParameter("command");
+	final String command = getParameter("command");
 	if (command != null && !"".equals(command)) {
 	    try {
-		String rconAddress = NetworkUtil.getLocalHostname();
-		int rconPort = getConfig().getValue(SRCDS_SERVER_PORT, Integer.class);
-		String rconPassword = getConfig().getValue(SRCDS_RCON_PASSWORD, Password.class).toString();
+		final String rconAddress = NetworkUtil.getLocalHostname();
+		final int rconPort = getConfig().getValue(SRCDS_SERVER_PORT, Integer.class);
+		final String rconPassword = getConfig().getValue(SRCDS_RCON_PASSWORD, Password.class).toString();
 
-		RconConnection rc = new RconConnection(rconAddress, rconPort, rconPassword);
-		String response = rc.send(command);
-		ResponseCode code = ResponseCode.RCON_RESPONSE;
-		String lines[] = response.split("\n");
-		Message message = new Message();
+		final RconConnection rc = new RconConnection(rconAddress, rconPort, rconPassword);
+		final String response = rc.send(command);
+		final ResponseCode code = ResponseCode.RCON_RESPONSE;
+		final String lines[] = response.split("\n");
+		final Message message = new Message();
 		for (String line : lines) {
 		    message.addLine(line);
 		}

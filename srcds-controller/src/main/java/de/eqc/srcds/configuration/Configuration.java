@@ -6,14 +6,14 @@ import de.eqc.srcds.configuration.exceptions.ConfigurationException;
 
 public interface Configuration {
 
-	public <T> T getValue(String key, Class<T> dataType) throws ConfigurationException;
+	<T> T getValue(final String key, final Class<T> dataType) throws ConfigurationException;
 	
-	public <T> void setValue(String key, T value) throws ConfigurationException;
+	<T> void setValue(final String key, final T value) throws ConfigurationException;
 	
-	public void removeValue(String key) throws ConfigurationException;
+	void removeValue(final String key) throws ConfigurationException;
 	
-	public String toXml();
+	String toXml();
 	
-	public <T> Map<ConfigurationKey<?>, String> getData();
+	<T> Map<ConfigurationKey<?>, String> getData();
 	
 }

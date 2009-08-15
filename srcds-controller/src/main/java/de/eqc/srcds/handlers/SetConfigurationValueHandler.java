@@ -17,13 +17,13 @@ public class SetConfigurationValueHandler extends AbstractRegisteredHandler
 	return "/setConfig";
     }
 
-    public void handleRequest(HttpExchange httpExchange) throws IOException {
+    public void handleRequest(final HttpExchange httpExchange) throws IOException {
 
-	String key = getParameter("key");
-	String value = getParameter("value");
+	final String key = getParameter("key");
+	final String value = getParameter("value");
 
 	ResponseCode code = ResponseCode.INFORMATION;
-	Message message = new Message();
+	final Message message = new Message();
 	if (key == null || value == null) {
 	    code = ResponseCode.ERROR;
 	    message.addLine("Either key or value parameter is missing");

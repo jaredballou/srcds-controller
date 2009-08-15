@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import de.eqc.srcds.games.Game;
+import de.eqc.srcds.games.AbstractGame;
 
-public class CounterStrikeSource extends Game {
+public class CounterStrikeSource extends AbstractGame {
 
     public CounterStrikeSource() {
 
@@ -18,7 +18,7 @@ public class CounterStrikeSource extends Game {
     @Override
     public List<String> getFilesForEdit() {
 
-	List<String> files = new ArrayList<String>();
+	final List<String> files = new ArrayList<String>();
 //	Collections.addAll(files, "left4dead/gameinfo.txt",
 //		"left4dead/missioncycle.txt", "left4dead/motd.txt",
 //		"left4dead/cfg/private_server.cfg", "left4dead/cfg/server.cfg");
@@ -28,7 +28,7 @@ public class CounterStrikeSource extends Game {
     @Override
     public List<String> getFilesForSync() {
 
-	List<String> files = new ArrayList<String>();
+	final List<String> files = new ArrayList<String>();
 	Collections.addAll(files, "left4dead/gameinfo.txt",
 		"left4dead/missioncycle.txt", "left4dead/motd.txt",
 		"left4dead/cfg/server.cfg");

@@ -25,7 +25,7 @@ public abstract class AbstractServerController<T> extends Thread {
     private final String subject;
     private boolean autostart;
     
-    public AbstractServerController(String subject, Configuration config) {
+    public AbstractServerController(final String subject, final Configuration config) {
 
 	setName(getClass().getSimpleName());
 	this.mutex = new Mutex();
@@ -41,7 +41,7 @@ public abstract class AbstractServerController<T> extends Thread {
 	return mutex;
     }
     
-    public void setAutostart(boolean autostart) {
+    public void setAutostart(final boolean autostart) {
 
 	this.autostart = autostart;
     }

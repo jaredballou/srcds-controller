@@ -23,16 +23,16 @@ public class XsltHandler extends AbstractCacheControlRegisteredHandler implement
      * .net.httpserver.HttpExchange)
      */
     @Override
-    public void handleRequest(HttpExchange httpExchange) throws IOException {
+    public void handleRequest(final HttpExchange httpExchange) throws IOException {
 
-	String name = getParameter("name");
+	final String name = getParameter("name");
 	if (name.indexOf('/') > -1 || name.indexOf('\\') > -1) {
 	    throw new IllegalArgumentException("Only plain file names are allowed as parameter value");
 	}
 	
-	String resource = String.format("/xslt/%s", name);
+	final String resource = String.format("/xslt/%s", name);
 	
-	SimpleTemplate template = new SimpleTemplate(resource);
+	final SimpleTemplate template = new SimpleTemplate(resource);
 	template.setAttribute("hostname", InetAddress.getLocalHost().getHostName());
 	template.setAttribute("version", VersionUtil.getProjectVersion());
 	template.setAttribute("srcds-executable-key", SRCDS_EXECUTABLE);

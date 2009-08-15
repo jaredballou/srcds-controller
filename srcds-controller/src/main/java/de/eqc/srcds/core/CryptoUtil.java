@@ -6,9 +6,11 @@ import javax.crypto.spec.SecretKeySpec;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
+import de.eqc.srcds.exceptions.CryptoException;
 
 public final class CryptoUtil {
 
+    private static final String CHARSET = "UTF-8";
     private final static String CRYPTO_KEY = "Aj17Ag%!&YJA!(.0";
 
     public enum Action {
@@ -21,47 +23,44 @@ public final class CryptoUtil {
 	throw new UnsupportedOperationException();
     }
 
-    public static String process(Action action, String text) {
+    public static String process(final Action action, final String text) throws CryptoException {
 
 	String ret = null;
-	switch (action) {
-	case ENCRYPT:
+	if (action == Action.ENCRYPT) {
 	    ret = encrypt(text);
-	    break;
-	case DECRYPT:
+	} else if (action == Action.DECRYPT) {
 	    ret = decrypt(text);
-	    break;
 	}
 	return ret;
     }
 
-    public static String encrypt(String plain) {
+    public static String encrypt(final String plain) throws CryptoException {
 
 	try {
-	    SecretKey secret = new SecretKeySpec(CRYPTO_KEY.getBytes("UTF-8"),
+	    final SecretKey secret = new SecretKeySpec(CRYPTO_KEY.getBytes(CHARSET),
 		    "Blowfish");
-	    Cipher cipher = Cipher.getInstance("Blowfish/ECB/PKCS5Padding");
+	    final Cipher cipher = Cipher.getInstance("Blowfish/ECB/PKCS5Padding");
 	    cipher.init(Cipher.ENCRYPT_MODE, secret);
-	    byte[] bytes = plain.getBytes("UTF-8");
+	    final byte[] bytes = plain.getBytes(CHARSET);
 	    return new BASE64Encoder().encode(cipher.doFinal(bytes));
 	} catch (Exception e) {
-	    throw new RuntimeException(String.format("Encryption failed: %s", e
-		    .getLocalizedMessage()));
+	    throw new CryptoException(String.format("Encryption failed: %s", e
+		    .getLocalizedMessage()), e);
 	}
     }
 
-    public static String decrypt(String encoded) {
+    public static String decrypt(final String encoded) throws CryptoException {
 
 	try {
-	    SecretKey secret = new SecretKeySpec(CRYPTO_KEY.getBytes("UTF-8"),
+	    final SecretKey secret = new SecretKeySpec(CRYPTO_KEY.getBytes(CHARSET),
 		    "Blowfish");
-	    Cipher cipher = Cipher.getInstance("Blowfish/ECB/PKCS5Padding");
+	    final Cipher cipher = Cipher.getInstance("Blowfish/ECB/PKCS5Padding");
 	    cipher.init(Cipher.DECRYPT_MODE, secret);
-	    byte[] bytes = new BASE64Decoder().decodeBuffer(encoded);
-	    return new String(cipher.doFinal(bytes), "UTF-8");
+	    final byte[] bytes = new BASE64Decoder().decodeBuffer(encoded);
+	    return new String(cipher.doFinal(bytes), CHARSET);
 	} catch (Exception e) {
-	    throw new RuntimeException(String.format("Decryption failed: %s", e
-		    .getLocalizedMessage()));
+	    throw new CryptoException(String.format("Decryption failed: %s", e
+		    .getLocalizedMessage()), e);
 	}
     }
 }

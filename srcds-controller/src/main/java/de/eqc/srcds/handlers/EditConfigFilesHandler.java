@@ -21,19 +21,19 @@ public class EditConfigFilesHandler extends AbstractRegisteredHandler {
      * @see de.eqc.srcds.handlers.AbstractRegisteredHandler#handleRequest(com.sun.net.httpserver.HttpExchange)
      */
     @Override
-    public void handleRequest(HttpExchange httpExchange) throws Exception {
-	List<String> filesForEdit = getServerController().getGameType().getImplementation().getFilesForEdit();
+    public void handleRequest(final HttpExchange httpExchange) throws Exception {
+	final List<String> filesForEdit = getServerController().getGameType().getImplementation().getFilesForEdit();
 
 	if (isPost()) {
-	    String fileIdParam = getPostParameter("id");
-	    String newContent = getPostParameter("content");
+	    final String fileIdParam = getPostParameter("id");
+	    final String newContent = getPostParameter("content");
 	    if (fileIdParam == null || newContent == null) {
 		throw new IllegalArgumentException("id or content was null");
 	    }
-	    int fileId = Integer.parseInt(fileIdParam);
+	    final int fileId = Integer.parseInt(fileIdParam);
 	    saveFile(fileId, filesForEdit.get(fileId), newContent);
 	} else {
-	    String fileIdParam = getParameter("id");
+	    final String fileIdParam = getParameter("id");
 	    int fileId = 0;
 	    if (fileIdParam != null) {
 		fileId = Integer.parseInt(fileIdParam);
@@ -48,8 +48,8 @@ public class EditConfigFilesHandler extends AbstractRegisteredHandler {
      * @throws IOException 
      * @throws ConfigurationException 
      */
-    private void saveFile(int fileId, String file, String newContent) throws IOException, ConfigurationException {
-	File fileToEdit = new File(getConfig().getValue("srcds.controller.srcds.path",String.class), file);
+    private void saveFile(final int fileId, final String file, final String newContent) throws IOException, ConfigurationException {
+	final File fileToEdit = new File(getConfig().getValue("srcds.controller.srcds.path",String.class), file);
 	
 	// TODO: unescape content!
 	Utils.saveToFile(fileToEdit, newContent);
@@ -66,14 +66,14 @@ public class EditConfigFilesHandler extends AbstractRegisteredHandler {
      * @throws FileNotFoundException 
      * @throws ConfigurationException 
      */
-    private void showFile(int fileId, String file) throws FileNotFoundException, IOException, ConfigurationException {
-	File fileToEdit = new File(getConfig().getValue("srcds.controller.srcds.path",String.class), file);
+    private void showFile(final int fileId, final String file) throws FileNotFoundException, IOException, ConfigurationException {
+	final File fileToEdit = new File(getConfig().getValue("srcds.controller.srcds.path",String.class), file);
 	
 	if (!fileToEdit.exists()) {
 	    throw new FileNotFoundException(String.format("Cannot find file %s", file));
 	}
 
-	GameConfiguration gameConfiguration = new GameConfiguration(getConfig(), fileId);
+	final GameConfiguration gameConfiguration = new GameConfiguration(getConfig(), fileId);
 	outputXmlContent(gameConfiguration.toXml());
     }
 

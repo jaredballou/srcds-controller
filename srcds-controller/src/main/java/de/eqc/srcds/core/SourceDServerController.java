@@ -10,13 +10,13 @@ import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_SERVER_PORT
 import static de.eqc.srcds.core.Constants.STARTUP_WAIT_TIME_MILLIS;
 
 import java.io.File;
+import java.util.AbstractSequentialList;
 import java.util.LinkedList;
 import java.util.List;
 
 import de.eqc.srcds.configuration.Configuration;
 import de.eqc.srcds.configuration.exceptions.ConfigurationException;
 import de.eqc.srcds.enums.GameType;
-import de.eqc.srcds.enums.OperatingSystem;
 import de.eqc.srcds.enums.ServerState;
 import de.eqc.srcds.exceptions.AlreadyRunningException;
 import de.eqc.srcds.exceptions.NotRunningException;
@@ -33,7 +33,7 @@ public class SourceDServerController extends AbstractServerController<Process> {
 
     private ServerOutputReader serverOutputReader;
 
-    public SourceDServerController(Configuration config)
+    public SourceDServerController(final Configuration config)
 	    throws ConfigurationException {
 
 	super("SRCDS server", config);
@@ -52,19 +52,20 @@ public class SourceDServerController extends AbstractServerController<Process> {
 
 	ServerState state = ServerState.RUNNING;
 	synchronized (getMutex()) {
-	    if (server != null) {
+	    if (server == null) {
+		state = ServerState.STOPPED;
+	    } else {
 		int exitValue = -1;
 		try {
 		    exitValue = server.exitValue();
 		    log.info("Server was terminated");
 		} catch (Exception e) {
+		    // Ignore
 		}
 
 		if (exitValue > -1) {
 		    state = ServerState.TERMINATED;
 		}
-	    } else {
-		state = ServerState.STOPPED;
 	    }
 	}
 	return state;
@@ -72,10 +73,10 @@ public class SourceDServerController extends AbstractServerController<Process> {
 
     private List<String> parseCommandLine() throws ConfigurationException {
 
-	String executable = config.getValue(SRCDS_EXECUTABLE, String.class);
+	final String executable = config.getValue(SRCDS_EXECUTABLE, String.class);
 
-	File srcdsPath = new File(config.getValue(SRCDS_PATH, String.class));
-	File srcdsExecutable = new File(srcdsPath.getPath() + File.separator
+	final File srcdsPath = new File(config.getValue(SRCDS_PATH, String.class));
+	final File srcdsExecutable = new File(srcdsPath.getPath() + File.separator
 		+ executable);
 	if (!srcdsPath.exists()) {
 	    throw new ConfigurationException(String.format(
@@ -94,17 +95,18 @@ public class SourceDServerController extends AbstractServerController<Process> {
 		    srcdsExecutable.getPath()));
 	}
 
-	GameType gameType = getGameType();
+	final GameType gameType = getGameType();
 	log.info(String.format("Game type is %s", gameType));
-	LinkedList<String> parameters = gameType.getImplementation()
+
+	final AbstractSequentialList<String> parameters = gameType.getImplementation()
 		.getParametersAsList();
 	
-	int srcdsPort = config.getValue(SRCDS_SERVER_PORT, Integer.class);
+	final int srcdsPort = config.getValue(SRCDS_SERVER_PORT, Integer.class);
 	parameters.add(String.format("+hostport %d", srcdsPort));
 
-	List<String> userParameters = parseUserParameters();
+	final List<String> userParameters = parseUserParameters();
 	for (int i = userParameters.size() - 1; i >= 0; i--) {
-	    String userParameter = userParameters.get(i).split(" ")[0];
+	    final String userParameter = userParameters.get(i).split(" ")[0];
 	    if (FORBIDDEN_USER_PARAMETERS.contains(userParameter)) {
 		userParameters.remove(i);
 		log.warning(String.format("Forbidden user parameter %s ignored", userParameter));
@@ -112,7 +114,7 @@ public class SourceDServerController extends AbstractServerController<Process> {
 	}
 	
 	parameters.addAll(userParameters);
-	parameters.addFirst(srcdsExecutable.getAbsolutePath());
+	parameters.add(0, srcdsExecutable.getAbsolutePath());
 
 	log.info(String.format("Process: %s", parameters.toString()));
 
@@ -128,26 +130,26 @@ public class SourceDServerController extends AbstractServerController<Process> {
 
 	String userParametersString = config.getValue(SRCDS_PARAMETERS,
 		String.class).trim();
-	List<String> userParameters = new LinkedList<String>();
+	final List<String> userParameters = new LinkedList<String>();
 
-	List<String> plusParameterNames = new LinkedList<String>();
+	final List<String> plusParameterNames = new LinkedList<String>();
 	for (int i = 0; i < userParametersString.length(); i++) {
-	    char c = userParametersString.charAt(i);
-	    if (c == '+' && userParametersString.lastIndexOf(' ') > i) {
-		int pNameLength = userParametersString.substring(i + 1)
+	    final char chr = userParametersString.charAt(i);
+	    if (chr == '+' && userParametersString.lastIndexOf(' ') > i) {
+		final int pNameLength = userParametersString.substring(i + 1)
 			.indexOf(' ');
-		int startOffset = i + 1;
-		String pName = userParametersString.substring(startOffset,
+		final int startOffset = i + 1;
+		final String pName = userParametersString.substring(startOffset,
 			startOffset + pNameLength);
 		plusParameterNames.add(pName);
 	    }
 	}
 
 	userParametersString = userParametersString.replaceAll("\\+", "-");
-	String[] parts = userParametersString.split("-");
+	final String[] parts = userParametersString.split("-");
 	for (String part : parts) {
 	    if (!"".equals(part)) {
-		String prefix = plusParameterNames.contains(part.split(" ")[0]) ? "+"
+		final String prefix = plusParameterNames.contains(part.split(" ")[0]) ? "+"
 			: "-";
 		userParameters.add(prefix + part.trim());
 	    }
@@ -163,12 +165,12 @@ public class SourceDServerController extends AbstractServerController<Process> {
 	synchronized (getMutex()) {
 	    if (getServerState() != ServerState.RUNNING) {
 		try {
-		    File srcdsPath = getSrcdsPath();
+		    final File srcdsPath = getSrcdsPath();
 
-		    ProcessBuilder pb = new ProcessBuilder(parseCommandLine());
-		    pb.redirectErrorStream(true);
-		    pb.directory(srcdsPath);
-		    server = pb.start();
+		    final ProcessBuilder processBuilder = new ProcessBuilder(parseCommandLine());
+		    processBuilder.redirectErrorStream(true);
+		    processBuilder.directory(srcdsPath);
+		    server = processBuilder.start();
 
 		    serverOutputReader = new ServerOutputReader(server
 			    .getInputStream());
@@ -183,7 +185,7 @@ public class SourceDServerController extends AbstractServerController<Process> {
 		} catch (Exception e) {
 		    throw new StartupFailedException(String.format(
 			    "Unable to start server: %s", e
-				    .getLocalizedMessage()));
+				    .getLocalizedMessage()), e);
 		}
 	    } else {
 		throw new AlreadyRunningException("Server is already running");
@@ -193,7 +195,7 @@ public class SourceDServerController extends AbstractServerController<Process> {
 
     public File getSrcdsPath() throws ConfigurationException {
 
-	File srcdsPath = new File(config.getValue(SRCDS_PATH, String.class));
+	final File srcdsPath = new File(config.getValue(SRCDS_PATH, String.class));
 	if (srcdsPath.exists()) {
 	    log.info(String.format("SRCDS path is %s", srcdsPath.getPath()));
 	} else {
@@ -217,7 +219,7 @@ public class SourceDServerController extends AbstractServerController<Process> {
 		    server.getOutputStream().flush();
 		    log.info("SIGTERM sent to process");
 		} catch (Exception e) {
-		    e.printStackTrace();
+		    // Ignore
 		}
 		log.info("Destroying reference to process");
 		server.destroy();

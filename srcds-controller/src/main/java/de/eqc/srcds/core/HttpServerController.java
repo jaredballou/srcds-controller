@@ -24,11 +24,11 @@ import de.eqc.srcds.handlers.utils.HandlerUtil;
 
 public class HttpServerController extends AbstractServerController<HttpServer> {
 
-    private final SourceDServerController srcdsController;
-    private final List<HttpContext> contextList;
+    private final transient SourceDServerController srcdsController;
+    private final transient List<HttpContext> contextList;
 
-    public HttpServerController(Configuration config,
-	    SourceDServerController srcdsController)
+    public HttpServerController(final Configuration config,
+	    final SourceDServerController srcdsController)
 	    throws InitializationException {
 
 	super("HTTP server", config);
@@ -37,12 +37,12 @@ public class HttpServerController extends AbstractServerController<HttpServer> {
 	this.srcdsController = srcdsController;
 
 	try {
-	    int port = config.getValue(HTTP_SERVER_PORT, Integer.class);
-	    server = HttpServer.create(new InetSocketAddress(port), 0);
+	    final int port = config.getValue(HTTP_SERVER_PORT, Integer.class);
+	    this.server = HttpServer.create(new InetSocketAddress(port), 0);
 	    log.info(String.format("Bound to TCP port %d.", port));
 	} catch (Exception e) {
 	    throw new InitializationException(String.format(
-		    "HTTP server startup failed: %s", e.getLocalizedMessage()));
+		    "HTTP server startup failed: %s", e.getLocalizedMessage()), e);
 	}
     }
 
@@ -51,17 +51,17 @@ public class HttpServerController extends AbstractServerController<HttpServer> {
 	    InstantiationException, IllegalAccessException,
 	    ConfigurationException {
 
-	String username = config.getValue(HTTP_SERVER_USERNAME, String.class);
-	String password = config.getValue(HTTP_SERVER_PASSWORD, Password.class).toString();
-	HttpAuthenticator defaultAuthenticator = new HttpAuthenticator(
+	final String username = config.getValue(HTTP_SERVER_USERNAME, String.class);
+	final String password = config.getValue(HTTP_SERVER_PASSWORD, Password.class).toString();
+	final HttpAuthenticator defaultAuthenticator = new HttpAuthenticator(
 		username, password);
 
-	List<HttpContext> localContextList = new LinkedList<HttpContext>();
-	Collection<RegisteredHandler> classes = HandlerUtil
+	final List<HttpContext> localContextList = new LinkedList<HttpContext>();
+	final Collection<RegisteredHandler> classes = HandlerUtil
 		.getRegisteredHandlerImplementations();
 	for (RegisteredHandler classByReflection : classes) {
 	    classByReflection.init(this.srcdsController, this.config);
-	    HttpContext context = server.createContext(classByReflection
+	    final HttpContext context = server.createContext(classByReflection
 		    .getPath(), classByReflection.getHttpHandler());
 	    context.setAuthenticator(defaultAuthenticator);
 	    localContextList.add(context);
@@ -79,7 +79,6 @@ public class HttpServerController extends AbstractServerController<HttpServer> {
 	    try {
 		contextList.addAll(bindHandlers());
 	    } catch (Exception e) {
-		e.printStackTrace();
 		log.warning(String.format(
 			"Error occured while registering handlers: %s", e
 				.getLocalizedMessage()));

@@ -36,13 +36,13 @@ public class RconConnection {
     private final InputStream in;
     private final OutputStream out;
 
-    public RconConnection(String ip, String password)
+    public RconConnection(final String ip, final String password)
 	    throws AuthenticationException, TimeoutException {
 
 	this(ip, DEFAULT_RCON_PORT, password);
     }
 
-    public RconConnection(String ip, int port, String password)
+    public RconConnection(final String ip, final int port, final String password)
 	    throws AuthenticationException, TimeoutException {
 
 	rconSocket = new Socket();
@@ -52,15 +52,15 @@ public class RconConnection {
 	    out = rconSocket.getOutputStream();
 	    in = rconSocket.getInputStream();
 	} catch (IOException e) {
-	    throw new AuthenticationException(e.getLocalizedMessage());
+	    throw new AuthenticationException(e.getLocalizedMessage(), e);
 	}
 
 	try {
 	    if (!authenticate(password)) {
 		throw new AuthenticationException("Authentication failed");
 	    }
-	} catch (SocketTimeoutException timeout) {
-	    throw new TimeoutException("Timeout occured during authentication");
+	} catch (SocketTimeoutException e) {
+	    throw new TimeoutException("Timeout occured during authentication", e);
 	}
     }
 
@@ -71,12 +71,12 @@ public class RconConnection {
 	rconSocket.close();
     }
 
-    public String send(String command) throws SocketTimeoutException,
+    public String send(final String command) throws SocketTimeoutException,
 	    AuthenticationException, ResponseEmptyException {
 
 	String response = null;
-	ByteBuffer[] resp = sendCommand(command);
-	if (resp != null) {
+	final ByteBuffer[] resp = sendCommand(command);
+	if (resp.length > 0) {
 	    response = assemblePackets(resp);
 	}
 	if (response == null || response.length() == 0) {
@@ -85,10 +85,10 @@ public class RconConnection {
 	return response;
     }
 
-    private ByteBuffer[] sendCommand(String command)
+    private ByteBuffer[] sendCommand(final String command)
 	    throws SocketTimeoutException {
 
-	byte[] request = contructPacket(2, SERVERDATA_EXECCOMMAND, command);
+	final byte[] request = contructPacket(2, SERVERDATA_EXECCOMMAND, command);
 
 	ByteBuffer[] resp = new ByteBuffer[128];
 	int i = 0;
@@ -104,21 +104,16 @@ public class RconConnection {
 		}
 	    } catch (SocketTimeoutException e) {
 		// No more packets in the response, go on
-		return resp;
 	    }
-
-	} catch (SocketTimeoutException timeout) {
-	    // Timeout while connecting to the server
-	    throw timeout;
 	} catch (Exception e) {
 	    System.err.println("I/O error on socket\n");
 	}
-	return null;
+	return new ByteBuffer[0];
     }
 
-    private static byte[] contructPacket(int id, int cmdtype, String s1) {
+    private static byte[] contructPacket(final int id, final int cmdtype, final String s1) {
 
-	ByteBuffer p = ByteBuffer.allocate(s1.length() + 16);
+	final ByteBuffer p = ByteBuffer.allocate(s1.length() + 16);
 	p.order(ByteOrder.LITTLE_ENDIAN);
 
 	// length of the packet
@@ -141,11 +136,11 @@ public class RconConnection {
 
     private ByteBuffer receivePacket() throws Exception {
 
-	ByteBuffer p = ByteBuffer.allocate(4120);
+	final ByteBuffer p = ByteBuffer.allocate(4120);
 	p.order(ByteOrder.LITTLE_ENDIAN);
 
-	byte[] length = new byte[4];
-
+	final byte[] length = new byte[4];
+	ByteBuffer ret = null;
 	if (in.read(length, 0, 4) == 4) {
 	    // Now we've the length of the packet, let's go read the bytes
 	    p.put(length);
@@ -154,13 +149,12 @@ public class RconConnection {
 		p.put((byte) in.read());
 		i++;
 	    }
-	    return p;
-	} else {
-	    return null;
+	    ret = p;
 	}
+	return ret;
     }
 
-    private static String assemblePackets(ByteBuffer[] packets) {
+    private static String assemblePackets(final ByteBuffer[] packets) {
 
 	// Return the text from all the response packets together
 	String response = "";
@@ -173,10 +167,11 @@ public class RconConnection {
 	return response;
     }
 
-    private boolean authenticate(String password) throws SocketTimeoutException {
+    private boolean authenticate(final String password) throws SocketTimeoutException {
 
-	byte[] authRequest = contructPacket(RESPONSE_ID, SERVERDATA_AUTH, password);
+	final byte[] authRequest = contructPacket(RESPONSE_ID, SERVERDATA_AUTH, password);
 	ByteBuffer response = ByteBuffer.allocate(64);
+	boolean ret = false;
 	try {
 	    out.write(authRequest);
 	    // junk response packet
@@ -185,15 +180,13 @@ public class RconConnection {
 
 	    if ((response.getInt(4) == RESPONSE_ID)
 		    && (response.getInt(8) == SERVERDATA_AUTH_RESPONSE)) {
-		return true;
+		ret = true;
 	    }
-	} catch (SocketTimeoutException e) {
-	    throw e;
 	} catch (Exception e) {
 	    // Ignore: authentication failed anyway
 	}
 
-	return false;
+	return ret;
     }
 
 }

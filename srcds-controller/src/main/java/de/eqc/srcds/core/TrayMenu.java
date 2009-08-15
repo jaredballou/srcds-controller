@@ -24,12 +24,12 @@ public class TrayMenu {
     public TrayMenu(final Configuration config) throws UnsupportedOSException {
 
 	if (SystemTray.isSupported()) {
-	    SystemTray tray = SystemTray.getSystemTray();
-	    URL iconUrl = getClass().getResource(TRAY_ICON_PATH);
-	    Image image = Toolkit.getDefaultToolkit().getImage(iconUrl);
+	    final SystemTray tray = SystemTray.getSystemTray();
+	    final URL iconUrl = getClass().getResource(TRAY_ICON_PATH);
+	    final Image image = Toolkit.getDefaultToolkit().getImage(iconUrl);
 
-	    ActionListener exitListener = new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
+	    final ActionListener exitListener = new ActionListener() {
+		public void actionPerformed(final ActionEvent event) {
 		    System.exit(0);
 		}
 	    };
@@ -46,16 +46,16 @@ public class TrayMenu {
 	    exitItem.addActionListener(exitListener);
 	    popup.add(exitItem);
 
-	    ActionListener actionListener = new ActionListener() {
+	    final ActionListener actionListener = new ActionListener() {
 
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent event) {
 
-		    if (e.getSource().equals(aboutItem)) {
+		    if (event.getSource().equals(aboutItem)) {
 			trayIcon.displayMessage("About", String.format(
 				"%s v%s", PROJECT_NAME, VersionUtil
 					.getProjectVersion()),
 				TrayIcon.MessageType.INFO);
-		    } else if (e.getSource().equals(webConsoleItem)) {
+		    } else if (event.getSource().equals(webConsoleItem)) {
 			try {
 			    String command = String.format(
 				    "rundll32 url.dll,FileProtocolHandler %s",
