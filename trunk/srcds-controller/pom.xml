@@ -7,7 +7,6 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<description>HTTP server which provides remote controlling abilities for Source Dedicated Servers</description>
 	<url>http://code.google.com/p/srcds-controller/</url>
-	<inceptionYear>2009</inceptionYear>
 
 	<properties>
 		<jdk.version>1.6</jdk.version>
@@ -142,25 +141,6 @@
 					</reportSet>
 				</reportSets>
 			</plugin>
-			<!--
-			<plugin>
-				<artifactId>maven-pmd-plugin</artifactId>
-				<configuration>
-					<linkXref>true</linkXref>
-					<targetJdk>${jdk.version}</targetJdk>
-					<minimumTokens>100</minimumTokens>
-					<rulesets>
-						<ruleset>/rulesets/basic.xml</ruleset>
-						<ruleset>/rulesets/braces.xml</ruleset>
-						<ruleset>/rulesets/finalizers.xml</ruleset>
-						<ruleset>/rulesets/imports.xml</ruleset>
-						<ruleset>/rulesets/migrating.xml</ruleset>
-						<ruleset>/rulesets/strings.xml</ruleset>
-						<ruleset>/rulesets/unusedcode.xml</ruleset>
-					</rulesets>
-				</configuration>
-			</plugin>
-			-->
 		</plugins>
 	</reporting>
 </project>
