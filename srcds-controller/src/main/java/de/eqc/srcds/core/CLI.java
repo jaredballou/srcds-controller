@@ -49,11 +49,12 @@ public class CLI {
 
     private Configuration config;
 
-    public void startup(final String... arguments)
-	    throws UnsupportedOSException, ConfigurationException,
-	    InitializationException {
+    public void startup(final String... arguments) throws UnsupportedOSException,
+						  ConfigurationException,
+						  InitializationException {
 
-	Thread.currentThread().setName(getClass().getSimpleName());
+	Thread.currentThread()
+	      .setName(getClass().getSimpleName());
 
 	checkOS();
 
@@ -72,14 +73,14 @@ public class CLI {
 	    System.exit(0);
 	}
 
-	final SourceDServerController srcdsController = new SourceDServerController(
-		this.config);
-	final HttpServerController httpServerController = new HttpServerController(
-		config, srcdsController);
+	final SourceDServerController srcdsController = new SourceDServerController(this.config);
+	final HttpServerController httpServerController = new HttpServerController(config,
+										   srcdsController);
 
-	Runtime.getRuntime().addShutdownHook(
-		new ShutdownHook(Thread.currentThread(), srcdsController,
-			httpServerController));
+	Runtime.getRuntime()
+	       .addShutdownHook(new ShutdownHook(Thread.currentThread(),
+						 srcdsController,
+						 httpServerController));
 
 	httpServerController.start();
 	srcdsController.start();
@@ -99,23 +100,23 @@ public class CLI {
 	System.out.println("Exiting...");
     }
 
-    private void processCommandlineArguments(final String... arguments)
-	    throws ConfigurationException {
+    private void processCommandlineArguments(final String... arguments) throws ConfigurationException {
 
 	for (int i = 0; i < arguments.length; i++) {
 	    final String argument = arguments[i].trim();
 	    if ("--help".equals(argument)) {
-		System.out
-			.println("Usage: java -jar <jarfile> [--httpServerPort <port>] [--srcdsExecutable <file>]");
+		System.out.println("Usage: java -jar <jarfile> [--httpServerPort <port>] [--srcdsExecutable <file>]");
 		System.exit(0);
 	    } else if ("--httpServerPort".equals(argument)
 		    && i < argument.length() - 1) {
 		final String value = arguments[i + 1];
-		config.setValue(HTTP_SERVER_PORT, Integer.valueOf(value));
+		config.setValue(HTTP_SERVER_PORT,
+				Integer.valueOf(value));
 	    } else if ("--srcdsExecutable".equals(argument)
 		    && i < argument.length() - 1) {
 		final String value = arguments[i + 1];
-		config.setValue(SRCDS_EXECUTABLE, value);
+		config.setValue(SRCDS_EXECUTABLE,
+				value);
 	    }
 	}
     }
@@ -123,12 +124,10 @@ public class CLI {
     private void checkOS() throws UnsupportedOSException {
 
 	final OperatingSystem operatingSystem = OperatingSystem.getCurrent();
-	log
-		.info(String.format("Detected %s operating system",
-			operatingSystem));
+	log.info(String.format("Detected %s operating system",
+			       operatingSystem));
 	if (operatingSystem == OperatingSystem.UNSUPPORTED) {
-	    throw new UnsupportedOSException(
-		    "Detected operating system is not supported");
+	    throw new UnsupportedOSException("Detected operating system is not supported");
 	}
     }
 
@@ -140,7 +139,9 @@ public class CLI {
 	try {
 	    new CLI().startup(args);
 	} catch (Exception e) {
-	    log.log(Level.WARNING, e.getMessage(), e);
+	    log.log(Level.WARNING,
+		    e.getMessage(),
+		    e);
 	}
     }
 }
