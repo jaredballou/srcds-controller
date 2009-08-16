@@ -55,15 +55,13 @@ import de.eqc.srcds.xmlbeans.impl.ControllerConfiguration;
 
 public final class XmlPropertiesConfiguration implements Configuration {
 
-    private static Logger log =
-	    Logger.getLogger(SourceDServerController.class.getSimpleName());
+    private static Logger log = Logger.getLogger(SourceDServerController.class.getSimpleName());
     private final File propertiesFile;
     private Properties properties;
 
     public XmlPropertiesConfiguration(final File propertiesFile) throws ConfigurationException {
 
-	this.propertiesFile =
-		propertiesFile;
+	this.propertiesFile = propertiesFile;
 
 	if (propertiesFile.exists()) {
 	    loadConfiguration();
@@ -74,29 +72,21 @@ public final class XmlPropertiesConfiguration implements Configuration {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T getValue(final String key,
-			  final Class<T> dataType) throws ConfigurationException {
+    public <T> T getValue(final String key, final Class<T> dataType) throws ConfigurationException {
 
-	if (!ConfigurationRegistry.matchesDataType(key,
-						   dataType)) {
+	if (!ConfigurationRegistry.matchesDataType(key, dataType)) {
 	    throw new ConfigurationException(String.format("Invalid data type for configuration key %s",
 							   key));
 	}
 
-	T value =
-		null;
+	T value = null;
 
 	if (String.class.isAssignableFrom(dataType)) {
-	    value =
-		    (T) properties.getProperty(key);
+	    value = (T) properties.getProperty(key);
 	} else {
 	    try {
-		final Method conversionMethod =
-			dataType.getDeclaredMethod("valueOf",
-						   String.class);
-		value =
-			(T) conversionMethod.invoke(dataType,
-						    properties.getProperty(key));
+		final Method conversionMethod = dataType.getDeclaredMethod("valueOf", String.class);
+		value = (T) conversionMethod.invoke(dataType, properties.getProperty(key));
 	    } catch (Exception e) {
 		throw new ConfigurationException(String.format("Conversion to datatype %s failed for %s",
 							       dataType.getName(),
@@ -108,8 +98,7 @@ public final class XmlPropertiesConfiguration implements Configuration {
     }
 
     @Override
-    public <T> void setValue(final String key,
-			     final T value) throws ConfigurationException {
+    public <T> void setValue(final String key, final T value) throws ConfigurationException {
 
 	// if (!ConfigurationRegistry.matchesDataType(key, value.getClass())) {
 	// throw new ConfigurationException(String.format(
@@ -117,12 +106,9 @@ public final class XmlPropertiesConfiguration implements Configuration {
 	// }
 
 	if (isValidKey(key)) {
-	    properties.setProperty(key,
-				   value.toString());
+	    properties.setProperty(key, value.toString());
 	    store();
-	    log.finest(String.format("%s = %s",
-				     key,
-				     value));
+	    log.finest(String.format("%s = %s", key, value));
 	} else {
 	    throw new ConfigurationException(String.format("Configuration key %s is not a valid key",
 							   key));
@@ -134,24 +120,18 @@ public final class XmlPropertiesConfiguration implements Configuration {
 
 	properties.remove(key);
 	store();
-	log.finest(String.format("Removed key %s",
-				 key));
+	log.finest(String.format("Removed key %s", key));
     }
 
     private void loadConfiguration() throws ConfigurationException {
 
-	properties =
-		new Properties();
+	properties = new Properties();
 
 	try {
-	    final FileInputStream fis =
-		    new FileInputStream(propertiesFile);
-	    final Properties decryptedProperties =
-		    new Properties();
+	    final FileInputStream fis = new FileInputStream(propertiesFile);
+	    final Properties decryptedProperties = new Properties();
 	    decryptedProperties.loadFromXML(fis);
-	    process(CryptoUtil.Action.DECRYPT,
-		    decryptedProperties,
-		    this.properties);
+	    process(CryptoUtil.Action.DECRYPT, decryptedProperties, this.properties);
 	    fis.close();
 	    validateConfiguration();
 	} catch (InvalidPropertiesFormatException e) {
@@ -159,18 +139,15 @@ public final class XmlPropertiesConfiguration implements Configuration {
 	    createDefaultConfiguration();
 	} catch (Exception e) {
 	    throw new ConfigurationException(String.format("Unable to load configuration file: %s",
-							   e.getLocalizedMessage()),
-					     e);
+							   e.getLocalizedMessage()), e);
 	}
     }
 
     private void validateConfiguration() throws ConfigurationException {
 
-	final List<Object> keysToRemove =
-		new LinkedList<Object>();
+	final List<Object> keysToRemove = new LinkedList<Object>();
 	for (Entry<Object, Object> entry : properties.entrySet()) {
-	    if (!isValidKey(entry.getKey()
-				 .toString())) {
+	    if (!isValidKey(entry.getKey().toString())) {
 		keysToRemove.add(entry.getKey());
 	    }
 	}
@@ -181,8 +158,7 @@ public final class XmlPropertiesConfiguration implements Configuration {
 	}
 	for (ConfigurationKey<?> registryEntry : ConfigurationRegistry.getEntries()) {
 	    if (!containsKey(registryEntry.getKey())) {
-		setValue(registryEntry.getKey(),
-			 registryEntry.getDefaultValue());
+		setValue(registryEntry.getKey(), registryEntry.getDefaultValue());
 		log.info(String.format("Configuration entry %s is missing in configuration - thus added with default value",
 				       registryEntry.getKey()));
 	    }
@@ -205,11 +181,9 @@ public final class XmlPropertiesConfiguration implements Configuration {
 	    propertiesFile.delete();
 	}
 
-	properties =
-		new Properties();
+	properties = new Properties();
 	for (ConfigurationKey<?> registryEntry : ConfigurationRegistry.getEntries()) {
-	    setValue(registryEntry.getKey(),
-		     registryEntry.getDefaultValue());
+	    setValue(registryEntry.getKey(), registryEntry.getDefaultValue());
 	}
 
 	store();
@@ -218,20 +192,14 @@ public final class XmlPropertiesConfiguration implements Configuration {
     private void store() throws ConfigurationException {
 
 	try {
-	    final FileOutputStream fos =
-		    new FileOutputStream(propertiesFile);
-	    final Properties encryptedProperties =
-		    new Properties();
-	    process(CryptoUtil.Action.ENCRYPT,
-		    properties,
-		    encryptedProperties);
-	    encryptedProperties.storeToXML(fos,
-					   null);
+	    final FileOutputStream fos = new FileOutputStream(propertiesFile);
+	    final Properties encryptedProperties = new Properties();
+	    process(CryptoUtil.Action.ENCRYPT, properties, encryptedProperties);
+	    encryptedProperties.storeToXML(fos, null);
 	    fos.flush();
 	    fos.close();
 	} catch (Exception e) {
-	    throw new ConfigurationException("Unable to store configuration to file",
-					     e);
+	    throw new ConfigurationException("Unable to store configuration to file", e);
 	}
 
 	log.finest("Configuration stored to file.");
@@ -243,19 +211,13 @@ public final class XmlPropertiesConfiguration implements Configuration {
 
 	for (Entry<Object, Object> entry : src.entrySet()) {
 	    final ConfigurationKey<?> configKey =
-		    ConfigurationRegistry.getEntryByKey(entry.getKey()
-							     .toString());
+		    ConfigurationRegistry.getEntryByKey(entry.getKey().toString());
 
-	    String value =
-		    entry.getValue()
-			 .toString();
+	    String value = entry.getValue().toString();
 	    if (configKey.getDataType() == Password.class) {
-		value =
-			CryptoUtil.process(action,
-					   value);
+		value = CryptoUtil.process(action, value);
 	    }
-	    target.put(configKey.getKey(),
-		       value);
+	    target.put(configKey.getKey(), value);
 	}
     }
 
@@ -268,16 +230,12 @@ public final class XmlPropertiesConfiguration implements Configuration {
     @Override
     public Map<ConfigurationKey<?>, String> getData() {
 
-	final Map<ConfigurationKey<?>, String> data =
-		new TreeMap<ConfigurationKey<?>, String>();
+	final Map<ConfigurationKey<?>, String> data = new TreeMap<ConfigurationKey<?>, String>();
 
 	for (Entry<Object, Object> entry : properties.entrySet()) {
 	    final ConfigurationKey<?> configKey =
-		    ConfigurationRegistry.getEntryByKey(entry.getKey()
-							     .toString());
-	    data.put(configKey,
-		     entry.getValue()
-			  .toString());
+		    ConfigurationRegistry.getEntryByKey(entry.getKey().toString());
+	    data.put(configKey, entry.getValue().toString());
 	}
 
 	return data;
