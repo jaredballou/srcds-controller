@@ -107,7 +107,7 @@ public class ProcessOutputHandler implements HttpHandler, RegisteredHandler {
 	    // output the log history
 	    printStream.println("### Output history:<br/>");
 	    if (serverOutput == null) {
-		printStream.println("### Process never run!<br/>");
+		printStream.println("### SRCDS Server not started yet<br/>");
 		Utils.closeQuietly(printStream);
 		return;
 	    } else {
@@ -116,7 +116,7 @@ public class ProcessOutputHandler implements HttpHandler, RegisteredHandler {
 		}
 
 		if (this.serverController.getServerState() != ServerState.RUNNING) {
-		    printStream.println("### Server isn't running.<br/>");
+		    printStream.println("### SRCDS Server is not running<br/>");
 		    Utils.closeQuietly(printStream);
 		} else {
 		    printStream.println("### Live output:<br/>");
