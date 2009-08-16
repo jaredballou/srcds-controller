@@ -1,0 +1,14 @@
+<project name="Source Dedicated Server Controller">
+  <bannerLeft>
+    <name>Source Dedicated Server Controller</name>
+    <src>images/banner.png</src>
+    <href>http://www.earthquake-clan.de/srcds/</href>
+  </bannerLeft>
+  <body>
+    <menu ref="reports"/>
+    <menu name="Links">
+      <item name="Project Homepage" href="http://www.earthquake-clan.de/srcds/"/>      
+      <item name="Google Code Project" href="http://code.google.com/p/srcds-controller/"/>      
+    </menu>
+  </body>
+</project>

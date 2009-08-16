@@ -81,7 +81,7 @@ public class TrayMenu {
 		public void actionPerformed(final ActionEvent event) {
 
 		    if (event.getSource().equals(aboutItem)) {
-			trayIcon.displayMessage("About", String.format(
+			getTrayIcon().displayMessage("About", String.format(
 				"%s v%s", PROJECT_NAME, VersionUtil
 					.getProjectVersion()),
 				TrayIcon.MessageType.INFO);
@@ -115,5 +115,10 @@ public class TrayMenu {
 	    throw new UnsupportedOSException(
 		    "System does not support tray icons");
 	}
+    }
+    
+    protected TrayIcon getTrayIcon() {
+
+	return this.trayIcon;
     }
 }
