@@ -9,6 +9,15 @@
 		for Source Dedicated Servers</description>
 	<url>http://code.google.com/p/srcds-controller/</url>
 
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.5</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
 	<properties>
 		<jdk.version>1.6</jdk.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -159,6 +168,11 @@
 					<tagBase>https://srcds-controller.googlecode.com/svn/tags</tagBase>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>clirr-maven-plugin</artifactId>
+				<version>2.2.1</version>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -211,6 +225,19 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-changelog-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>taglist-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>clirr-maven-plugin</artifactId>
+				<version>2.2.1</version>
 			</plugin>
 		</plugins>
 	</reporting>
