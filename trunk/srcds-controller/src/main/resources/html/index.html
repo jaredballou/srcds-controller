@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
 
     This file is part of the Source Dedicated Server Controller project.
@@ -30,10 +32,7 @@
        <http://www.earthquake-clan.de/srcds/>
        <http://code.google.com/p/srcds-controller/>
 
--->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
- "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
- 
+--> 
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>Source Dedicated Server Controller @ ${hostname}</title>
@@ -44,9 +43,8 @@
 		  @import url(${css:screen.css}) screen, print, projection, tv;
 		</style>
 		<script type="text/javascript">
-        <!--
-		function CheckWindowed() 
-		{
+		<!--
+		function CheckWindowed() {
 			var query = document.location.search || document.location.hash;
 			var windowed = false;
 			if (query) 
@@ -64,17 +62,15 @@
 			  		}
 			 	}
 			}
-			if (windowed == true)
-			{
+			if (windowed == true) {
 				document.getElementById('popupshow').style.display = 'none';		
 			}		
 		}
-		
-        function PopupWindow() 
-		{
-        	myWindow = window.open(".?windowed=true","${hostname}","status=0,menubar=0,resizable=0,width=640,height=480");
-        }
-        // -->
+
+        function PopupWindow() {
+			myWindow = window.open(".?windowed=true","${hostname}","status=0,menubar=0,resizable=0,width=640,height=480");
+		}
+		// -->
         </script>        
 	</head>
 	<body onload="javascript: CheckWindowed()">
@@ -93,10 +89,10 @@
 		<li><a href="editConfigFiles"><img width="48" height="24" src="${img:icon_editconfigfiles.png}" />Edit the game-specific configuration files</a></li>
 		<li><a href="setConfig"><img width="48" height="24" src="${img:icon_setconfig.png}" />Set a configuration key to a specified value (e.g. setConfig?key=value)</a></li>
 		<li><a href="#"><img width="48" height="24" src="${img:icon_rcon.png}" />Execute a rcon command (e.g. rcon?command=status)</a>
-        <form action="rcon" method="get"><input name="command" type="text" size="40" class="rcon" /><input value="Send" type="submit" />
-        </form>
-        </li>
-
+			<form action="rcon" method="get"><input name="command" type="text" size="40" class="rcon" />
+				<input type="submit" value="Send" />
+			</form>
+			</li>
 		<li><a href="shutdown"><img width="48" height="24" src="${img:icon_shutdown.png}" />Shutdown the controller</a></li>
 		</ul>
         <p class="footer">
