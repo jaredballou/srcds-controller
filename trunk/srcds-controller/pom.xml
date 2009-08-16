@@ -33,12 +33,36 @@
 
 	<developers>
 		<developer>
+			<id>holger.cremer</id>
+			<name>Holger Cremer</name>
+			<email>HolgerCremer@gmail.com</email>
+			<organization>SRCDS Controller Development Team</organization>
+			<organizationUrl>http://www.earthquake-clan.de/srcds/</organizationUrl>
+			<timezone>+1</timezone>
+			<roles>
+				<role>project owner</role>
+				<role>developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>nils.peters</id>
+			<name>Nils Peters</name>
+			<email>an.nils.peters@googlemail.com</email>
+			<organization>SRCDS Controller Development Team</organization>
+			<organizationUrl>http://www.earthquake-clan.de/srcds/</organizationUrl>
+			<timezone>+1</timezone>
+			<roles>
+				<role>project owner</role>
+				<role>developer</role>
+			</roles>
+		</developer>
+		<developer>
 			<id>hannes.scharmann</id>
 			<name>Hannes Scharmann</name>
 			<email>hannes.scharmann@googlemail.com</email>
 			<organization>SRCDS Controller Development Team</organization>
 			<organizationUrl>http://www.earthquake-clan.de/srcds/</organizationUrl>
-			<timezone>-1</timezone>
+			<timezone>+1</timezone>
 			<roles>
 				<role>project owner</role>
 				<role>developer</role>
