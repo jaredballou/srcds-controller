@@ -51,7 +51,7 @@
 					screen, print, projection, tv;
 				</style>
 			</head>
-			<body onload="CheckRcon()">
+			<body>
 				<div id="header">Source Dedicated Server Controller @ ${hostname} -
 					Response</div>
 				<br />
@@ -92,7 +92,7 @@
 					</xsl:when>
 				</xsl:choose>
 				<br />
-				<a href="/" class="response">Back to main page</a>
+				<a href="/" class="response">[Back to main page]</a>
 			</body>
 		</html>
 	</xsl:template>

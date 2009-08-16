@@ -90,15 +90,13 @@ td.tableData {
 	background-color: #e6f3e5;	
 }
 
-h2.response, a.response, table.response, p.response, form input.response, form span.response, form textarea.response, #rconsubmit {
+a.response, h2.response, table.response, p.response, form input.response, form span.response, form textarea.response, #rconsubmit, .content {
     margin-left: 98px;
 }
-
 
 input, select {
 	border: 1px solid #000;
   	color:#000; 
-	font: bold 84%; 
 	background-color: #e6f3e5;
 	border:1px solid; 
 	border-color: #5cb553 #5cb553 #5cb553 #5cb553; 
@@ -112,7 +110,6 @@ input.rcon {
 input[type=submit], input[type=reset], input[type=button] {
 	border: 1px solid #000;
   	color:#000; 
-	font: bold 84%; 
 	background-color: #e6f3e5;	
 	border:1px solid; 
 	border-color: #5cb553 #5cb553 #5cb553 #5cb553; 
@@ -123,7 +120,6 @@ textarea {
 	height: 400px;
 	padding: 5px;
   	color:#000; 
-	font: bold 84%; 
 	background-color: #e6f3e5;	
 	border:1px solid; 
 	border-color: #5cb553 #5cb553 #5cb553 #5cb553; 

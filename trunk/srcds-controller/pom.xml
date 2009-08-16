@@ -241,4 +241,11 @@
 			</plugin>
 		</plugins>
 	</reporting>
+
+	<distributionManagement>
+    <site>
+      <id>eqc.site</id>
+      <url>dav:http://www.earthquake-clan.de/srcds/site</url>
+    </site>
+	</distributionManagement>
 </project>
