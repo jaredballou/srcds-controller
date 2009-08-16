@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.eqc.srcds</groupId>
 	<artifactId>srcds-controller</artifactId>
-	<name>srcds-controller</name>
+	<name>Source Dedicated Server Controller</name>
 	<version>0.0.1-SNAPSHOT</version>
 	<description>HTTP server which provides remote controlling abilities for Source Dedicated Servers</description>
 	<url>http://code.google.com/p/srcds-controller/</url>
