@@ -57,7 +57,7 @@ public class ServerOutputReader extends Thread implements ServerOutput {
     // this object
     private final transient LinkedBlockingDeque<String> savedLogLines = new LinkedBlockingDeque<String>(SAVE_LAST_LINES);
     // same here
-    private final transient List<ProcessOutputObserver> outputObservers = new ArrayList<ProcessOutputObserver>(3);
+    private final transient List<ProcessOutputObserver> outputObservers = Collections.synchronizedList(new ArrayList<ProcessOutputObserver>(3));
 
     public ServerOutputReader(final InputStream inputStream) {
 
