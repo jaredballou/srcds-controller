@@ -109,7 +109,7 @@ public class RconConnection {
 	if (resp.length > 0) {
 	    response = assemblePackets(resp);
 	}
-	if (response == null || response.length() == 0) {
+	if ("".equals(response)) {
 	    throw new ResponseEmptyException("Response is empty");
 	}
 	return response;
@@ -187,14 +187,14 @@ public class RconConnection {
     private static String assemblePackets(final ByteBuffer[] packets) {
 
 	// Return the text from all the response packets together
-	String response = "";
+	final StringBuilder response = new StringBuilder();
 	for (int i = 0; i < packets.length; i++) {
 	    if (packets[i] != null) {
-		response = response.concat(new String(packets[i].array(), 12,
+		response.append(new String(packets[i].array(), 12,
 			packets[i].position() - 14));
 	    }
 	}
-	return response;
+	return response.toString();
     }
 
     private boolean authenticate(final String password) throws SocketTimeoutException {
