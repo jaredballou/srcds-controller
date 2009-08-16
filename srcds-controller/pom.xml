@@ -10,6 +10,7 @@
 
 	<properties>
 		<jdk.version>1.6</jdk.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<scm>
@@ -119,7 +120,7 @@
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
 				<configuration>
-					<encoding>UTF-8</encoding>
+					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -156,6 +157,7 @@
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<configuration>
+					<encoding>${project.build.sourceEncoding}</encoding>
 					<quiet>true</quiet>
 				</configuration>
 				<reportSets>
