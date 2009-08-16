@@ -33,6 +33,7 @@ package de.eqc.srcds.handlers;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.net.InetAddress;
 import java.nio.channels.Channels;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,14 +48,16 @@ import de.eqc.srcds.core.SourceDServerController;
 import de.eqc.srcds.core.Utils;
 import de.eqc.srcds.core.logging.LogFactory;
 import de.eqc.srcds.enums.ServerState;
+import de.eqc.srcds.handlers.utils.SimpleTemplate;
 
 /**
  * @author Holger Cremer
  */
-public class ProcessOutputHandler implements HttpHandler, RegisteredHandler {
+public class ProcessOutputHandler implements HttpHandler, RegisteredHandler  {
 
     private static Logger log = LogFactory.getLogger(ProcessOutputHandler.class);
-    
+    private static final String HEADER_HTML = "/html/header.html";
+    private static final String FOOTER_HTML = "/html/footer.html";
     private SourceDServerController serverController;
 
     /*
@@ -96,18 +99,19 @@ public class ProcessOutputHandler implements HttpHandler, RegisteredHandler {
 	httpExchange.getResponseHeaders().add("Content-type", "text/html");
 	httpExchange.sendResponseHeaders(200, 0);
 	PrintStream printStream = null;
-	
+
 	final ServerOutput serverOutput = this.serverController.getServerOutput();
 	try {
 	    final OutputStream os = httpExchange.getResponseBody();
-	    
+
 	    // set autoflush on in constructor
 	    printStream = new PrintStream(os, true);
+	    writeHtmlHeader(printStream);
 
 	    // output the log history
-	    printStream.println("### Output history:<br/>");
+	    printStream.println("<h2>Output History</h2>");
 	    if (serverOutput == null) {
-		printStream.println("### SRCDS Server not started yet<br/>");
+		printStream.println("<b>SRCDS Server is not running</b>");
 		Utils.closeQuietly(printStream);
 		return;
 	    } else {
@@ -116,22 +120,23 @@ public class ProcessOutputHandler implements HttpHandler, RegisteredHandler {
 		}
 
 		if (this.serverController.getServerState() != ServerState.RUNNING) {
-		    printStream.println("### SRCDS Server is not running<br/>");
+		    printStream.println("<b>SRCDS Server stopped</b>");
 		    Utils.closeQuietly(printStream);
 		} else {
-		    printStream.println("### Live output:<br/>");
+		    printStream.println("<h2>Live Output</h2>");
 		    Channels.newChannel(printStream);
-		    final WriteLogToStreamThread streamLogger = new WriteLogToStreamThread(printStream, serverOutput);
+		    final WriteLogToStreamThread streamLogger =
+			    new WriteLogToStreamThread(printStream, serverOutput);
 		    streamLogger.start();
 		}
 	    }
 	} catch (Exception e) {
-	    // every Exception is interesting here because the PrintStream should omit any IOExceptions
+	    // every Exception is interesting here because the PrintStream
+	    // should omit any IOExceptions
 	    log.log(Level.WARNING, "Exception during output sending: " + e.getMessage());
 	    log.log(Level.FINE, "Detailled exception: ", e);
 	    Utils.closeQuietly(printStream);
-	} 
-	
+	}
     }
 
     /**
@@ -146,7 +151,7 @@ public class ProcessOutputHandler implements HttpHandler, RegisteredHandler {
 
 	/**
 	 * @param printStream
-	 * @param serverOutput 
+	 * @param serverOutput
 	 */
 	public WriteLogToStreamThread(final PrintStream printStream, final ServerOutput serverOutput) {
 
@@ -163,22 +168,28 @@ public class ProcessOutputHandler implements HttpHandler, RegisteredHandler {
 
 	    serverOutput.registerOnLogObserver(this);
 	    try {
-	    /*
-	     * If the browser disconnects 'checkError()' returns true and we
-	     * stop this thread. (PrintStream omit any IOExceptions !)
-	     */
-	    while (!this.printStream.checkError()) {
-		try {
-		    // sleeping 1 sec. seem to be a good compromise between cpu
-		    // usage and actuality
-		    Thread.sleep(1000);
-		} catch (InterruptedException excp) {
-		    // ignore
+		/*
+		 * If the browser disconnects 'checkError()' returns true and we
+		 * stop this thread. (PrintStream omit any IOExceptions !)
+		 */
+		while (!this.printStream.checkError()) {
+		    try {
+			// sleeping 1 sec. seem to be a good compromise between
+			// cpu usage and actuality
+			Thread.sleep(1000);
+		    } catch (InterruptedException excp) {
+			// ignore
+		    }
 		}
-	    }
 	    } finally {
 		serverOutput.unRegisterOnLogObserver(this);
-		Utils.closeQuietly(this.printStream);
+		try {
+		    writeHtmlFooter(this.printStream);
+		} catch (IOException e) {
+		    // Ignore
+		} finally {
+			Utils.closeQuietly(this.printStream);
+		}
 	    }
 	}
 
@@ -193,4 +204,17 @@ public class ProcessOutputHandler implements HttpHandler, RegisteredHandler {
 	    this.printStream.println(newLine + "<br />");
 	}
     }
+    
+    private void writeHtmlHeader(final PrintStream printStream) throws IOException {
+
+	final SimpleTemplate template = new SimpleTemplate(HEADER_HTML);
+	template.setAttribute("hostname", InetAddress.getLocalHost().getHostName());
+	printStream.write(template.renderTemplate().getBytes());
+    }
+
+    private void writeHtmlFooter(final PrintStream printStream) throws IOException {
+
+	final SimpleTemplate template = new SimpleTemplate(FOOTER_HTML);
+	printStream.write(template.renderTemplate().getBytes());
+    }    
 }
