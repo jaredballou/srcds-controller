@@ -121,8 +121,8 @@ public abstract class AbstractRegisteredHandler implements HttpHandler, Register
 		if (parts.length != 2) {
 		    continue;
 		}
-		this.parsedRequestParameter.put(URLDecoder.decode(parts[0], UTF_8), URLDecoder.decode(parts[1],
-			UTF_8));
+		this.parsedRequestParameter.put(URLDecoder.decode(parts[0], UTF_8),
+						URLDecoder.decode(parts[1], UTF_8));
 	    }
 	}
     }
@@ -136,7 +136,8 @@ public abstract class AbstractRegisteredHandler implements HttpHandler, Register
 	if (this.parsedPostParameter == null) {
 	    this.parsedPostParameter = new HashMap<String, String>();
 
-	    final String requestBody = Utils.getInputStreamContent(this.httpExchange.getRequestBody());
+	    final String requestBody =
+		    Utils.getInputStreamContent(this.httpExchange.getRequestBody());
 
 	    final String[] params = requestBody.split("&");
 	    for (String param : params) {
@@ -144,8 +145,8 @@ public abstract class AbstractRegisteredHandler implements HttpHandler, Register
 		if (parts.length != 2) {
 		    continue;
 		}
-		this.parsedPostParameter
-			.put(URLDecoder.decode(parts[0], UTF_8), URLDecoder.decode(parts[1], UTF_8));
+		this.parsedPostParameter.put(URLDecoder.decode(parts[0], UTF_8),
+					     URLDecoder.decode(parts[1], UTF_8));
 	    }
 	}
     }
@@ -245,14 +246,13 @@ public abstract class AbstractRegisteredHandler implements HttpHandler, Register
     protected void outputContent(final byte[] bytes, final String contentType) throws IOException {
 
 	this.httpExchange.getResponseHeaders().add("Content-type", contentType);
-
-	httpExchange.sendResponseHeaders(200, bytes.length);
+	this.httpExchange.sendResponseHeaders(200, bytes.length);
 	final OutputStream os = httpExchange.getResponseBody();
 	os.write(bytes);
 	os.flush();
 	os.close();
     }
-    
+
     /*
      * @see
      * com.sun.net.httpserver.HttpHandler#handle(com.sun.net.httpserver.HttpExchange
@@ -268,10 +268,11 @@ public abstract class AbstractRegisteredHandler implements HttpHandler, Register
 	try {
 	    this.handleRequest(httpExchange);
 	} catch (Exception e) {
-	    log.log(Level.WARNING, String.format("Exception in request handler '%s': %s", this.getPath(), e
-		    .getMessage()));
+	    log.log(Level.WARNING, String.format("Exception in request handler '%s': %s",
+						 this.getPath(),
+						 e.getMessage()));
 	    log.log(Level.FINE, "Stacktrace: ", e);
-	    
+
 	    final Message message = new Message();
 	    message.addLine(e.getLocalizedMessage());
 	    outputXmlContent(new ControllerResponse(ResponseCode.ERROR, message).toXml());
