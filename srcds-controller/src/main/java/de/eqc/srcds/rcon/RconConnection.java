@@ -66,8 +66,8 @@ public class RconConnection {
     private final InputStream in;
     private final OutputStream out;
 
-    public RconConnection(final String ip, final String password)
-	    throws AuthenticationException, TimeoutException {
+    public RconConnection(final String ip, final String password) throws AuthenticationException,
+	    TimeoutException {
 
 	this(ip, DEFAULT_RCON_PORT, password);
     }
@@ -85,12 +85,8 @@ public class RconConnection {
 	    throw new AuthenticationException(e.getLocalizedMessage(), e);
 	}
 
-	try {
-	    if (!authenticate(password)) {
-		throw new AuthenticationException("Authentication failed");
-	    }
-	} catch (SocketTimeoutException e) {
-	    throw new TimeoutException("Timeout occured during authentication", e);
+	if (!authenticate(password)) {
+	    throw new AuthenticationException("Authentication failed");
 	}
     }
 
@@ -109,14 +105,13 @@ public class RconConnection {
 	if (resp.length > 0) {
 	    response = assemblePackets(resp);
 	}
-	if ("".equals(response)) {
+	if (response == null || response.length() == 0) {
 	    throw new ResponseEmptyException("Response is empty");
 	}
 	return response;
     }
 
-    private ByteBuffer[] sendCommand(final String command)
-	    throws SocketTimeoutException {
+    private ByteBuffer[] sendCommand(final String command) throws SocketTimeoutException {
 
 	final byte[] request = contructPacket(2, SERVERDATA_EXECCOMMAND, command);
 
@@ -136,9 +131,9 @@ public class RconConnection {
 		// No more packets in the response, go on
 	    }
 	} catch (Exception e) {
-	    System.err.println("I/O error on socket\n");
+	    resp = new ByteBuffer[0];
 	}
-	return new ByteBuffer[0];
+	return resp;
     }
 
     private static byte[] contructPacket(final int id, final int cmdtype, final String s1) {
@@ -164,7 +159,7 @@ public class RconConnection {
 	return p.array();
     }
 
-    private ByteBuffer receivePacket() throws Exception {
+    private ByteBuffer receivePacket() throws IOException {
 
 	final ByteBuffer p = ByteBuffer.allocate(4120);
 	p.order(ByteOrder.LITTLE_ENDIAN);
@@ -190,14 +185,13 @@ public class RconConnection {
 	final StringBuilder response = new StringBuilder();
 	for (int i = 0; i < packets.length; i++) {
 	    if (packets[i] != null) {
-		response.append(new String(packets[i].array(), 12,
-			packets[i].position() - 14));
+		response.append(new String(packets[i].array(), 12, packets[i].position() - 14));
 	    }
 	}
 	return response.toString();
     }
 
-    private boolean authenticate(final String password) throws SocketTimeoutException {
+    private boolean authenticate(final String password) throws AuthenticationException {
 
 	final byte[] authRequest = contructPacket(RESPONSE_ID, SERVERDATA_AUTH, password);
 	ByteBuffer response = ByteBuffer.allocate(64);
@@ -209,11 +203,11 @@ public class RconConnection {
 	    response = receivePacket();
 
 	    if ((response.getInt(4) == RESPONSE_ID)
-		    && (response.getInt(8) == SERVERDATA_AUTH_RESPONSE)) {
+		&& (response.getInt(8) == SERVERDATA_AUTH_RESPONSE)) {
 		ret = true;
 	    }
-	} catch (Exception e) {
-	    // Ignore: authentication failed anyway
+	} catch (IOException e) {
+	    throw new AuthenticationException(e.getLocalizedMessage(), e);
 	}
 
 	return ret;
