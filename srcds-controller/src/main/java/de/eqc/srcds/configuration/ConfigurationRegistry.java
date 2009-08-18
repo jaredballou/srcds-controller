@@ -97,7 +97,7 @@ public final class ConfigurationRegistry {
 		GameType.LEFT4DEAD, "SRCDS Game Type", 7));
 	entries.add(new ConfigurationKey<String>(SRCDS_PATH, "./",
 		"SRCDS Path", 8));
-	entries.add(new ConfigurationKey<String>(SRCDS_EXECUTABLE, "srcds_run",
+	entries.add(new ConfigurationKey<String>(SRCDS_EXECUTABLE, "srcds_i486",
 		"SRCDS Executable", 9));
 	entries.add(new ConfigurationKey<String>(SRCDS_PARAMETERS, "",
 		"SRCDS Parameters", 10));
