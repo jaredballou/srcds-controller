@@ -81,13 +81,13 @@ public class EditConfigFilesHandler extends AbstractRegisteredHandler {
     private void saveFile(final int fileId, final String file, final String newContent) throws IOException, ConfigurationException {
 	final File fileToEdit = new File(getConfig().getValue("srcds.controller.srcds.path",String.class), file);
 	
-	// TODO: unescape content!
+	if (! fileToEdit.exists()) {
+	    
+	}
+	
 	Utils.saveToFile(fileToEdit, newContent);
 
 	showFile(fileId, file);
-//	SimpleTemplate template = new SimpleTemplate("/html/editConfigFiles/fileSaved.html");
-//	template.setAttribute("url", this.getPath());
-//	outputHtmlContent(template.renderTemplate());
     }
 
     /**
@@ -97,11 +97,11 @@ public class EditConfigFilesHandler extends AbstractRegisteredHandler {
      * @throws ConfigurationException 
      */
     private void showFile(final int fileId, final String file) throws FileNotFoundException, IOException, ConfigurationException {
-	final File fileToEdit = new File(getConfig().getValue("srcds.controller.srcds.path",String.class), file);
-	
-	if (!fileToEdit.exists()) {
-	    throw new FileNotFoundException(String.format("Cannot find file %s", file));
-	}
+//	final File fileToEdit = new File(getConfig().getValue("srcds.controller.srcds.path",String.class), file);
+//	
+//	if (!fileToEdit.exists()) {
+//	    throw new FileNotFoundException(String.format("Cannot find file %s", file));
+//	}
 
 	final GameConfiguration gameConfiguration = new GameConfiguration(getConfig(), fileId);
 	outputXmlContent(gameConfiguration.toXml());

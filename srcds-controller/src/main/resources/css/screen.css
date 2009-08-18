@@ -90,7 +90,7 @@ td.tableData {
 	background-color: #e6f3e5;	
 }
 
-a.response, h2.response, table.response, p.response, form input.response, form span.response, form textarea.response, #rconsubmit, .content {
+div.response, a.response, h2.response, table.response, p.response, form input.response, form span.response, form textarea.response, #rconsubmit, .content {
     margin-left: 98px;
 }
 
@@ -123,4 +123,13 @@ textarea {
 	background-color: #e6f3e5;	
 	border:1px solid; 
 	border-color: #5cb553 #5cb553 #5cb553 #5cb553; 
+}
+
+.fileNotExist {
+	color: red;
+	font-weight: bold;
+	background-color:lightyellow;
+	border:1px solid orange;
+	padding:2px;
+	width:600px;		
 }

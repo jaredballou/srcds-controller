@@ -1,36 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!--
-
-    This file is part of the Source Dedicated Server Controller project.
-
-    This program is free software; you can redistribute it and/or modify it
-    under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-    See the GNU General Public License for more details.
-    
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, see <http://www.gnu.org/licenses>.
-    
-    Additional permission under GNU GPL version 3 section 7
-    
-    If you modify this Program, or any covered work, by linking or
-    combining it with srcds-controller (or a modified version of that library),
-    containing parts covered by the terms of GNU General Public License,
-    the licensors of this Program grant you additional permission to convey
-    the resulting work. {Corresponding Source for a non-source form of such a
-    combination shall include the source code for the parts of srcds-controller
-    used as well as that of the covered work.}
-
-    For more information, please consult:
-       <http://www.earthquake-clan.de/srcds/>
-       <http://code.google.com/p/srcds-controller/>
-
--->
 <profiles version="11">
 <profile kind="CodeFormatterProfile" name="srcds-controller" version="11">
 <setting id="org.eclipse.jdt.core.formatter.comment.insert_new_line_before_root_tags" value="insert"/>
@@ -103,7 +71,7 @@
 <setting id="org.eclipse.jdt.core.formatter.insert_space_before_opening_angle_bracket_in_type_parameters" value="do not insert"/>
 <setting id="org.eclipse.jdt.core.formatter.insert_new_line_in_empty_type_declaration" value="insert"/>
 <setting id="org.eclipse.jdt.core.formatter.comment.clear_blank_lines_in_block_comment" value="false"/>
-<setting id="org.eclipse.jdt.core.formatter.lineSplit" value="100"/>
+<setting id="org.eclipse.jdt.core.formatter.lineSplit" value="130"/>
 <setting id="org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_if" value="insert"/>
 <setting id="org.eclipse.jdt.core.formatter.insert_space_between_brackets_in_array_type_reference" value="do not insert"/>
 <setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_parenthesized_expression" value="do not insert"/>
