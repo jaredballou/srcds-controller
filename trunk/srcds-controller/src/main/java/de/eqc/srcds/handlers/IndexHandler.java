@@ -31,6 +31,7 @@
 package de.eqc.srcds.handlers;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.InetAddress;
 
 import com.sun.net.httpserver.HttpExchange;
@@ -48,6 +49,7 @@ public class IndexHandler extends AbstractRegisteredHandler implements
      * 
      */
     private static final String INDEX_HTML = "/html/index.html";
+    private static final byte[] ERROR_404_MESSAGE ="404 - page not found!".getBytes();
 
     /*
      * @see
@@ -56,6 +58,17 @@ public class IndexHandler extends AbstractRegisteredHandler implements
      */
     @Override
     public void handleRequest(final HttpExchange httpExchange) throws IOException {
+	
+	// every wrong url falls back to this handler, so we have to check the request url and may send a 404 error
+	if (! httpExchange.getRequestURI().getPath().equalsIgnoreCase(getPath())) {
+		httpExchange.getResponseHeaders().add("Content-type", "text/plain");
+		httpExchange.sendResponseHeaders(404, ERROR_404_MESSAGE.length);
+		final OutputStream os = httpExchange.getResponseBody();
+		os.write(ERROR_404_MESSAGE);
+		os.flush();
+		os.close();
+		return;
+	}
 
 	final SimpleTemplate template = new SimpleTemplate(INDEX_HTML);
 	template.setAttribute("hostname", InetAddress.getLocalHost().getHostName());
