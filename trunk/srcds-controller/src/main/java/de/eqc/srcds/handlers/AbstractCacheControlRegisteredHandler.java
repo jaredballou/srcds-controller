@@ -51,13 +51,17 @@ import de.eqc.srcds.core.logging.LogFactory;
  */
 public abstract class AbstractCacheControlRegisteredHandler extends AbstractRegisteredHandler {
 
+    /**
+     * This is the date format in a http reponse.
+     */
+    public static final String HTTP_RESPONSE_DATE_FORMAT = "EEE, dd MMM yyyy HH:mm:ss 'GMT'";
+
     private static Logger log = LogFactory.getLogger(AbstractCacheControlRegisteredHandler.class);
 
     /**
      * 86400 seconds = one day
      */
     private static final long EXPIRES_IN = 86400000;
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss 'GMT'", Locale.ENGLISH);
 
     /*
      * @see
@@ -69,16 +73,17 @@ public abstract class AbstractCacheControlRegisteredHandler extends AbstractRegi
 
 	final long lastModified = (Utils.getLastModifiedDate() / 1000) * 1000;
 
+	final SimpleDateFormat dateFormat = new SimpleDateFormat(HTTP_RESPONSE_DATE_FORMAT, Locale.ENGLISH);
+
 	// send cache control headers
 	httpExchange.getResponseHeaders().add("Cache-Control", "public, max-age=" + EXPIRES_IN + ", must-revalidate");
-	httpExchange.getResponseHeaders().add("Expires",
-		this.dateFormat.format(new Date(System.currentTimeMillis() + EXPIRES_IN)));
-	httpExchange.getResponseHeaders().add("Last-Modified", this.dateFormat.format(new Date(lastModified)));
-	
+	httpExchange.getResponseHeaders().add("Expires", dateFormat.format(new Date(System.currentTimeMillis() + EXPIRES_IN)));
+	httpExchange.getResponseHeaders().add("Last-Modified", dateFormat.format(new Date(lastModified)));
+
 	// looking for "If-modified-since" to send a 304 status
 	for (Entry<String, List<String>> entry : httpExchange.getRequestHeaders().entrySet()) {
 	    if (entry.getKey().equalsIgnoreCase("If-modified-since")) {
-		final Date parsedDate = parseHeaderDate(entry.getValue());
+		final Date parsedDate = parseHeaderDate(entry.getValue(), dateFormat);
 		if (parsedDate != null && lastModified <= parsedDate.getTime()) {
 		    // skip the request and send a http 304
 		    httpExchange.sendResponseHeaders(304, 0);
@@ -94,7 +99,7 @@ public abstract class AbstractCacheControlRegisteredHandler extends AbstractRegi
 	super.handle(httpExchange);
     }
 
-    private Date parseHeaderDate(final List<String> valueList) {
+    private Date parseHeaderDate(final List<String> valueList, final SimpleDateFormat dateFormat) {
 
 	Date ret = null;
 	if (valueList.size() != 1) {
@@ -103,8 +108,9 @@ public abstract class AbstractCacheControlRegisteredHandler extends AbstractRegi
 	    try {
 		ret = dateFormat.parse(valueList.get(0));
 	    } catch (ParseException excp) {
-		log.log(Level.WARNING, "Can't parse the if-modified-since date '" + valueList.get(0) + "': "
-			+ excp.getMessage(), excp);
+		log.log(Level.WARNING,
+			"Can't parse the if-modified-since date '" + valueList.get(0) + "': " + excp.getMessage(),
+			excp);
 	    }
 	}
 	return ret;
