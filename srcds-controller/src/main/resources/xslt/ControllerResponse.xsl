@@ -42,14 +42,9 @@
 			<head>
 				<title>Source Dedicated Server Controller @ ${hostname}</title>
 				<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-				<link rel="icon" href="${img:favicon.ico}" type="image/x-icon">
-				</link>
-				<style type="text/css">
-					@import url(${css:textmode.css}) braille,
-					embossed, handheld, speech, tty;
-					@import url(${css:screen.css})
-					screen, print, projection, tv;
-				</style>
+				<link rel="icon" href="${img:favicon.ico}" type="image/x-icon"></link>
+				<link rel="stylesheet" media="screen, print, projection, tv" href="${css:screen.css}"></link>
+				<link rel="stylesheet" media="aural, braille, embossed, handheld, tty" href="${css:textmode.css}"></link>
 			</head>
 			<body>
 				<div id="header">Source Dedicated Server Controller @ ${hostname} -
