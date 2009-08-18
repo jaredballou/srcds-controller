@@ -267,13 +267,7 @@ public class SourceDServerController extends AbstractServerController<Process> {
 		} catch (InterruptedException e1) {
 		    // Ignore
 		}
-		// try {
-		// log.info("SIGTERM sent to process");
-		// ProcessUtil.sendSigAbort(server,
-		// PROCESS_SHUTDOWN_TIMEOUT_MILLIS);
-		// } catch (Exception e) {
-		// // Ignore
-		// }
+
 		log.info("Destroying reference to process");
 		server.destroy();
 		try {
