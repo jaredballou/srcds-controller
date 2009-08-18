@@ -60,7 +60,7 @@ public class CssHandler extends AbstractCacheControlRegisteredHandler implements
 	
 	final String resource = String.format("/css/%s", name);
 	
-	final SimpleTemplate template = new SimpleTemplate(resource);
+	final SimpleTemplate template = SimpleTemplate.createTemplateByTemplatePath(resource);
 	outputCssContent(template.renderTemplate());
     }
 
