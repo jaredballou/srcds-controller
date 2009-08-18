@@ -73,6 +73,8 @@ public class IndexHandler extends AbstractRegisteredHandler implements
 	final SimpleTemplate template = new SimpleTemplate(INDEX_HTML);
 	template.setAttribute("hostname", InetAddress.getLocalHost().getHostName());
 	template.setAttribute("version", VersionUtil.getProjectVersion());
+	template.setAttribute("popup-width", "640");
+	template.setAttribute("popup-height", "480");
 	
 	outputHtmlContent(template.renderTemplate());
     }
