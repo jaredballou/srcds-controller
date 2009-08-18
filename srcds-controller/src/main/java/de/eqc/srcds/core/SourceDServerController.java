@@ -276,6 +276,11 @@ public class SourceDServerController extends AbstractServerController<Process> {
 		// }
 		log.info("Destroying reference to process");
 		server.destroy();
+		try {
+		    server.waitFor();
+		} catch (InterruptedException e) {
+		    // Ignore		    
+		}
 		server = null;
 	    }
 	}
