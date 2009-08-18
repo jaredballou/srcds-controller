@@ -32,7 +32,9 @@ package de.eqc.srcds.handlers;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,6 +48,7 @@ import de.eqc.srcds.configuration.Configuration;
 import de.eqc.srcds.core.SourceDServerController;
 import de.eqc.srcds.core.Utils;
 import de.eqc.srcds.core.logging.LogFactory;
+import de.eqc.srcds.handlers.utils.SimpleTemplate;
 import de.eqc.srcds.xmlbeans.enums.ResponseCode;
 import de.eqc.srcds.xmlbeans.impl.ControllerResponse;
 import de.eqc.srcds.xmlbeans.impl.Message;
@@ -56,6 +59,8 @@ import de.eqc.srcds.xmlbeans.impl.Message;
 public abstract class AbstractRegisteredHandler implements HttpHandler, RegisteredHandler {
 
     private static final String UTF_8 = "utf-8";
+    private static final String HEADER_HTML = "/html/header.html";
+    private static final String FOOTER_HTML = "/html/footer.html";
 
     private static Logger log = LogFactory.getLogger(AbstractRegisteredHandler.class);
 
@@ -174,6 +179,19 @@ public abstract class AbstractRegisteredHandler implements HttpHandler, Register
 	return this.httpExchange.getRequestMethod().equalsIgnoreCase("POST");
     }
 
+    protected String getHtmlHeader() throws IOException {
+
+	final SimpleTemplate template = new SimpleTemplate(HEADER_HTML);
+	template.setAttribute("hostname", InetAddress.getLocalHost().getHostName());
+	return template.renderTemplate();
+    }
+
+    protected String getHtmlFooter() throws IOException {
+
+	final SimpleTemplate template = new SimpleTemplate(FOOTER_HTML);
+	return template.renderTemplate();
+    }       
+    
     /**
      * Set the content-type to "text/html" and writes the content to the stream.
      * The stream is closed at the end, so don't call this method twice!
