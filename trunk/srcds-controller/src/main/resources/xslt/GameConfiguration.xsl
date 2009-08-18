@@ -55,9 +55,10 @@
                 <br/>
                 <img src="${img:header_index.png}" />
                 <br/>
-   				<h2 class="response">Edit Game Configuration</h2>
+                <div class="response">
+   				<h2>Edit Game Configuration</h2>
 				<form method="post">
-						<span class="response">
+						<span>
 							Configuration&#160;File:&#160;
 							<select name="id" onchange="window.location.href='?id=' + this.selectedIndex">
 								<xsl:for-each select="ConfigurationFiles/ConfigurationFile">
@@ -72,13 +73,27 @@
 								</xsl:for-each>
 							</select>
 						</span>
-						<br/><br/>
-						<textarea name="content" class="response"><xsl:value-of select="/GameConfiguration/FileContent" /></textarea>
-						<br />
-						<br />
-						<input type="submit" value="Save" class="response"/>
+                        <xsl:choose>
+                            <xsl:when test="/GameConfiguration/FileContent/@folderExists = 'false'">
+                                <br /><br />
+                                <div class="fileNotExist">The parent folder doesn't exist! Please create the folder to edit the file.</div>
+                            </xsl:when>
+                            <xsl:when test="/GameConfiguration/FileContent/@fileExists = 'false'">
+                                <br /><br />
+                                <div class="fileNotExist">The file doesn't exist! The 'SAVE' button will create it.</div>
+                            </xsl:when>
+                        </xsl:choose>
+                        
+                        <xsl:if test="/GameConfiguration/FileContent/@folderExists = 'true'">
+    						<br/><br/>
+    						<textarea name="content"><xsl:value-of select="/GameConfiguration/FileContent" /></textarea>
+    						<br />
+    						<br />
+                            <input type="submit" value="Save"/>
+                        </xsl:if>
 						<input type="button" value="Cancel" onclick="javascript:window.location.href='/'" />
 				</form>
+                </div>
 			</body>
 		</html>
 	</xsl:template>

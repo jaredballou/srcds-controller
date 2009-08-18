@@ -49,9 +49,17 @@ public class Left4Dead extends AbstractGame {
     public List<String> getFilesForEdit() {
 
 	final List<String> files = new ArrayList<String>();
-	Collections.addAll(files, "left4dead/gameinfo.txt",
-		"left4dead/missioncycle.txt", "left4dead/motd.txt",
-		"left4dead/cfg/private_server.cfg", "left4dead/cfg/server.cfg");
+	Collections.addAll(files, // 
+			   "left4dead/gameinfo.txt", //
+			   "left4dead/missioncycle.txt", // 
+			   "left4dead/motd.txt", //
+			   "left4dead/cfg/private_server.cfg",// 
+			   "left4dead/cfg/server.cfg", //
+			   "left4dead/addons/sourcemod/configs/adminmenu_custom.txt",
+			   "left4dead/addons/sourcemod/configs/adminmenu_sorting.txt",
+			   "left4dead/addons/sourcemod/configs/admins_simple.ini"
+			   
+	);
 	return files;
     }
 
@@ -59,9 +67,11 @@ public class Left4Dead extends AbstractGame {
     public List<String> getFilesForSync() {
 
 	final List<String> files = new ArrayList<String>();
-	Collections.addAll(files, "left4dead/gameinfo.txt",
-		"left4dead/missioncycle.txt", "left4dead/motd.txt",
-		"left4dead/cfg/server.cfg");
+	Collections.addAll(files,
+			   "left4dead/gameinfo.txt",
+			   "left4dead/missioncycle.txt",
+			   "left4dead/motd.txt",
+			   "left4dead/cfg/server.cfg");
 	return files;
     }
 }

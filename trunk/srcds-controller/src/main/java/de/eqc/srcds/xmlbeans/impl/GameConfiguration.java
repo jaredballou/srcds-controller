@@ -49,8 +49,7 @@ public class GameConfiguration extends AbstractXmlBean {
     private final Configuration config;
     private final int selectedFileIndex;
 
-    public GameConfiguration(final Configuration config,
-	    final int selectedFileIndex) {
+    public GameConfiguration(final Configuration config, final int selectedFileIndex) {
 
 	super(true);
 	this.config = config;
@@ -62,25 +61,27 @@ public class GameConfiguration extends AbstractXmlBean {
 
 	final StringBuilder sb = new StringBuilder(header(indent));
 	try {
-	    final AbstractGame game = config.getValue(SRCDS_GAMETYPE,
-		    GameType.class).getImplementation();
-	    final File file = new File(config.getValue(
-		    "srcds.controller.srcds.path", String.class), game
-		    .getFilesForEdit().get(selectedFileIndex));
+	    final AbstractGame game = config.getValue(SRCDS_GAMETYPE, GameType.class).getImplementation();
 
 	    sb.append(indent("<ConfigurationFiles>\n", indent + 1));
 	    for (int id = 0; id < game.getFilesForEdit().size(); id++) {
 		final String configFile = game.getFilesForEdit().get(id);
-		sb.append(indent(String.format(
-			"<ConfigurationFile id=\"%d\" name=\"%s\" />\n", id,
-			configFile), indent + 2));
+		sb.append(indent(String.format("<ConfigurationFile id=\"%d\" name=\"%s\" />\n", id, configFile), indent + 2));
 	    }
 	    sb.append(indent("</ConfigurationFiles>\n", indent + 1));
 
-	    sb.append(indent(String.format("<FileContent id=\"%d\">",
-		    selectedFileIndex), indent + 1));
+	    final File file =
+		    new File(config.getValue("srcds.controller.srcds.path", String.class), game.getFilesForEdit()
+											       .get(selectedFileIndex));
+
+	    sb.append(indent(String.format("<FileContent id=\"%d\" fileExists=\"%b\" folderExists=\"%b\">",
+					   selectedFileIndex,
+					   file.exists(),
+					   file.getParentFile().exists()), indent + 1));
 	    sb.append("<![CDATA[");
-	    sb.append(Utils.getFileContent(file));
+	    if (file.exists()) {
+		sb.append(Utils.getFileContent(file));
+	    }
 	    sb.append("]]>");
 	    sb.append("</FileContent>\n");
 	} catch (Exception e) {
@@ -89,10 +90,4 @@ public class GameConfiguration extends AbstractXmlBean {
 
 	return sb.append(footer(indent)).toString();
     }
-
-    // public static void main(String[] args) throws ConfigurationException {
-    // File configFile = new File(DEFAULT_CONFIG_FILENAME);
-    // Configuration config = new XmlPropertiesConfiguration(configFile);
-    // System.out.println(new GameConfiguration(config, 0).toXml());
-    // }
 }
