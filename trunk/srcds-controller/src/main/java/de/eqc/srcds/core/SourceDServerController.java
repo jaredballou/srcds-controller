@@ -39,6 +39,7 @@ import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_PATH;
 import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_SERVER_PORT;
 import static de.eqc.srcds.core.Constants.STARTUP_WAIT_TIME_MILLIS;
 import static de.eqc.srcds.core.Constants.OUTPUT_READING_SHUTDOWN_TIMEOUT_MILLIS;
+import static de.eqc.srcds.core.Constants.PROCESS_SHUTDOWN_TIMEOUT_MILLIS;
 
 import java.io.File;
 import java.util.AbstractSequentialList;
@@ -251,9 +252,8 @@ public class SourceDServerController extends AbstractServerController<Process> {
 		    // Ignore
 		}
 		try {
-		    server.getOutputStream().write(3);
-		    server.getOutputStream().flush();
 		    log.info("SIGTERM sent to process");
+		    ProcessUtil.sendSigAbort(server, PROCESS_SHUTDOWN_TIMEOUT_MILLIS);
 		} catch (Exception e) {
 		    // Ignore
 		}
