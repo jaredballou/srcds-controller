@@ -38,6 +38,7 @@ import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_PARAMETERS;
 import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_PATH;
 import static de.eqc.srcds.configuration.ConfigurationRegistry.SRCDS_SERVER_PORT;
 import static de.eqc.srcds.core.Constants.STARTUP_WAIT_TIME_MILLIS;
+import static de.eqc.srcds.core.Constants.OUTPUT_READING_SHUTDOWN_TIMEOUT_MILLIS;
 
 import java.io.File;
 import java.util.AbstractSequentialList;
@@ -244,6 +245,11 @@ public class SourceDServerController extends AbstractServerController<Process> {
 		throw new NotRunningException("Server is not running");
 	    } else {
 		serverOutputReader.stopGraceful();
+		try {
+		    serverOutputReader.join(OUTPUT_READING_SHUTDOWN_TIMEOUT_MILLIS);
+		} catch (InterruptedException e1) {
+		    // Ignore
+		}
 		try {
 		    server.getOutputStream().write(3);
 		    server.getOutputStream().flush();
