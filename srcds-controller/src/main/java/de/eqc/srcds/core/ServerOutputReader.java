@@ -105,6 +105,7 @@ public class ServerOutputReader extends Thread implements ServerOutput {
 
     public void stopGraceful() {
 
+	unRegisterAllOnLogObservers();
 	running.set(false);
     }
 
@@ -147,6 +148,12 @@ public class ServerOutputReader extends Thread implements ServerOutput {
     public void unRegisterOnLogObserver(final ProcessOutputObserver observer) {
 
 	this.outputObservers.remove(observer);
+    }
+
+    @Override
+    public void unRegisterAllOnLogObservers() {
+
+	this.outputObservers.clear();	
     }
 
     /*
