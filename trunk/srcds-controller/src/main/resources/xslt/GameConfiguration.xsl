@@ -84,7 +84,7 @@
                         
                         <xsl:if test="/GameConfiguration/FileContent/@folderExists = 'true'">
     						<br/><br/>
-    						<textarea name="content"><xsl:value-of select="/GameConfiguration/FileContent" /></textarea>
+    						<textarea name="content" wrap="off"><xsl:value-of select="/GameConfiguration/FileContent" /></textarea>
     						<br />
     						<br />
                             <input type="submit" value="Save"/>
