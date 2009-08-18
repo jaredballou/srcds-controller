@@ -68,4 +68,10 @@ public interface ServerOutput {
      * @param o
      */
     void unRegisterOnLogObserver(ProcessOutputObserver observer);
+    
+    /**
+     * Unregisters all observers.
+     * 
+     */
+    void unRegisterAllOnLogObservers();
 }
