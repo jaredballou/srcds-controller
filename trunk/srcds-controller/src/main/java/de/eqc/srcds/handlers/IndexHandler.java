@@ -49,7 +49,7 @@ public class IndexHandler extends AbstractRegisteredHandler implements
      * 
      */
     private static final String INDEX_HTML = "/html/index.html";
-    private static final byte[] ERROR_404_MESSAGE ="404 - page not found!".getBytes();
+    private static final String ERROR_404_MESSAGE ="404 - Page not found";
 
     /*
      * @see
@@ -61,10 +61,16 @@ public class IndexHandler extends AbstractRegisteredHandler implements
 	
 	// every wrong url falls back to this handler, so we have to check the request url and may send a 404 error
 	if (! httpExchange.getRequestURI().getPath().equalsIgnoreCase(getPath())) {
-		httpExchange.getResponseHeaders().add("Content-type", "text/plain");
-		httpExchange.sendResponseHeaders(404, ERROR_404_MESSAGE.length);
+		httpExchange.getResponseHeaders().add("Content-type", "text/html");
+		final StringBuilder sb = new StringBuilder();
+		sb.append(getHtmlHeader());
+		sb.append(String.format("<br/><h2>%s</h2>", ERROR_404_MESSAGE));
+		sb.append(getHtmlFooter());
+		final byte[] output = sb.toString().getBytes();
+
+		httpExchange.sendResponseHeaders(404, output.length);
 		final OutputStream os = httpExchange.getResponseBody();
-		os.write(ERROR_404_MESSAGE);
+		os.write(output);
 		os.flush();
 		os.close();
 		return;

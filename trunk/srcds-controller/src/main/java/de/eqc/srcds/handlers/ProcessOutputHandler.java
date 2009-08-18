@@ -33,9 +33,7 @@ package de.eqc.srcds.handlers;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.net.InetAddress;
 import java.nio.channels.Channels;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.sun.net.httpserver.HttpExchange;
@@ -48,16 +46,13 @@ import de.eqc.srcds.core.SourceDServerController;
 import de.eqc.srcds.core.Utils;
 import de.eqc.srcds.core.logging.LogFactory;
 import de.eqc.srcds.enums.ServerState;
-import de.eqc.srcds.handlers.utils.SimpleTemplate;
 
 /**
  * @author Holger Cremer
  */
-public class ProcessOutputHandler implements HttpHandler, RegisteredHandler  {
+public class ProcessOutputHandler extends AbstractRegisteredHandler  {
 
     private static Logger log = LogFactory.getLogger(ProcessOutputHandler.class);
-    private static final String HEADER_HTML = "/html/header.html";
-    private static final String FOOTER_HTML = "/html/footer.html";
     private SourceDServerController serverController;
 
     /*
@@ -90,23 +85,22 @@ public class ProcessOutputHandler implements HttpHandler, RegisteredHandler  {
 
     /*
      * @see
-     * com.sun.net.httpserver.HttpHandler#handle(com.sun.net.httpserver.HttpExchange
-     * )
+     * de.eqc.srcds.handlers.AbstractRegisteredHandler#handleRequest(com.sun
+     * .net.httpserver.HttpExchange)
      */
     @Override
-    public void handle(final HttpExchange httpExchange) throws IOException {
+    public void handleRequest(final HttpExchange httpExchange) throws Exception {
 
 	httpExchange.getResponseHeaders().add("Content-type", "text/html");
 	httpExchange.sendResponseHeaders(200, 0);
 	PrintStream printStream = null;
 
 	final ServerOutput serverOutput = this.serverController.getServerOutput();
-	try {
 	    final OutputStream os = httpExchange.getResponseBody();
 
 	    // set autoflush on in constructor
 	    printStream = new PrintStream(os, true);
-	    writeHtmlHeader(printStream);
+	    printStream.write(getHtmlHeader().getBytes());
 
 	    // output the log history
 	    printStream.println("<h2>Output History</h2>");
@@ -130,13 +124,6 @@ public class ProcessOutputHandler implements HttpHandler, RegisteredHandler  {
 		    streamLogger.start();
 		}
 	    }
-	} catch (Exception e) {
-	    // every Exception is interesting here because the PrintStream
-	    // should omit any IOExceptions
-	    log.log(Level.WARNING, "Exception during output sending: " + e.getMessage());
-	    log.log(Level.FINE, "Detailled exception: ", e);
-	    Utils.closeQuietly(printStream);
-	}
     }
 
     /**
@@ -184,7 +171,7 @@ public class ProcessOutputHandler implements HttpHandler, RegisteredHandler  {
 	    } finally {
 		serverOutput.unRegisterOnLogObserver(this);
 		try {
-		    writeHtmlFooter(this.printStream);
+		    this.printStream.write(getHtmlFooter().getBytes());
 		} catch (IOException e) {
 		    // Ignore
 		} finally {
@@ -204,17 +191,5 @@ public class ProcessOutputHandler implements HttpHandler, RegisteredHandler  {
 	    this.printStream.println(newLine + "<br />");
 	}
     }
-    
-    private void writeHtmlHeader(final PrintStream printStream) throws IOException {
 
-	final SimpleTemplate template = new SimpleTemplate(HEADER_HTML);
-	template.setAttribute("hostname", InetAddress.getLocalHost().getHostName());
-	printStream.write(template.renderTemplate().getBytes());
-    }
-
-    private void writeHtmlFooter(final PrintStream printStream) throws IOException {
-
-	final SimpleTemplate template = new SimpleTemplate(FOOTER_HTML);
-	printStream.write(template.renderTemplate().getBytes());
-    }    
 }
