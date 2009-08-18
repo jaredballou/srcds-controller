@@ -62,7 +62,7 @@ public class XsltHandler extends AbstractCacheControlRegisteredHandler implement
 	
 	final String resource = String.format("/xslt/%s", name);
 	
-	final SimpleTemplate template = new SimpleTemplate(resource);
+	final SimpleTemplate template = SimpleTemplate.createTemplateByTemplatePath(resource);
 	template.setAttribute("hostname", InetAddress.getLocalHost().getHostName());
 	template.setAttribute("version", VersionUtil.getProjectVersion());
 	template.setAttribute("srcds-executable-key", SRCDS_EXECUTABLE);

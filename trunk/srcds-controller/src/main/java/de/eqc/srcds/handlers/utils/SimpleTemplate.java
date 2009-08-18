@@ -47,34 +47,63 @@ import de.eqc.srcds.handlers.ImageHandler;
 /**
  * @author Holger Cremer
  */
-public class SimpleTemplate {
-    private final Map<String, String> attribute = new HashMap<String, String>();
-    private final URL template;
-    
-    private final static Pattern IMG_TAG_PATTERN = Pattern.compile("\\$\\{img:([\\w\\.\\-]*)\\}"); 
-    private final static Pattern CSS_TAG_PATTERN = Pattern.compile("\\$\\{css:([\\w\\.\\-]*)\\}"); 
-    
-    /**
-     * @param templatePath
-     * @throws FileNotFoundException 
-     * @throws IOException 
-     */
-    public SimpleTemplate(final String templatePath) throws FileNotFoundException {
+public final class SimpleTemplate {
 
-	this.template = getClass().getResource(templatePath);
-	if (this.template == null) {
+    private final Map<String, String> attribute = new HashMap<String, String>();
+    private URL template = null;
+    private String content = null;
+
+    private final static Pattern IMG_TAG_PATTERN = Pattern.compile("\\$\\{img:([\\w\\.\\-]*)\\}");
+    private final static Pattern CSS_TAG_PATTERN = Pattern.compile("\\$\\{css:([\\w\\.\\-]*)\\}");
+
+    /**
+     * Creates a simple template from the given template path.
+     * 
+     * @param templatePath
+     * @return
+     * @throws FileNotFoundException
+     */
+    public static SimpleTemplate createTemplateByTemplatePath(final String templatePath) throws FileNotFoundException {
+
+	final SimpleTemplate simpleTemplate = new SimpleTemplate();
+	simpleTemplate.template = simpleTemplate.getClass().getResource(templatePath);
+	if (simpleTemplate.template == null) {
 	    throw new FileNotFoundException(String.format("Cannot find the template '%s'", templatePath));
 	}
-    }    
-    
+
+	return simpleTemplate;
+    }
+
+    /**
+     * Creates a simple template with the given content.
+     * 
+     * @param content
+     * @return
+     */
+    public static SimpleTemplate createTemplateFromContent(final String content) {
+
+	final SimpleTemplate simpleTemplate = new SimpleTemplate();
+	simpleTemplate.content = content;
+	return simpleTemplate;
+    }
+
+    // no one must use this constructor
+    private SimpleTemplate() {
+
+    }
+
     public void setAttribute(final String key, final String value) {
 
 	this.attribute.put(key, value);
     }
-    
+
     public String renderTemplate() throws IOException {
 
-	String templateContent = Utils.getUrlContent(this.template);
+	String templateContent = this.content;
+
+	if (templateContent == null) {
+	    templateContent = Utils.getUrlContent(this.template);
+	}
 
 	// add the images
 	Matcher matcher = IMG_TAG_PATTERN.matcher(templateContent);
@@ -90,8 +119,8 @@ public class SimpleTemplate {
 	    final MatchResult result = matcher.toMatchResult();
 	    final String imageUrl = CssHandler.HANDLER_PATH + "?name=" + result.group(1);
 	    templateContent = templateContent.replace(result.group(0), imageUrl);
-	}	
-	
+	}
+
 	// add the attribute into the template
 	for (Entry<String, String> entry : this.attribute.entrySet()) {
 	    templateContent = templateContent.replace("${" + entry.getKey() + "}", entry.getValue());

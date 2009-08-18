@@ -181,14 +181,14 @@ public abstract class AbstractRegisteredHandler implements HttpHandler, Register
 
     protected String getHtmlHeader() throws IOException {
 
-	final SimpleTemplate template = new SimpleTemplate(HEADER_HTML);
+	final SimpleTemplate template = SimpleTemplate.createTemplateByTemplatePath(HEADER_HTML);
 	template.setAttribute("hostname", InetAddress.getLocalHost().getHostName());
 	return template.renderTemplate();
     }
 
     protected String getHtmlFooter() throws IOException {
 
-	final SimpleTemplate template = new SimpleTemplate(FOOTER_HTML);
+	final SimpleTemplate template = SimpleTemplate.createTemplateByTemplatePath(FOOTER_HTML);
 	return template.renderTemplate();
     }       
     
