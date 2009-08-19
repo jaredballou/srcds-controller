@@ -68,7 +68,7 @@ public class EditConfigFilesHandler extends AbstractRegisteredHandler {
 	    if (fileIdParam != null) {
 		fileId = Integer.parseInt(fileIdParam);
 	    }
-	    showFile(fileId, filesForEdit.get(fileId));
+	    showFile(fileId);
 	}
     }
 
@@ -79,15 +79,10 @@ public class EditConfigFilesHandler extends AbstractRegisteredHandler {
      * @throws ConfigurationException 
      */
     private void saveFile(final int fileId, final String file, final String newContent) throws IOException, ConfigurationException {
-	final File fileToEdit = new File(getConfig().getValue("srcds.controller.srcds.path",String.class), file);
-	
-	if (! fileToEdit.exists()) {
-	    
-	}
-	
-	Utils.saveToFile(fileToEdit, newContent);
 
-	showFile(fileId, file);
+	final File fileToEdit = new File(getConfig().getValue("srcds.controller.srcds.path",String.class), file);
+	Utils.saveToFile(fileToEdit, newContent);
+	showFile(fileId);
     }
 
     /**
@@ -96,12 +91,7 @@ public class EditConfigFilesHandler extends AbstractRegisteredHandler {
      * @throws FileNotFoundException 
      * @throws ConfigurationException 
      */
-    private void showFile(final int fileId, final String file) throws FileNotFoundException, IOException, ConfigurationException {
-//	final File fileToEdit = new File(getConfig().getValue("srcds.controller.srcds.path",String.class), file);
-//	
-//	if (!fileToEdit.exists()) {
-//	    throw new FileNotFoundException(String.format("Cannot find file %s", file));
-//	}
+    private void showFile(final int fileId) throws FileNotFoundException, IOException, ConfigurationException {
 
 	final GameConfiguration gameConfiguration = new GameConfiguration(getConfig(), fileId);
 	outputXmlContent(gameConfiguration.toXml());
