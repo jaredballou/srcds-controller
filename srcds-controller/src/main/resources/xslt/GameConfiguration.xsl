@@ -75,10 +75,11 @@
                             <xsl:when test="/GameConfiguration/FileContent/@folderExists = 'false'">
                                 <br /><br />
                                 <div class="fileNotExist">The parent folder doesn't exist! Please create the folder to edit the file.</div>
+                                <br />
                             </xsl:when>
                             <xsl:when test="/GameConfiguration/FileContent/@fileExists = 'false'">
                                 <br /><br />
-                                <div class="fileNotExist">The file doesn't exist! It will be created by by pressing the 'Save' button.</div>
+                                <div class="fileNotExist">The file doesn't exist! It will be created by pressing the 'Save' button.</div>
                             </xsl:when>
                         </xsl:choose>
                         
