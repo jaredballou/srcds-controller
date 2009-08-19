@@ -74,23 +74,30 @@
                         <xsl:choose>
                             <xsl:when test="/GameConfiguration/FileContent/@folderExists = 'false'">
                                 <br /><br />
-                                <div class="fileNotExist">The parent folder doesn't exist! Please create the folder to edit the file.</div>
+                                <div class="fileNotExistent">The parent folder doesn't exist! Please create the folder to edit the file.</div>
                                 <br />
                             </xsl:when>
                             <xsl:when test="/GameConfiguration/FileContent/@fileExists = 'false'">
                                 <br /><br />
-                                <div class="fileNotExist">The file doesn't exist! It will be created by pressing the 'Save' button.</div>
+                                <div class="fileNotExistent">The file doesn't exist! It will be created by pressing the 'Save' button.</div>
+                                <br />
                             </xsl:when>
+                            <xsl:otherwise>
+                            	<br />
+                            </xsl:otherwise>
                         </xsl:choose>
                         
                         <xsl:if test="/GameConfiguration/FileContent/@folderExists = 'true'">
-    						<br/><br/>
+    						<br />
     						<textarea name="content" wrap="off"><xsl:value-of select="/GameConfiguration/FileContent" /></textarea>
     						<br />
     						<br />
                             <input type="submit" value="Save"/>
-                        </xsl:if>
-						<input type="button" value="Cancel" onclick="javascript:window.location.href='/'" />
+							<input type="button" value="Revert" onclick="javascript:history.go(0)" />
+	   						<br />
+	                    </xsl:if>
+						<br />
+						<a href="/">[Back to main page]</a>
 				</form>
                 </div>
 			</body>
