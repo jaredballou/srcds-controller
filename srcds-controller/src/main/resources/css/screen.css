@@ -107,6 +107,11 @@ input.rcon {
 	margin-right: 5px;
 }
 
+form.rcon {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
 input[type=submit], input[type=reset], input[type=button] {
 	border: 1px solid #000;
   	color:#000; 
