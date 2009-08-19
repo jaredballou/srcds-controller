@@ -78,7 +78,7 @@
                             </xsl:when>
                             <xsl:when test="/GameConfiguration/FileContent/@fileExists = 'false'">
                                 <br /><br />
-                                <div class="fileNotExist">The file doesn't exist! The 'SAVE' button will create it.</div>
+                                <div class="fileNotExist">The file doesn't exist! It will be created by by pressing the 'Save' button.</div>
                             </xsl:when>
                         </xsl:choose>
                         
