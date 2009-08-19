@@ -42,16 +42,16 @@ public class CounterStrikeSource extends AbstractGame {
 
 	super("css");
 
-	addParameter("game", "css");
+	addParameter("game", "cstrike");
     }
 
     @Override
     public List<String> getFilesForEdit() {
 
 	final List<String> files = new ArrayList<String>();
-//	Collections.addAll(files, "left4dead/gameinfo.txt",
-//		"left4dead/missioncycle.txt", "left4dead/motd.txt",
-//		"left4dead/cfg/private_server.cfg", "left4dead/cfg/server.cfg");
+	Collections.addAll(files, "cstrike/gameinfo.txt",
+	   		"cstrike/cfg/game.cfg", "cstrike/motd.txt",
+	   		"cstrike/cfg/server.cfg");
 	return files;
     }
 
@@ -59,9 +59,9 @@ public class CounterStrikeSource extends AbstractGame {
     public List<String> getFilesForSync() {
 
 	final List<String> files = new ArrayList<String>();
-	Collections.addAll(files, "left4dead/gameinfo.txt",
-		"left4dead/missioncycle.txt", "left4dead/motd.txt",
-		"left4dead/cfg/server.cfg");
+	Collections.addAll(files, "cstrike/gameinfo.txt",
+		"cstrike/cfg/game.cfg", "cstrike/motd.txt",
+		"cstrike/cfg/server.cfg");
 	return files;
     }
 }
