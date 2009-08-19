@@ -96,9 +96,9 @@ div.response, a.response, h2.response, table.response, p.response, form input.re
 
 input, select {
 	border: 1px solid #000;
-  	color:#000; 
+  	color: #000; 
 	background-color: #e6f3e5;
-	border:1px solid; 
+	border: 1px solid; 
 	border-color: #5cb553 #5cb553 #5cb553 #5cb553; 
 }
 
@@ -111,7 +111,7 @@ input[type=submit], input[type=reset], input[type=button] {
 	border: 1px solid #000;
   	color:#000; 
 	background-color: #e6f3e5;	
-	border:1px solid; 
+	border: 1px solid; 
 	border-color: #5cb553 #5cb553 #5cb553 #5cb553; 
 }
 
@@ -119,17 +119,17 @@ textarea {
 	width: 600px;
 	height: 400px;
 	padding: 5px;
-  	color:#000; 
+  	color: #000; 
 	background-color: #e6f3e5;	
-	border:1px solid; 
+	border: 1px solid; 
 	border-color: #5cb553 #5cb553 #5cb553 #5cb553; 
 }
 
-.fileNotExist {
+.fileNotExistent {
 	color: red;
 	font-weight: bold;
-	background-color:lightyellow;
-	border:1px solid orange;
-	padding:2px;
-	width:600px;		
+	background-color: lightyellow;
+	border: 1px solid orange;
+	padding: 2px;
+	display: inline;
 }

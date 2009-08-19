@@ -137,9 +137,12 @@
 					</table>
 					<br />
 					<p class="response">
-                    <input type="submit" value="Save" />
-					<input type="button" value="Cancel" onclick="javascript:window.location.href='/'" />
-					</p>
+                    	<input type="submit" value="Save" />
+						<input type="button" value="Revert" onclick="javascript:history.go(0)" />
+						<br />
+						<br />
+						<a href="/">[Back to main page]</a>
+					</p>					
                 </form>
 			</body>
 		</html>
