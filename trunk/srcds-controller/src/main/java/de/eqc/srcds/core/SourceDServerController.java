@@ -186,24 +186,6 @@ public class SourceDServerController extends AbstractServerController<Process> {
 	return userParameters;
     }
 
-    private void customizeLdLibraryPath(final Map<String, String> env) {
-
-	String ldLibraryPath = env.get("LD_LIBRARY_PATH");
-	final String ldLibraryPathExtension =
-		String.format("%s%s%s", ".", File.pathSeparator, "bin");
-	if (ldLibraryPath != null && !ldLibraryPath.equals("")) {
-	    ldLibraryPath =
-		    String.format("%s%s%s",
-				  ldLibraryPath,
-				  File.pathSeparator,
-				  ldLibraryPathExtension);
-	} else {
-	    ldLibraryPath = ldLibraryPathExtension;
-	}
-	env.put("LD_LIBRARY_PATH", ldLibraryPath);
-	log.info(String.format("Set LD_LIBRARY_PATH to %s", ldLibraryPath));
-    }
-
     @Override
     public void startServer() throws AlreadyRunningException, StartupFailedException,
 	    ConfigurationException {
@@ -216,7 +198,11 @@ public class SourceDServerController extends AbstractServerController<Process> {
 		    final ProcessBuilder processBuilder = new ProcessBuilder(parseCommandLine());
 
 		    if (OperatingSystem.getCurrent() == OperatingSystem.LINUX) {
-			customizeLdLibraryPath(processBuilder.environment());
+			processBuilder.environment().put("LD_LIBRARY_PATH",
+							 String.format("%s%s%s",
+								       ".",
+								       File.pathSeparator,
+								       "bin"));
 		    }
 
 		    processBuilder.redirectErrorStream(true);
@@ -273,7 +259,7 @@ public class SourceDServerController extends AbstractServerController<Process> {
 		try {
 		    server.waitFor();
 		} catch (InterruptedException e) {
-		    // Ignore		    
+		    // Ignore
 		}
 		server = null;
 	    }
