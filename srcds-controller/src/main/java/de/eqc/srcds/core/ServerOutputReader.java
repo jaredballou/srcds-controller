@@ -77,9 +77,14 @@ public class ServerOutputReader extends Thread implements ServerOutput {
 	    while ((line = reader.readLine()) != null && running.get()) {
 		// TODO: apply a filter here?
 		this.saveLogLine(line);
-		if (line.matches("^.*STEAM.*connected.*$")) {
-		    log.info(line.replaceAll("[^\\p{ASCII}]", "").trim());
-		}
+		log.fine(line);
+//		if (line.matches("^.*STEAM.*connected.*$")) {
+//		    log.info(line.replaceAll("[^\\p{ASCII}]", "").trim());
+//		}
+	    }
+	    if (line != null) {
+		this.saveLogLine(line);
+		log.fine(line);
 	    }
 	} catch (IOException e) {
 	    log.info(String.format("Error while reading server output: %s", e.getLocalizedMessage()));
