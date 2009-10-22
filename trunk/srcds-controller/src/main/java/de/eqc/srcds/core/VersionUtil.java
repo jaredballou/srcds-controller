@@ -52,9 +52,9 @@ public final class VersionUtil {
 	    String pomPropertiesLocation = POM_PROPERTIES_LOCATION;
 	    pomPropertiesLocation = pomPropertiesLocation.replaceAll("\\$\\{root-package\\}", ROOT_PACKAGE);
 	    pomPropertiesLocation = pomPropertiesLocation.replaceAll("\\$\\{project-name\\}", PROJECT_NAME);
-	    final InputStream intputStream = VersionUtil.class.getResourceAsStream(pomPropertiesLocation);
+	    final InputStream inputStream = VersionUtil.class.getResourceAsStream(pomPropertiesLocation);
 	    final Properties props = new Properties();
-	    props.load(intputStream);
+	    props.load(inputStream);
 	    projectVersion = props.getProperty("version");
 	} catch (Exception e) {
 	    projectVersion = "(unknown)";
