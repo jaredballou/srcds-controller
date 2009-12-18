@@ -33,10 +33,12 @@ package de.eqc.srcds.enums;
 import de.eqc.srcds.games.AbstractGame;
 import de.eqc.srcds.games.impl.CounterStrikeSource;
 import de.eqc.srcds.games.impl.Left4Dead;
+import de.eqc.srcds.games.impl.Left4Dead2;
 
 public enum GameType {
 
     LEFT4DEAD(new Left4Dead()),
+    LEFT4DEAD2(new Left4Dead2()),
     COUNTERSTRIKE_SOURCE(new CounterStrikeSource());
 
     private final AbstractGame implementation;
