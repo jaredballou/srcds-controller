@@ -36,6 +36,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import de.eqc.srcds.enums.OperatingSystem;
+
 public abstract class AbstractGame {
 
     private final Map<String, String> parameters;
@@ -56,7 +58,7 @@ public abstract class AbstractGame {
 
 	if (parameters.get(key) == null) {
 	    parameters.put(key, value);
-	}	
+	}
     }
 
     public AbstractSequentialList<String> getParametersAsList() {
@@ -64,7 +66,12 @@ public abstract class AbstractGame {
 	final LinkedList<String> params = new LinkedList<String>();
 
 	for (String parameter : parameters.keySet()) {
-	    params.add("-" + parameter + " " + parameters.get(parameter));
+	    if (OperatingSystem.getCurrent() == OperatingSystem.LINUX) {
+		params.add("-" + parameter + " " + parameters.get(parameter));
+	    } else {
+		params.add("-" + parameter);
+		params.add(parameters.get(parameter));
+	    }
 	}
 
 	return params;
@@ -76,8 +83,6 @@ public abstract class AbstractGame {
     }
 
     public abstract List<String> getFilesForEdit();
-    
+
     public abstract List<String> getFilesForSync();
 }
-
-

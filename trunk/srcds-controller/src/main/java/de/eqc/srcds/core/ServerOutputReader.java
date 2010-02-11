@@ -43,6 +43,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 import de.eqc.srcds.core.logging.LogFactory;
+import de.eqc.srcds.enums.OperatingSystem;
 
 public class ServerOutputReader extends Thread implements ServerOutput {
 
@@ -55,9 +56,11 @@ public class ServerOutputReader extends Thread implements ServerOutput {
 
     // we use a concurrent version of the deque because many threads may access
     // this object
-    private final transient LinkedBlockingDeque<String> savedLogLines = new LinkedBlockingDeque<String>(SAVE_LAST_LINES);
+    private final transient LinkedBlockingDeque<String> savedLogLines =
+	    new LinkedBlockingDeque<String>(SAVE_LAST_LINES);
     // same here
-    private final transient List<ProcessOutputObserver> outputObservers = Collections.synchronizedList(new ArrayList<ProcessOutputObserver>(3));
+    private final transient List<ProcessOutputObserver> outputObservers =
+	    Collections.synchronizedList(new ArrayList<ProcessOutputObserver>(3));
 
     public ServerOutputReader(final InputStream inputStream) {
 
@@ -71,26 +74,34 @@ public class ServerOutputReader extends Thread implements ServerOutput {
 
 	final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 	running.set(true);
-	log.info("Reading server output started");
-	try {
-	    String line;
-	    while ((line = reader.readLine()) != null && running.get()) {
-		// TODO: apply a filter here?
-		this.saveLogLine(line);
-		log.fine(line);
-//		if (line.matches("^.*STEAM.*connected.*$")) {
-//		    log.info(line.replaceAll("[^\\p{ASCII}]", "").trim());
-//		}
+
+	if (OperatingSystem.getCurrent() == OperatingSystem.LINUX) {
+	    log.info("Reading server output started");
+	    try {
+		String line;
+		while ((line = reader.readLine()) != null && running.get()) {
+		    // TODO: apply a filter here?
+		    this.saveLogLine(line);
+		    log.fine(line);
+		}
+		if (line != null) {
+		    this.saveLogLine(line);
+		    log.fine(line);
+		}
+	    } catch (IOException e) {
+		log.info(String.format("Error while reading server output: %s",
+				       e.getLocalizedMessage()));
 	    }
-	    if (line != null) {
-		this.saveLogLine(line);
-		log.fine(line);
-	    }
-	} catch (IOException e) {
-	    log.info(String.format("Error while reading server output: %s", e.getLocalizedMessage()));
-	} finally {
-	    log.info("Reading server output stopped");
+	} else {
+	    final String unsupportedMessage =
+		    String.format("%s does currently not support your operating system.",
+				  getClass().getSimpleName());
+	    this.saveLogLine(unsupportedMessage);
+	    log.info(unsupportedMessage);
 	}
+
+	log.info("Reading server output stopped");
+	running.set(false);
     }
 
     /**
@@ -158,7 +169,7 @@ public class ServerOutputReader extends Thread implements ServerOutput {
     @Override
     public void unRegisterAllOnLogObservers() {
 
-	this.outputObservers.clear();	
+	this.outputObservers.clear();
     }
 
     /*

@@ -42,9 +42,9 @@ import static de.eqc.srcds.core.Constants.STARTUP_WAIT_TIME_MILLIS;
 
 import java.io.File;
 import java.util.AbstractSequentialList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import de.eqc.srcds.configuration.Configuration;
 import de.eqc.srcds.configuration.exceptions.ConfigurationException;
@@ -132,6 +132,9 @@ public class SourceDServerController extends AbstractServerController<Process> {
 	final int srcdsPort = config.getValue(SRCDS_SERVER_PORT, Integer.class);
 	parameters.add(String.format("+hostport %d", srcdsPort));
 	parameters.add("-norestart");
+	if (OperatingSystem.getCurrent() == OperatingSystem.WINDOWS) {
+	    parameters.add("-console");
+	}
 
 	final List<String> userParameters = parseUserParameters();
 	for (int i = userParameters.size() - 1; i >= 0; i--) {
@@ -160,27 +163,31 @@ public class SourceDServerController extends AbstractServerController<Process> {
 	String userParametersString = config.getValue(SRCDS_PARAMETERS, String.class).trim();
 	final List<String> userParameters = new LinkedList<String>();
 
-	final List<String> plusParameterNames = new LinkedList<String>();
-	for (int i = 0; i < userParametersString.length(); i++) {
-	    final char chr = userParametersString.charAt(i);
-	    if (chr == '+' && userParametersString.lastIndexOf(' ') > i) {
-		final int pNameLength = userParametersString.substring(i + 1).indexOf(' ');
-		final int startOffset = i + 1;
-		final String pName =
-			userParametersString.substring(startOffset, startOffset + pNameLength);
-		plusParameterNames.add(pName);
+	if (OperatingSystem.getCurrent() == OperatingSystem.LINUX) {
+	    final List<String> plusParameterNames = new LinkedList<String>();
+	    for (int i = 0; i < userParametersString.length(); i++) {
+		final char chr = userParametersString.charAt(i);
+		if (chr == '+' && userParametersString.lastIndexOf(' ') > i) {
+		    final int pNameLength = userParametersString.substring(i + 1).indexOf(' ');
+		    final int startOffset = i + 1;
+		    final String pName =
+			    userParametersString.substring(startOffset, startOffset + pNameLength);
+		    plusParameterNames.add(pName);
+		}
 	    }
-	}
 
-	userParametersString = userParametersString.replaceAll("\\+", "-");
-	final String[] parts = userParametersString.split("-");
-	for (String part : parts) {
-	    if (!"".equals(part)) {
-		final String prefix = plusParameterNames.contains(part.split(" ")[0])
-			? "+"
-			: "-";
-		userParameters.add(prefix + part.trim());
+	    userParametersString = userParametersString.replaceAll("\\+", "-");
+	    final String[] parts = userParametersString.split("-");
+	    for (String part : parts) {
+		if (!"".equals(part)) {
+		    final String prefix = plusParameterNames.contains(part.split(" ")[0])
+			    ? "+"
+			    : "-";
+		    userParameters.add(prefix + part.trim());
+		}
 	    }
+	} else {
+	    userParameters.addAll(Arrays.asList(userParametersString.split(" ")));
 	}
 
 	return userParameters;
@@ -208,7 +215,7 @@ public class SourceDServerController extends AbstractServerController<Process> {
 		    processBuilder.redirectErrorStream(true);
 		    processBuilder.directory(srcdsPath);
 		    server = processBuilder.start();
-
+		    
 		    serverOutputReader = new ServerOutputReader(server.getInputStream());
 		    serverOutputReader.start();
 
